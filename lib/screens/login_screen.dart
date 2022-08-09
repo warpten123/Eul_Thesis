@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:thesis_eul/screens/user_dashboard.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -112,7 +113,13 @@ class LoginScreen extends StatelessWidget {
                     ),
                     margin: EdgeInsets.only(left: 40, right: 40),
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const UserDashboard()),
+                        );
+                      },
                       child: Text('SIGN IN',
                           style: TextStyle(
                               color: Colors.white,
