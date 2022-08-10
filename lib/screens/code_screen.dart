@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:thesis_eul/screens/first_login.screen.dart';
+import 'package:thesis_eul/screens/login_screen.dart';
+import 'package:thesis_eul/screens/register_screen.dart';
 import 'package:thesis_eul/screens/user_dashboard.dart';
 
 import 'input_box.dart';
