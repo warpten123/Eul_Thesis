@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:thesis_eul/models/res_categories.dart';
 import 'package:thesis_eul/models/research.dart';
 
+import 'header_drawer.dart';
+
 class ContentUserDashBoard extends StatefulWidget {
   ContentUserDashBoard({Key? key}) : super(key: key);
 
@@ -43,36 +45,49 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+      appBar: AppBar(),
+      drawer: Drawer(
+        child: SingleChildScrollView(
+          child: Container(
+            child: Column(
+              children: <Widget>[
+                HeaderDrawer(),
+                // ListDrawer(),
+              ],
+            ),
+          ),
+        ),
+      ),
       backgroundColor: Colors.grey.shade100,
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SizedBox(
-              height: 60,
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 20, right: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Icon(
-                    Icons.menu,
-                    size: 36,
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(30),
-                    child: Image.asset(
-                      'assets/pj.jpg',
-                      height: 36,
-                      width: 36,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            // SizedBox(
+            //   height: 60,
+            // ),
+            // Padding(
+            //   padding: EdgeInsets.only(left: 20, right: 20),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: <Widget>[
+            //       Icon(
+            //         Icons.menu,
+            //         size: 36,
+            //       ),
+            //       ClipRRect(
+            //         borderRadius: BorderRadius.circular(30),
+            //         child: Image.asset(
+            //           'assets/pj.jpg',
+            //           height: 36,
+            //           width: 36,
+            //           fit: BoxFit.cover,
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             SizedBox(
               height: 30,
             ),

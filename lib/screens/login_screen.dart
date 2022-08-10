@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:thesis_eul/screens/code_screen.dart';
 import 'package:thesis_eul/screens/user_dashboard.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -94,12 +95,21 @@ class LoginScreen extends StatelessWidget {
                   SizedBox(
                     height: 12,
                   ),
-                  Text(
-                    'Forgot Password?',
-                    style: TextStyle(
-                        color: Colors.green,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CodeScreen()),
+                      );
+                    },
+                    child: Text(
+                      'No Account? Enter Code!',
+                      style: TextStyle(
+                          color: Colors.green,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
                   SizedBox(
                     height: 30,
