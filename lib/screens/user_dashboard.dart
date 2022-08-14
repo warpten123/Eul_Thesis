@@ -13,7 +13,7 @@ class UserDashboard extends StatelessWidget {
         child: Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.green,
-        unselectedItemColor: Color(0xffdbdbdb),
+        unselectedItemColor: Colors.black,
         showSelectedLabels: false,
         showUnselectedLabels: false,
         iconSize: 30,
@@ -26,7 +26,7 @@ class UserDashboard extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.search,
+              Icons.group,
             ),
             label: 'Home',
           ),
