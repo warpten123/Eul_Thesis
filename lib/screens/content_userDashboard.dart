@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:thesis_eul/models/res_categories.dart';
 import 'package:thesis_eul/models/research.dart';
+import 'package:thesis_eul/screens/research_screen.dart';
 
 import 'header_drawer.dart';
 
@@ -17,6 +18,7 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
   bool checkbox = false;
 
   List<Categories> categories = [
+    Categories(title: 'All', image: 'assets/vision.jpg', count: 4),
     Categories(
         title: 'Artificial Intelligence', image: 'assets/ai.png', count: 2),
     Categories(title: 'Machine Learning', image: 'assets/ml.png', count: 2),
@@ -39,13 +41,23 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
         image: 'assets/cover_page.jpg',
         department: 'School Of Computer Studies',
         authors: ['Patalita', 'Bandalan']),
+    Research(
+        title: 'StudyUp',
+        image: 'assets/cover_page.jpg',
+        department: 'School Of Computer Studies',
+        authors: ['Daguplo', 'Solis']),
   ];
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(
+          'Welcome Josenian!',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
       drawer: Drawer(
         child: SingleChildScrollView(
           child: Container(
@@ -88,17 +100,17 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
             //     ],
             //   ),
             // ),
-            SizedBox(
-              height: 30,
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 20),
-              child: Text(
-                'Welcome Josenian!',
-                style: TextStyle(
-                    fontSize: 40, height: 1.2, fontWeight: FontWeight.bold),
-              ),
-            ),
+            // SizedBox(
+            //   height: 30,
+            // ),
+            // Padding(
+            //   padding: EdgeInsets.only(left: 20),
+            //   child: Text(
+            //     'Welcome Josenian!',
+            //     style: TextStyle(
+            //         fontSize: 40, height: 1.2, fontWeight: FontWeight.bold),
+            //   ),
+            // ),
             SizedBox(
               height: 50,
             ),
@@ -141,7 +153,7 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
               ),
             ),
             Container(
-              height: 110,
+              height: 50,
               child: ListView.builder(
                 itemCount: categories.length,
                 shrinkWrap: true,
@@ -154,26 +166,26 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
                     padding: EdgeInsets.only(top: 10, bottom: 10),
                     width: 150,
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.greenAccent,
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Image.asset(
-                          categories[index].image,
-                          height: 44,
-                          width: 44,
-                          fit: BoxFit.cover,
-                        ),
+                        // Image.asset(
+                        //   categories[index].image,
+                        //   height: 44,
+                        //   width: 44,
+                        //   fit: BoxFit.cover,
+                        // ),
                         SizedBox(
                           height: 12,
                         ),
                         Text(
                           categories[index].title,
                           style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
+                              fontSize: 15, fontWeight: FontWeight.w500),
                         ),
                       ],
                     ),
@@ -204,7 +216,7 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
               height: 30,
             ),
             Container(
-              height: 300,
+              height: 400,
               child: ListView.builder(
                 itemCount: research.length,
                 shrinkWrap: true,
@@ -231,6 +243,14 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
                             Padding(
                               padding: const EdgeInsets.only(bottom: 20.0),
                               child: ListTile(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ReseachScreen(
+                                            name: research[index].title)),
+                                  );
+                                },
                                 leading: Image.asset(
                                   research[index].image,
                                   height: 80,
@@ -282,6 +302,10 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
           ],
         ),
       ),
+      // floatingActionButton: FloatingActionButton(
+      //   child: Icon(Icons.add),
+      //   onPressed: () {},
+      // ),
     ));
   }
 }
