@@ -76,41 +76,6 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            // SizedBox(
-            //   height: 60,
-            // ),
-            // Padding(
-            //   padding: EdgeInsets.only(left: 20, right: 20),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     children: <Widget>[
-            //       Icon(
-            //         Icons.menu,
-            //         size: 36,
-            //       ),
-            //       ClipRRect(
-            //         borderRadius: BorderRadius.circular(30),
-            //         child: Image.asset(
-            //           'assets/pj.jpg',
-            //           height: 36,
-            //           width: 36,
-            //           fit: BoxFit.cover,
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            // SizedBox(
-            //   height: 30,
-            // ),
-            // Padding(
-            //   padding: EdgeInsets.only(left: 20),
-            //   child: Text(
-            //     'Welcome Josenian!',
-            //     style: TextStyle(
-            //         fontSize: 40, height: 1.2, fontWeight: FontWeight.bold),
-            //   ),
-            // ),
             SizedBox(
               height: 50,
             ),
@@ -302,10 +267,71 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   child: Icon(Icons.add),
-      //   onPressed: () {},
-      // ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        backgroundColor: Colors.greenAccent,
+        splashColor: Colors.green,
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return Container(
+                  child: AlertDialog(
+                    title: Text(
+                      'Upload File',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 20.0),
+                    ),
+                    content: IconButton(
+                      icon: Icon(
+                        Icons.upload,
+                        size: 50.0,
+                      ),
+                      onPressed: () {},
+                    ),
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text('CANCEL',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                              ))),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text('CONFIRM',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                              ))),
+                    ],
+                  ),
+                );
+              });
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.greenAccent,
+        shape: CircularNotchedRectangle(),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.home),
+              iconSize: 30.0,
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.favorite),
+              iconSize: 30.0,
+            ),
+          ],
+        ),
+      ),
     ));
   }
 }
