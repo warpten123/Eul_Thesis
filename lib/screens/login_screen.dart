@@ -151,7 +151,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     //     );
                     //   },
                     child: TextButton(
-                      onPressed: signIn,
+                      onPressed: () {
+                        auth.signIn(emailController.text.trim(),
+                            passwordController.text.trim());
+                      },
                       child: Text('SIGN IN',
                           style: TextStyle(
                               color: Colors.white,
@@ -193,16 +196,5 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-  }
-
-  Future signIn() async {
-    print("i am inside here");
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.text.trim(),
-          password: passwordController.text.trim());
-    } on FirebaseAuthException catch (e) {
-      print(e);
-    }
   }
 }

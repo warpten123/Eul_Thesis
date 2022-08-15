@@ -54,6 +54,13 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+              },
+              icon: Icon(Icons.logout))
+        ],
         title: Text(
           'Welcome Josenian!',
           style: TextStyle(fontWeight: FontWeight.bold),
