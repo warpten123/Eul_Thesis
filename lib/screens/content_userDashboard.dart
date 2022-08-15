@@ -45,7 +45,12 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(
+          'Welcome Josenian!',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
       drawer: Drawer(
         child: SingleChildScrollView(
           child: Container(
@@ -88,17 +93,17 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
             //     ],
             //   ),
             // ),
-            SizedBox(
-              height: 30,
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 20),
-              child: Text(
-                'Welcome Josenian!',
-                style: TextStyle(
-                    fontSize: 40, height: 1.2, fontWeight: FontWeight.bold),
-              ),
-            ),
+            // SizedBox(
+            //   height: 30,
+            // ),
+            // Padding(
+            //   padding: EdgeInsets.only(left: 20),
+            //   child: Text(
+            //     'Welcome Josenian!',
+            //     style: TextStyle(
+            //         fontSize: 40, height: 1.2, fontWeight: FontWeight.bold),
+            //   ),
+            // ),
             SizedBox(
               height: 50,
             ),
