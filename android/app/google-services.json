@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "310276747995",
+    "project_id": "thesis-eul-final",
+    "storage_bucket": "thesis-eul-final.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:310276747995:android:d45a48c5f7af0fa10552fe",
+        "android_client_info": {
+          "package_name": "com.example.thesis_eul"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "310276747995-mfavoo54pn8b55ahjltonn35pi9sgugu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGvXUlK49OWAxzLYDHloKF6V9Uz2ZAk5o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "310276747995-mfavoo54pn8b55ahjltonn35pi9sgugu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
