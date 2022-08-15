@@ -25,9 +25,7 @@ class UserDashboard extends StatelessWidget {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.group,
-            ),
+            icon: Icon(Icons.upload_rounded),
             label: 'Home',
           ),
           BottomNavigationBarItem(
