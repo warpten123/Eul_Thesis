@@ -64,7 +64,7 @@ class CodeScreen extends StatelessWidget {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const UserDashboard()),
+                                builder: (context) => const RegisterScreen()),
                           );
                         },
                         child: Text('Continue',
