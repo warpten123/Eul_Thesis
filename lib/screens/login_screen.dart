@@ -1,9 +1,27 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:thesis_eul/authentication/login.dart';
 import 'package:thesis_eul/screens/code_screen.dart';
 import 'package:thesis_eul/screens/user_dashboard.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final auth = Authentication();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  // @override
+  // void dispose() {
+  //   emailController.dispose();
+  //   passwordController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +70,7 @@ class LoginScreen extends StatelessWidget {
                     height: 50,
                     margin: EdgeInsets.only(left: 40, right: 40),
                     child: TextField(
+                      controller: emailController,
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.white,
@@ -75,6 +94,7 @@ class LoginScreen extends StatelessWidget {
                     height: 50,
                     margin: EdgeInsets.only(left: 40, right: 40),
                     child: TextField(
+                      controller: passwordController,
                       obscureText: true,
                       style: TextStyle(
                         fontSize: 16,
@@ -122,13 +142,18 @@ class LoginScreen extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                     ),
                     margin: EdgeInsets.only(left: 40, right: 40),
+                    // child: TextButton(
+                    //   onPressed: () {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //           builder: (context) => const UserDashboard()),
+                    //     );
+                    //   },
                     child: TextButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const UserDashboard()),
-                        );
+                        auth.signIn(emailController.text.trim(),
+                            passwordController.text.trim());
                       },
                       child: Text('SIGN IN',
                           style: TextStyle(
@@ -137,6 +162,7 @@ class LoginScreen extends StatelessWidget {
                               fontSize: 18)),
                     ),
                   ),
+                  // ),
                   SizedBox(
                     height: 16,
                   ),

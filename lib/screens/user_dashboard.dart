@@ -11,31 +11,36 @@ class UserDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.green,
-        unselectedItemColor: Colors.black,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        iconSize: 30,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-            ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.upload_rounded),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.favorite,
-            ),
-            label: 'Home',
-          ),
-        ],
-      ),
+      // bottomNavigationBar: BottomAppBar(
+      //   color: Colors.green,
+      //   shape: CircularNotchedRectangle(),
+      //   child: Row(
+      //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //     children: <Widget>[
+      //       IconButton(onPressed: () {}, icon: Icon(Icons.home)),
+      //       IconButton(onPressed: () {}, icon: Icon(Icons.favorite)),
+      //     ],
+      //   ),
+
+      //   // items: [
+      //   //   BottomNavigationBarItem(
+      //   //     icon: Icon(
+      //   //       Icons.home,
+      //   //     ),
+      //   //     label: 'Home',
+      //   //   ),
+      //   //   BottomNavigationBarItem(
+      //   //     icon: Icon(Icons.upload_rounded),
+      //   //     label: 'Home',
+      //   //   ),
+      //   //   BottomNavigationBarItem(
+      //   //     icon: Icon(
+      //   //       Icons.favorite,
+      //   //     ),
+      //   //     label: 'Home',
+      //   //   ),
+      //   // ],
+      // ),
       body: ContentUserDashBoard(),
     ));
   }
