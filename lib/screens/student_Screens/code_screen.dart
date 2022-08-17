@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:thesis_eul/screens/first_login.screen.dart';
+
 import 'package:thesis_eul/screens/login_screen.dart';
-import 'package:thesis_eul/screens/register_screen.dart';
-import 'package:thesis_eul/screens/user_dashboard.dart';
+import 'package:thesis_eul/screens/student_Screens/register_screen.dart';
 
 import 'input_box.dart';
 
@@ -38,7 +37,7 @@ class CodeScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Text(
-                      "Enter OTP Code",
+                      "Verification Code",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 38,
@@ -50,6 +49,14 @@ class CodeScreen extends StatelessWidget {
                     Input_Box(),
                     SizedBox(
                       height: 30,
+                    ),
+                    Text(
+                      'Check your USJ-R email! We sent you a code',
+                      style:
+                          TextStyle(color: Colors.grey.shade500, fontSize: 16),
+                    ),
+                    SizedBox(
+                      height: 20,
                     ),
                     Container(
                       height: 50,
@@ -73,6 +80,9 @@ class CodeScreen extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18)),
                       ),
+                    ),
+                    SizedBox(
+                      height: 30,
                     ),
                   ],
                 ),

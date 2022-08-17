@@ -40,6 +40,11 @@ dependencies:
   firebase_auth: ^3.6.3
   firebase_core: ^1.20.1
   cloud_firestore: ^3.4.4
+  file_picker: ^4.1.3
+  open_file: ^3.2.1
+  path_provider: ^2.0.11 
+  dio: ^4.0.6
+  
 
 dev_dependencies:
   flutter_test:
@@ -74,6 +79,11 @@ flutter:
     - assets/cover_page.jpg
     - assets/cartoon_usjr.png
     - assets/usjr3.jpg
+    - assets/jovelyn.jpg
+    - assets/bohol.jpg
+    - assets/vincent.png
+    - assets/basak.jpg
+    - assets/basak2.jpg
   
 
   # An image asset can refer to one or more resolution-specific "variants", see

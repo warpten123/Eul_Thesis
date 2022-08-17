@@ -1,18 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:thesis_eul/authentication/login.dart';
+import 'package:thesis_eul/screens/login_screen.dart';
 
 import 'package:thesis_eul/screens/student_Screens/code_screen.dart';
-import 'package:thesis_eul/screens/teacher_Screens/teacher_login.dart';
+import 'package:thesis_eul/screens/teacher_Screens/teacher_code_screen.dart';
+import 'package:thesis_eul/screens/teacher_Screens/teacher_dashboard.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class TeacherLogin extends StatefulWidget {
+  const TeacherLogin({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<TeacherLogin> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<TeacherLogin> {
   final auth = Authentication();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -33,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Container(
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('assets/usjr2.jpg'),
+                      image: AssetImage('assets/basak2.jpg'),
                       fit: BoxFit.cover)),
             ),
             Container(
@@ -52,20 +54,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Text(
-                      "Adelante!",
+                      "Welcome Adviser!",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 38,
                           fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Text(
-                      'Need help with your thesis? Come sign in!',
-                      style:
-                          TextStyle(color: Colors.grey.shade500, fontSize: 16),
-                    ),
+
                     SizedBox(
                       height: 20,
                     ),
@@ -123,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const CodeScreen()),
+                              builder: (context) => const TeacherCodeScreen()),
                         );
                       },
                       child: Text(
@@ -153,10 +148,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       //           builder: (context) => const UserDashboard()),
                       //     );
                       //   },
+
                       child: TextButton(
                         onPressed: () {
-                          auth.signIn(emailController.text.trim(),
-                              passwordController.text.trim());
+                          // auth.signIn(emailController.text.trim(),
+                          //     passwordController.text.trim());
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TeacherDashboard()),
+                          );
                         },
                         child: Text('SIGN IN',
                             style: TextStyle(
@@ -174,23 +175,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text(
-                            'Research Adviser?',
-                            style: TextStyle(color: Colors.white),
-                          ),
                           SizedBox(
                             height: 15,
                           ),
-                          GestureDetector(
+                          InkWell(
                             onTap: () {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const TeacherLogin()),
+                                    builder: (context) => const LoginScreen()),
                               );
                             },
                             child: Text(
-                              '  Tap me!',
+                              'Go Back',
                               style: TextStyle(
                                   color: Colors.green,
                                   fontWeight: FontWeight.bold),

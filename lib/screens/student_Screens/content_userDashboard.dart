@@ -1,10 +1,13 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:flutter/material.dart';
+import 'package:open_file/open_file.dart';
 import 'package:thesis_eul/models/res_categories.dart';
 import 'package:thesis_eul/models/research.dart';
-import 'package:thesis_eul/screens/research_screen.dart';
+import 'package:thesis_eul/screens/student_Screens/research_screen.dart';
 
 import 'header_drawer.dart';
 
@@ -48,11 +51,22 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
         department: 'School Of Computer Studies',
         authors: ['Daguplo', 'Solis']),
   ];
+  Future<File?> pickFile() async {
+    final result = await FilePicker.platform.pickFiles(
+        allowMultiple: true,
+        type: FileType.custom,
+        allowedExtensions: ['pdf', 'docx']);
+    final file = result?.files.first;
+
+    if (result == null) return null;
+    OpenFile.open(file?.path);
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         actions: [
           IconButton(
@@ -295,7 +309,9 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
                         Icons.upload,
                         size: 50.0,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        pickFile();
+                      },
                     ),
                     actions: [
                       TextButton(

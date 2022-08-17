@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:thesis_eul/screens/code_screen.dart';
-import 'package:thesis_eul/screens/user_dashboard.dart';
 
 class FirstLoginScreen extends StatelessWidget {
   const FirstLoginScreen({Key? key}) : super(key: key);
