@@ -10,6 +10,7 @@ import 'input_box.dart';
 class CodeScreen extends StatelessWidget {
   const CodeScreen({Key? key}) : super(key: key);
 
+  _sendCode() {}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +53,7 @@ class CodeScreen extends StatelessWidget {
                       height: 30,
                     ),
                     Text(
-                      'We sent a code to ade***@gmail.com',
+                      'Check your USJ-R email! We sent you a code',
                       style:
                           TextStyle(color: Colors.grey.shade500, fontSize: 16),
                     ),
@@ -81,6 +82,9 @@ class CodeScreen extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18)),
                       ),
+                    ),
+                    SizedBox(
+                      height: 30,
                     ),
                   ],
                 ),

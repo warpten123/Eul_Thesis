@@ -123,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const EmailScreen()),
+                              builder: (context) => const CodeScreen()),
                         );
                       },
                       child: Text(

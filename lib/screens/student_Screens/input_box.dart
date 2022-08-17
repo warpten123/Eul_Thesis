@@ -33,11 +33,9 @@ class Input_Box extends StatelessWidget {
                   ),
                 ),
                 style: TextStyle(fontSize: 40.0, color: Colors.white),
-                keyboardType: TextInputType.number,
                 textAlign: TextAlign.center,
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(1),
-                  FilteringTextInputFormatter.digitsOnly,
                 ],
               ),
             ),
@@ -61,11 +59,9 @@ class Input_Box extends StatelessWidget {
                     borderSide: BorderSide(color: Colors.green),
                   ),
                 ),
-                keyboardType: TextInputType.number,
                 textAlign: TextAlign.center,
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(1),
-                  FilteringTextInputFormatter.digitsOnly,
                 ],
               ),
             ),
@@ -89,11 +85,9 @@ class Input_Box extends StatelessWidget {
                   ),
                 ),
                 style: TextStyle(fontSize: 40.0, color: Colors.white),
-                keyboardType: TextInputType.number,
                 textAlign: TextAlign.center,
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(1),
-                  FilteringTextInputFormatter.digitsOnly,
                 ],
               ),
             ),
@@ -101,6 +95,7 @@ class Input_Box extends StatelessWidget {
               height: 68,
               width: 64,
               child: TextFormField(
+                textCapitalization: TextCapitalization.words,
                 onSaved: (pin4) {},
                 onChanged: (value) {
                   if (value.length == 1) {
@@ -117,11 +112,9 @@ class Input_Box extends StatelessWidget {
                   ),
                 ),
                 style: TextStyle(fontSize: 40.0, color: Colors.white),
-                keyboardType: TextInputType.number,
                 textAlign: TextAlign.center,
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(1),
-                  FilteringTextInputFormatter.digitsOnly,
                 ],
               ),
             ),

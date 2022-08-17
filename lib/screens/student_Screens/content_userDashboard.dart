@@ -56,10 +56,10 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
         allowMultiple: true,
         type: FileType.custom,
         allowedExtensions: ['pdf', 'docx']);
-    final file = result!.files.first;
-    OpenFile.open(file.path);
-    // ignore: unnecessary_null_comparison
+    final file = result?.files.first;
+
     if (result == null) return null;
+    OpenFile.open(file?.path);
   }
 
   @override

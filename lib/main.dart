@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:thesis_eul/screens/login_screen.dart';
-import 'package:thesis_eul/screens/user_dashboard.dart';
+import 'package:thesis_eul/screens/student_Screens/user_dashboard.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

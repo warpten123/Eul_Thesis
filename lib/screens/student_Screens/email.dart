@@ -102,6 +102,9 @@ class EmailScreen extends StatelessWidget {
                                 fontSize: 18)),
                       ),
                     ),
+                    SizedBox(
+                      height: 30,
+                    ),
                   ],
                 ),
               ),
