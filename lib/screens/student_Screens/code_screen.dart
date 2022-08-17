@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:thesis_eul/screens/first_login.screen.dart';
+
 import 'package:thesis_eul/screens/login_screen.dart';
-import 'package:thesis_eul/screens/register_screen.dart';
-import 'package:thesis_eul/screens/user_dashboard.dart';
+import 'package:thesis_eul/screens/student_Screens/register_screen.dart';
 
 import 'input_box.dart';
 
 class CodeScreen extends StatelessWidget {
   const CodeScreen({Key? key}) : super(key: key);
 
-  _sendCode() {}
   @override
   Widget build(BuildContext context) {
     return Scaffold(

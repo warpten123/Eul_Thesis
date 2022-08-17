@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:thesis_eul/authentication/login.dart';
-import 'package:thesis_eul/screens/code_screen.dart';
-import 'package:thesis_eul/screens/email.dart';
-import 'package:thesis_eul/screens/user_dashboard.dart';
+
+import 'package:thesis_eul/screens/student_Screens/code_screen.dart';
+import 'package:thesis_eul/screens/teacher_Screens/teacher_login.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -181,11 +181,20 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizedBox(
                             height: 15,
                           ),
-                          Text(
-                            '  Tap me!',
-                            style: TextStyle(
-                                color: Colors.green,
-                                fontWeight: FontWeight.bold),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const TeacherLogin()),
+                              );
+                            },
+                            child: Text(
+                              '  Tap me!',
+                              style: TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ],
                       ),

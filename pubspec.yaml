@@ -76,6 +76,9 @@ flutter:
     - assets/cover_page.jpg
     - assets/cartoon_usjr.png
     - assets/usjr3.jpg
+    - assets/jovelyn.jpg
+    - assets/bohol.jpg
+    - assets/vincent.png
   
 
   # An image asset can refer to one or more resolution-specific "variants", see

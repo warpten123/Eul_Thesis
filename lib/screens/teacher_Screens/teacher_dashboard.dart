@@ -5,20 +5,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
+import 'package:thesis_eul/models/class.dart';
 import 'package:thesis_eul/models/res_categories.dart';
 import 'package:thesis_eul/models/research.dart';
 import 'package:thesis_eul/screens/student_Screens/research_screen.dart';
 
-import 'header_drawer.dart';
-
-class ContentUserDashBoard extends StatefulWidget {
-  ContentUserDashBoard({Key? key}) : super(key: key);
+class TeacherDashboard extends StatefulWidget {
+  TeacherDashboard({Key? key}) : super(key: key);
 
   @override
-  State<ContentUserDashBoard> createState() => _ContentUserDashBoardState();
+  State<TeacherDashboard> createState() => _ContentUserDashBoardState();
 }
 
-class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
+class _ContentUserDashBoardState extends State<TeacherDashboard> {
   bool checkbox = false;
 
   List<Categories> categories = [
@@ -51,6 +50,44 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
         department: 'School Of Computer Studies',
         authors: ['Daguplo', 'Solis']),
   ];
+  // ignore: non_constant_identifier_names
+  List<Class> class_list = [
+    Class(
+        classID: 123456,
+        image: 'assets/vincent.png',
+        className: "Thesis 1",
+        schedule: "TTH (3:30 - 4:30)",
+        adviser: "Mr. Vincent Patalita",
+        studentID: [123, 123]),
+    Class(
+        classID: 123456,
+        image: 'assets/jovelyn.jpg  ',
+        className: "Research 2",
+        schedule: "Fri (3:30 - 4:30)",
+        adviser: "Ms. Jovelyn Cuizon",
+        studentID: [123, 123, 123, 123, 123, 123, 123]),
+    Class(
+        classID: 123456,
+        image: 'assets/bohol.jpg  ',
+        className: "Thesis 2",
+        schedule: "Fri (3:30 - 4:30)",
+        adviser: "Mr. Cristopher Bohol",
+        studentID: [123, 123, 123, 123, 123, 123, 23]),
+    Class(
+        classID: 123456,
+        image: 'assets/jovelyn.jpg  ',
+        className: "Capstone 1",
+        schedule: "Fri (3:30 - 4:30)",
+        adviser: "Mr. Gregg Gabison",
+        studentID: [123, 123, 123, 123, 123, 123, 123]),
+    Class(
+        classID: 123456,
+        image: 'assets/jovelyn.jpg  ',
+        className: "Capstone 2",
+        schedule: "Sat (3:30 - 4:30)",
+        adviser: "Mr. Fredirick Bandalan",
+        studentID: [123, 123, 123, 123, 123, 123, 123, 123, 123]),
+  ];
   Future<File?> pickFile() async {
     final result = await FilePicker.platform.pickFiles(
         allowMultiple: true,
@@ -76,7 +113,7 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
               icon: Icon(Icons.logout))
         ],
         title: Text(
-          'Welcome Josenian!',
+          'Teacher Dashboard',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
@@ -85,7 +122,6 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
           child: Container(
             child: Column(
               children: <Widget>[
-                HeaderDrawer(),
                 // ListDrawer(),
               ],
             ),
@@ -105,7 +141,7 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
               padding: EdgeInsets.only(left: 20, right: 20),
               child: TextField(
                 decoration: InputDecoration(
-                  hintText: 'Search Thesis...',
+                  hintText: 'Search Class',
                   prefixIcon: Icon(
                     Icons.search,
                     color: Colors.greenAccent,
@@ -133,68 +169,13 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
               height: 30,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 20, bottom: 10),
-              child: Text(
-                'Select Category',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Container(
-              height: 50,
-              child: ListView.builder(
-                itemCount: categories.length,
-                shrinkWrap: true,
-                physics: BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.only(left: 20),
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: EdgeInsets.only(right: 24),
-                    padding: EdgeInsets.only(top: 10, bottom: 10),
-                    width: 150,
-                    decoration: BoxDecoration(
-                      color: Colors.greenAccent,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        // Image.asset(
-                        //   categories[index].image,
-                        //   height: 44,
-                        //   width: 44,
-                        //   fit: BoxFit.cover,
-                        // ),
-                        SizedBox(
-                          height: 12,
-                        ),
-                        Text(
-                          categories[index].title,
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            Padding(
               padding: EdgeInsets.only(left: 20, right: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    'Tap a research!',
+                    'Class List',
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    'Pick one...',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                   ),
                 ],
               ),
@@ -203,9 +184,9 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
               height: 30,
             ),
             Container(
-              height: 400,
+              height: 600,
               child: ListView.builder(
-                itemCount: research.length,
+                itemCount: class_list.length,
                 shrinkWrap: true,
                 physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.vertical,
@@ -231,36 +212,36 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
                               padding: const EdgeInsets.only(bottom: 20.0),
                               child: ListTile(
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ReseachScreen(
-                                            name: research[index].title)),
-                                  );
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //       builder: (context) => ReseachScreen(
+                                  //           name: research[index].title)),
+                                  // );
                                 },
-                                leading: Image.asset(
-                                  research[index].image,
-                                  height: 80,
-                                  width: 50,
-                                  fit: BoxFit.cover,
-                                ),
+                                // leading: CircleAvatar(
+                                //   child: Text(
+                                //     class_list[index].className[0],
+                                //     style: TextStyle(
+                                //         fontSize: 20.0,
+                                //         fontWeight: FontWeight.bold),
+                                //   ),
+                                // ),
                                 contentPadding: EdgeInsets.only(left: 10),
                                 title: Text(
-                                  research[index].title,
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  class_list[index].className,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 25.0),
                                 ),
+                                isThreeLine: true,
                                 subtitle: Text(
-                                    '${research[index].authors[0]}, ${research[index].authors[1]}'),
+                                  'Schedule: ${class_list[index].schedule}\nAdviser: ${class_list[index].adviser}\nStudents: ${class_list[index].studentID.length}/ ${class_list[index].studentID.length}',
+                                  style: TextStyle(
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.bold),
+                                ),
                                 selectedColor: Colors.greenAccent,
-                                trailing: Checkbox(
-                                  value: checkbox,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      print('${research[index].authors[0]}');
-                                      checkbox = value!;
-                                    });
-                                  },
-                                ), //Che
                               ),
                             ),
 
@@ -300,17 +281,17 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
                 return Container(
                   child: AlertDialog(
                     title: Text(
-                      'Upload File',
+                      'Add Class',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 20.0),
                     ),
                     content: IconButton(
                       icon: Icon(
-                        Icons.upload,
+                        Icons.group_add,
                         size: 50.0,
                       ),
                       onPressed: () {
-                        pickFile();
+                        // pickFile();
                       },
                     ),
                     actions: [
@@ -350,7 +331,7 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
             ),
             IconButton(
               onPressed: () {},
-              icon: Icon(Icons.favorite),
+              icon: Icon(Icons.document_scanner),
               iconSize: 30.0,
             ),
           ],

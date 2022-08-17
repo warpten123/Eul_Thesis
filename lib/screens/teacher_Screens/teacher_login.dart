@@ -1,35 +1,29 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:thesis_eul/authentication/login.dart';
 
-import 'package:thesis_eul/screens/login_screen.dart';
-import 'package:thesis_eul/screens/student_Screens/user_dashboard.dart';
+import 'package:thesis_eul/screens/student_Screens/code_screen.dart';
+import 'package:thesis_eul/screens/teacher_Screens/teacher_dashboard.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+class TeacherLogin extends StatefulWidget {
+  const TeacherLogin({Key? key}) : super(key: key);
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<TeacherLogin> createState() => _LoginScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
-  List<String> deparments = [
-    "School of Computer Studies",
-    "School of Medicine",
-    "School of Arts and Sciences",
-    "School of Law",
-    "School of Business Administration",
-    "School of Engineering"
-  ];
-  String? value;
-  DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
-        value: item,
-        child: Text(
-          item,
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-              color: Colors.grey.shade500),
-        ),
-      );
+class _LoginScreenState extends State<TeacherLogin> {
+  final auth = Authentication();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  // @override
+  // void dispose() {
+  //   emailController.dispose();
+  //   passwordController.dispose();
+  //   super.dispose();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -58,14 +52,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Text(
-                      "Register Account",
+                      "Adelante!",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 38,
                           fontWeight: FontWeight.bold),
                     ),
+                    SizedBox(
+                      height: 30,
+                    ),
                     Text(
-                      "You're one step away from joining us!",
+                      'Welcome Adviser',
                       style:
                           TextStyle(color: Colors.grey.shade500, fontSize: 16),
                     ),
@@ -76,29 +73,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       height: 50,
                       margin: EdgeInsets.only(left: 40, right: 40),
                       child: TextField(
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
-                        decoration: InputDecoration(
-                          hintText: "Full Name",
-                          hintStyle: TextStyle(color: Colors.grey.shade500),
-                          filled: true,
-                          fillColor: Color(0xff161d27).withOpacity(0.9),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide(color: Colors.green),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    Container(
-                      height: 50,
-                      margin: EdgeInsets.only(left: 40, right: 40),
-                      child: TextField(
+                        controller: emailController,
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.white,
@@ -122,6 +97,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       height: 50,
                       margin: EdgeInsets.only(left: 40, right: 40),
                       child: TextField(
+                        controller: passwordController,
                         obscureText: true,
                         style: TextStyle(
                           fontSize: 16,
@@ -142,37 +118,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     SizedBox(
                       height: 12,
                     ),
-                    Container(
-                        height: 50,
-                        margin: EdgeInsets.only(left: 40, right: 40),
-                        decoration: BoxDecoration(
-                          color: Color(0xff161d27).withOpacity(0.9),
-                          borderRadius: BorderRadius.circular(30),
-                          border: Border.all(color: Colors.green),
-                        ),
-                        child: DropdownButton<String>(
-                          isExpanded: true,
-                          value: value,
-                          onChanged: (value) {
-                            setState(() {
-                              this.value = value;
-                            });
-                          },
-                          items: deparments.map(buildMenuItem).toList(),
-                        )),
-                    SizedBox(
-                      height: 12,
-                    ),
                     InkWell(
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const LoginScreen()),
+                              builder: (context) => const CodeScreen()),
                         );
                       },
                       child: Text(
-                        'Take me back!',
+                        'No Account? Enter Code!',
                         style: TextStyle(
                             color: Colors.green,
                             fontSize: 14,
@@ -190,47 +145,56 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
                       margin: EdgeInsets.only(left: 40, right: 40),
+                      // child: TextButton(
+                      //   onPressed: () {
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //           builder: (context) => const UserDashboard()),
+                      //     );
+                      //   },
+
                       child: TextButton(
                         onPressed: () {
+                          // auth.signIn(emailController.text.trim(),
+                          //     passwordController.text.trim());
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const UserDashboard()),
+                                builder: (context) => TeacherDashboard()),
                           );
                         },
-                        child: Text('REGISTER',
+                        child: Text('SIGN IN',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18)),
                       ),
                     ),
+                    // ),
                     SizedBox(
                       height: 16,
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.all(8.0),
-                    //   child: Row(
-                    //     mainAxisAlignment: MainAxisAlignment.center,
-                    //     children: <Widget>[
-                    //       Text(
-                    //         'Research Adviser?',
-                    //         style: TextStyle(color: Colors.white),
-                    //       ),
-                    //       SizedBox(
-                    //         height: 15,
-                    //       ),
-                    //       Text(
-                    //         '  Tap me!',
-                    //         style: TextStyle(
-                    //             color: Colors.green, fontWeight: FontWeight.bold),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
-                    // SizedBox(
-                    //   height: 30,
-                    // ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Text(
+                            'Go Back',
+                            style: TextStyle(
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
                   ],
                 ),
               ),

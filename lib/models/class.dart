@@ -5,11 +5,13 @@ class Class {
   String schedule;
   String adviser;
   List<int> studentID;
+  String image;
   Class({
     required this.classID,
     required this.className,
     required this.schedule,
     required this.adviser,
     required this.studentID,
+    required this.image,
   });
 }

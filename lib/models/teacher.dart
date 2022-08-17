@@ -2,8 +2,8 @@
 class Teacher {
   int teacherID;
   String teacherName;
-  List<int> classID;
-  List<String> groups;
+  List<int?> classID;
+  List<String?> groups;
   Teacher({
     required this.teacherID,
     required this.teacherName,
