@@ -11,7 +11,7 @@ class Input_Box extends StatelessWidget {
     return Center(
       child: Form(
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             SizedBox(
               height: 68,
@@ -23,6 +23,15 @@ class Input_Box extends StatelessWidget {
                     FocusScope.of(context).nextFocus();
                   }
                 },
+                decoration: InputDecoration(
+                  hintStyle: TextStyle(color: Colors.grey.shade500),
+                  filled: true,
+                  fillColor: Color(0xff161d27).withOpacity(0.9),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide(color: Colors.green),
+                  ),
+                ),
                 style: TextStyle(fontSize: 40.0, color: Colors.white),
                 keyboardType: TextInputType.number,
                 textAlign: TextAlign.center,
@@ -43,6 +52,15 @@ class Input_Box extends StatelessWidget {
                   }
                 },
                 style: TextStyle(fontSize: 40.0, color: Colors.white),
+                decoration: InputDecoration(
+                  hintStyle: TextStyle(color: Colors.grey.shade500),
+                  filled: true,
+                  fillColor: Color(0xff161d27).withOpacity(0.9),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide(color: Colors.green),
+                  ),
+                ),
                 keyboardType: TextInputType.number,
                 textAlign: TextAlign.center,
                 inputFormatters: [
@@ -61,6 +79,15 @@ class Input_Box extends StatelessWidget {
                     FocusScope.of(context).nextFocus();
                   }
                 },
+                decoration: InputDecoration(
+                  hintStyle: TextStyle(color: Colors.grey.shade500),
+                  filled: true,
+                  fillColor: Color(0xff161d27).withOpacity(0.9),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide(color: Colors.green),
+                  ),
+                ),
                 style: TextStyle(fontSize: 40.0, color: Colors.white),
                 keyboardType: TextInputType.number,
                 textAlign: TextAlign.center,
@@ -80,6 +107,15 @@ class Input_Box extends StatelessWidget {
                     FocusScope.of(context).nextFocus();
                   }
                 },
+                decoration: InputDecoration(
+                  hintStyle: TextStyle(color: Colors.grey.shade500),
+                  filled: true,
+                  fillColor: Color(0xff161d27).withOpacity(0.9),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide(color: Colors.green),
+                  ),
+                ),
                 style: TextStyle(fontSize: 40.0, color: Colors.white),
                 keyboardType: TextInputType.number,
                 textAlign: TextAlign.center,

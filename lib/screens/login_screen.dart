@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:thesis_eul/authentication/login.dart';
 import 'package:thesis_eul/screens/code_screen.dart';
+import 'package:thesis_eul/screens/email.dart';
 import 'package:thesis_eul/screens/user_dashboard.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -122,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const CodeScreen()),
+                              builder: (context) => const EmailScreen()),
                         );
                       },
                       child: Text(
