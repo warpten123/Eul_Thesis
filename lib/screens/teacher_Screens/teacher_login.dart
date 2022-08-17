@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:thesis_eul/authentication/login.dart';
+import 'package:thesis_eul/screens/login_screen.dart';
 
 import 'package:thesis_eul/screens/student_Screens/code_screen.dart';
+import 'package:thesis_eul/screens/teacher_Screens/teacher_code_screen.dart';
 import 'package:thesis_eul/screens/teacher_Screens/teacher_dashboard.dart';
 
 class TeacherLogin extends StatefulWidget {
@@ -33,7 +35,7 @@ class _LoginScreenState extends State<TeacherLogin> {
             Container(
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('assets/usjr2.jpg'),
+                      image: AssetImage('assets/basak2.jpg'),
                       fit: BoxFit.cover)),
             ),
             Container(
@@ -52,20 +54,13 @@ class _LoginScreenState extends State<TeacherLogin> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Text(
-                      "Adelante!",
+                      "Welcome Adviser!",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 38,
                           fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Text(
-                      'Welcome Adviser',
-                      style:
-                          TextStyle(color: Colors.grey.shade500, fontSize: 16),
-                    ),
+
                     SizedBox(
                       height: 20,
                     ),
@@ -120,10 +115,10 @@ class _LoginScreenState extends State<TeacherLogin> {
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const CodeScreen()),
+                              builder: (context) => const TeacherCodeScreen()),
                         );
                       },
                       child: Text(
@@ -158,7 +153,7 @@ class _LoginScreenState extends State<TeacherLogin> {
                         onPressed: () {
                           // auth.signIn(emailController.text.trim(),
                           //     passwordController.text.trim());
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => TeacherDashboard()),
@@ -183,11 +178,20 @@ class _LoginScreenState extends State<TeacherLogin> {
                           SizedBox(
                             height: 15,
                           ),
-                          Text(
-                            'Go Back',
-                            style: TextStyle(
-                                color: Colors.green,
-                                fontWeight: FontWeight.bold),
+                          InkWell(
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const LoginScreen()),
+                              );
+                            },
+                            child: Text(
+                              'Go Back',
+                              style: TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ],
                       ),

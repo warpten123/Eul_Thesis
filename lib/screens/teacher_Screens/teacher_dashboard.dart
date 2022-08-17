@@ -9,6 +9,7 @@ import 'package:thesis_eul/models/class.dart';
 import 'package:thesis_eul/models/res_categories.dart';
 import 'package:thesis_eul/models/research.dart';
 import 'package:thesis_eul/screens/student_Screens/research_screen.dart';
+import 'package:thesis_eul/screens/teacher_Screens/teacher_login.dart';
 
 class TeacherDashboard extends StatefulWidget {
   TeacherDashboard({Key? key}) : super(key: key);
@@ -108,7 +109,10 @@ class _ContentUserDashBoardState extends State<TeacherDashboard> {
         actions: [
           IconButton(
               onPressed: () {
-                FirebaseAuth.instance.signOut();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => TeacherLogin()),
+                );
               },
               icon: Icon(Icons.logout))
         ],
@@ -184,7 +188,7 @@ class _ContentUserDashBoardState extends State<TeacherDashboard> {
               height: 30,
             ),
             Container(
-              height: 600,
+              height: 500,
               child: ListView.builder(
                 itemCount: class_list.length,
                 shrinkWrap: true,
