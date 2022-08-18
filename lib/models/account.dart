@@ -33,26 +33,7 @@ class Student extends Account {
           accountPassword: studentPassword,
         );
 
-  // register function
-  static Future<Student> register(
-      {required String studentID,
-      required String code,
-      required String studentName,
-      required String studentEmail,
-      required String studentPassword,
-      required String department,
-      required int groupID}) async {
-    final Student student = Student(
-      studentID: studentID,
-      code: code,
-      studentName: studentName,
-      studentEmail: studentEmail,
-      studentPassword: studentPassword,
-      department: department,
-      groupID: 0,
-    );
-    return student;
-  }
+  register(String email, String name, String school_id, String password) {}
 }
 
 // extend teachers Account class to Accoount Class
