@@ -7,6 +7,7 @@ import 'package:thesis_eul/screens/student_Screens/student_dashboard/sdg_details
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/sdg_details/sdg_description.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/sdg_details/sdg_icon_list.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/sdg_details/sdg_name.dart';
+import 'package:thesis_eul/screens/student_Screens/student_dashboard/sdg_details/sdg_view_button.dart';
 
 class SDGDetails extends StatelessWidget {
   final SDG sdg;
@@ -27,6 +28,7 @@ class SDGDetails extends StatelessWidget {
               SDGName(sdg),
               SDGDescription(sdg),
               SDGIconList(),
+              SDGButton(),
             ],
           ),
         ),
