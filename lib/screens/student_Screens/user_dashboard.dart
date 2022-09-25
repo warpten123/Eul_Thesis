@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-
-import 'content_userDashboard.dart';
+import 'package:thesis_eul/screens/student_Screens/student_dashboard/content_userDashboard.dart';
 
 class UserDashboard extends StatelessWidget {
   const UserDashboard({Key? key}) : super(key: key);

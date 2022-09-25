@@ -192,11 +192,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       margin: EdgeInsets.only(left: 40, right: 40),
                       child: TextButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const UserDashboard()),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => const UserDashboard()),
+                          // );
                         },
                         child: Text('REGISTER',
                             style: TextStyle(

@@ -7,9 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
 import 'package:thesis_eul/models/res_categories.dart';
 import 'package:thesis_eul/models/research.dart';
+import 'package:thesis_eul/screens/student_Screens/header_drawer.dart';
 import 'package:thesis_eul/screens/student_Screens/research_screen.dart';
-
-import 'header_drawer.dart';
 
 class ContentUserDashBoard extends StatefulWidget {
   ContentUserDashBoard({Key? key}) : super(key: key);
@@ -59,7 +58,7 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
     final file = result?.files.first;
 
     if (result == null) return null;
-    OpenFile.open(file?.path);
+    // OpenFile.open(file?.path);
   }
 
   @override

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:thesis_eul/authentication/login.dart';
 
 import 'package:thesis_eul/screens/student_Screens/code_screen.dart';
+import 'package:thesis_eul/screens/student_Screens/student_dashboard/new_user_dashboard.dart';
 import 'package:thesis_eul/screens/teacher_Screens/teacher_login.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -33,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Container(
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('assets/usjr2.jpg'),
+                      image: AssetImage('assets/newback.jpg'),
                       fit: BoxFit.cover)),
             ),
             Container(
@@ -52,19 +53,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Text(
-                      "Adelante!",
+                      "EUL",
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: 38,
+                          fontSize: 150,
                           fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
                       height: 30,
                     ),
                     Text(
-                      'Need help with your thesis? Come sign in!',
-                      style:
-                          TextStyle(color: Colors.grey.shade500, fontSize: 16),
+                      'Your Digital Research Repository System',
+                      style: TextStyle(color: Colors.white70, fontSize: 16),
                     ),
                     SizedBox(
                       height: 20,
@@ -145,27 +145,27 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
                       margin: EdgeInsets.only(left: 40, right: 40),
-                      // child: TextButton(
-                      //   onPressed: () {
-                      //     Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //           builder: (context) => const UserDashboard()),
-                      //     );
-                      //   },
                       child: TextButton(
-                        onPressed: () {
-                          auth.signIn(emailController.text.trim(),
-                              passwordController.text.trim());
-                        },
-                        child: Text('SIGN IN',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18)),
+                        onPressed: () {},
+                        child: TextButton(
+                          onPressed: () {
+                            // auth.signIn(emailController.text.trim(),
+                            //     passwordController.text.trim());
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const UserDashboardNew()),
+                            );
+                          },
+                          child: Text('SIGN IN',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18)),
+                        ),
                       ),
                     ),
-                    // ),
                     SizedBox(
                       height: 16,
                     ),
@@ -183,11 +183,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const TeacherLogin()),
-                              );
+                              // Navigator.pushReplacement(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //       builder: (context) => const TeacherLogin()),
+                              // );
                             },
                             child: Text(
                               '  Tap me!',

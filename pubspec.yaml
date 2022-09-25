@@ -41,6 +41,8 @@ dependencies:
   open_file: ^3.2.1
   path_provider: ^2.0.11 
   dio: ^4.0.6
+  flutter_svg: ^0.22.0
+  flutter_staggered_grid_view: ^0.4.0
   
 
 dev_dependencies:
@@ -81,7 +83,25 @@ flutter:
     - assets/vincent.png
     - assets/basak.jpg
     - assets/basak2.jpg
-  
+    - assets/newback.jpg
+    - assets/1.png
+    - assets/2.png
+    - assets/3.png
+    - assets/4.png
+    - assets/5.png
+    - assets/6.png
+    - assets/7.png
+    - assets/8.png
+    - assets/9.png
+    - assets/10.png
+    - assets/11.png
+    - assets/12.png
+    - assets/13.png
+    - assets/14.png
+    - assets/15.png
+    - assets/16.png
+    - assets/17.png
+   
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
