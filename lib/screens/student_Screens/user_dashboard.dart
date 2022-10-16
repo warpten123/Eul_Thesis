@@ -10,37 +10,37 @@ class UserDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      // bottomNavigationBar: BottomAppBar(
-      //   color: Colors.green,
-      //   shape: CircularNotchedRectangle(),
-      //   child: Row(
-      //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //     children: <Widget>[
-      //       IconButton(onPressed: () {}, icon: Icon(Icons.home)),
-      //       IconButton(onPressed: () {}, icon: Icon(Icons.favorite)),
-      //     ],
-      //   ),
+            // bottomNavigationBar: BottomAppBar(
+            //   color: Colors.green,
+            //   shape: CircularNotchedRectangle(),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //     children: <Widget>[
+            //       IconButton(onPressed: () {}, icon: Icon(Icons.home)),
+            //       IconButton(onPressed: () {}, icon: Icon(Icons.favorite)),
+            //     ],
+            //   ),
 
-      //   // items: [
-      //   //   BottomNavigationBarItem(
-      //   //     icon: Icon(
-      //   //       Icons.home,
-      //   //     ),
-      //   //     label: 'Home',
-      //   //   ),
-      //   //   BottomNavigationBarItem(
-      //   //     icon: Icon(Icons.upload_rounded),
-      //   //     label: 'Home',
-      //   //   ),
-      //   //   BottomNavigationBarItem(
-      //   //     icon: Icon(
-      //   //       Icons.favorite,
-      //   //     ),
-      //   //     label: 'Home',
-      //   //   ),
-      //   // ],
-      // ),
-      body: ContentUserDashBoard(),
-    ));
+            //   // items: [
+            //   //   BottomNavigationBarItem(
+            //   //     icon: Icon(
+            //   //       Icons.home,
+            //   //     ),
+            //   //     label: 'Home',
+            //   //   ),
+            //   //   BottomNavigationBarItem(
+            //   //     icon: Icon(Icons.upload_rounded),
+            //   //     label: 'Home',
+            //   //   ),
+            //   //   BottomNavigationBarItem(
+            //   //     icon: Icon(
+            //   //       Icons.favorite,
+            //   //     ),
+            //   //     label: 'Home',
+            //   //   ),
+            //   // ],
+            // ),
+            //body: ContentUserDashBoard(),
+            ));
   }
 }

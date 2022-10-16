@@ -5,8 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
+import '../../../../models/sdg.dart';
+import '../content_userDashboard.dart';
+
 class SDGButton extends StatelessWidget {
-  const SDGButton({Key? key}) : super(key: key);
+  SDG sdg;
+  SDGButton(this.sdg);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +25,13 @@ class SDGButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
         ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ContentUserDashBoard(sdg),
+              ));
+        },
         child: Container(
           // ignore: prefer_const_constructors
           padding: EdgeInsets.symmetric(vertical: 16),

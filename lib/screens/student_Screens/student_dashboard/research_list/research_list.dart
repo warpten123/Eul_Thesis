@@ -9,9 +9,7 @@ import 'package:thesis_eul/models/res_categories.dart';
 import 'package:thesis_eul/models/research.dart';
 import 'package:thesis_eul/screens/student_Screens/header_drawer.dart';
 import 'package:thesis_eul/screens/student_Screens/research_screen.dart';
-import 'package:thesis_eul/screens/student_Screens/student_dashboard/department_list.dart';
-
-import '../../../models/sdg.dart';
+import 'package:thesis_eul/models/sdg.dart';
 
 class ContentUserDashBoard extends StatefulWidget {
   SDG sdg;
@@ -70,16 +68,28 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
         child: Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        actions: [],
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.logout))
+        ],
         title: Text(
-          "${widget.sdg.goal}: ${widget.sdg.name}",
+          'Welcome Josenian!',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+      ),
+      drawer: Drawer(
+        child: SingleChildScrollView(
+          child: Container(
+            child: Column(
+              children: <Widget>[
+                HeaderDrawer(),
+                // ListDrawer(),
+              ],
+            ),
+          ),
         ),
       ),
       backgroundColor: Colors.grey.shade100,
@@ -91,35 +101,25 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
             SizedBox(
               height: 50,
             ),
-            // SizedBox(
-            //   height: 30,
-            // ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20, bottom: 10),
-              child: Text(
-                'Select Research to Read...',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-            ),
             Padding(
               padding: EdgeInsets.only(left: 20, right: 20),
               child: TextField(
                 decoration: InputDecoration(
-                  hintText: 'Search...',
+                  hintText: 'Search Thesis...',
                   prefixIcon: Icon(
                     Icons.search,
                     color: Colors.greenAccent,
                   ),
-                  // suffixIcon: Container(
-                  //   decoration: BoxDecoration(
-                  //     color: Colors.greenAccent,
-                  //     borderRadius: BorderRadius.circular(8),
-                  //   ),
-                  //   child: Icon(
-                  //     Icons.filter_none,
-                  //     color: Colors.black,
-                  //   ),
-                  // ),
+                  suffixIcon: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.greenAccent,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(
+                      Icons.filter_none,
+                      color: Colors.black,
+                    ),
+                  ),
                   filled: true,
                   fillColor: Color(0xfff4f5f9),
                   enabledBorder: OutlineInputBorder(
@@ -132,12 +132,78 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
             SizedBox(
               height: 30,
             ),
-            Department_List(),
+            Padding(
+              padding: const EdgeInsets.only(left: 20, bottom: 10),
+              child: Text(
+                'Select Category',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Container(
+              height: 50,
+              child: ListView.builder(
+                itemCount: categories.length,
+                shrinkWrap: true,
+                physics: BouncingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.only(left: 20),
+                itemBuilder: (context, index) {
+                  return Container(
+                    margin: EdgeInsets.only(right: 24),
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                    width: 150,
+                    decoration: BoxDecoration(
+                      color: Colors.greenAccent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        // Image.asset(
+                        //   categories[index].image,
+                        //   height: 44,
+                        //   width: 44,
+                        //   fit: BoxFit.cover,
+                        // ),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Text(
+                          categories[index].title,
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 20, right: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    'Tap a research!',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'Pick one...',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                  ),
+                ],
+              ),
+            ),
             SizedBox(
               height: 30,
             ),
             Container(
-              height: 600,
+              height: 400,
               child: ListView.builder(
                 itemCount: research.length,
                 shrinkWrap: true,
