@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:thesis_eul/api_service/api_response.dart';
+import 'package:thesis_eul/models/research_details.dart';
 
 import '../models/research.dart';
 
@@ -11,41 +12,41 @@ class ResearchService {
     'apiKey': 'abaf3c8e-72c0-498b-9862-47afad7add14',
     'Content-Type': 'application/json'
   };
-  Future<APIResponse<List<Research>>> getResearchList() {
+  Future<APIResponse<List<ResearchDetails>>> getResearchList() {
     return http
         .get(Uri.parse(API + '/research'), headers: headers)
         .then((data) {
       if (data.statusCode == 200) {
         final jsonData = jsonDecode(data.body); //
-        final notes = <Research>[];
+        final research = <ResearchDetails>[];
         for (var item in jsonData) {
-          notes.add(Research.fromJson(item));
+          research.add(ResearchDetails.fromJson(item));
         }
-        return APIResponse<List<Research>>(
-          data: notes,
+        return APIResponse<List<ResearchDetails>>(
+          data: research,
         );
       }
-      return APIResponse<List<Research>>(
+      return APIResponse<List<ResearchDetails>>(
           error: true, errorMessage: "An error occured");
-    }).catchError((_) => APIResponse<List<NotesForListing>>(
+    }).catchError((_) => APIResponse<List<ResearchDetails>>(
             error: true, errorMessage: "An error occured"));
   }
 
   ////single item
-  Future<APIResponse<Note>> getNote(String noteID) {
+  Future<APIResponse<ResearchDetails>> getResearch(String researchID) {
     return http
-        .get(Uri.parse(API + '/notes/' + noteID), headers: headers)
+        .get(Uri.parse(API + '/research/' + researchID), headers: headers)
         .then((data) {
       if (data.statusCode == 200) {
         final jsonData = jsonDecode(data.body);
 
-        return APIResponse<Note>(
-          data: Note.fromJson(jsonData),
+        return APIResponse<ResearchDetails>(
+          data: ResearchDetails.fromJson(jsonData),
         );
       }
-      return APIResponse<Note>(error: true, errorMessage: "An error occured");
+      return APIResponse<ResearchDetails>(error: true, errorMessage: "An error occured");
     }).catchError((_) =>
-            APIResponse<Note>(error: true, errorMessage: "An error occured"));
+            APIResponse<ResearchDetails>(error: true, errorMessage: "An error occured"));
   }
 
   //create note
