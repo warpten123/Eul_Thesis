@@ -5,7 +5,7 @@ import 'package:thesis_eul/models/sdg.dart';
 
 class SDGHeader extends StatelessWidget {
   final SDG sdg;
-  SDGHeader(this.sdg);
+  const SDGHeader(this.sdg);
 
   @override
   Widget build(BuildContext context) {

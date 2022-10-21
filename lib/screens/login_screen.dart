@@ -4,7 +4,6 @@ import 'package:thesis_eul/authentication/login.dart';
 
 import 'package:thesis_eul/screens/student_Screens/code_screen.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/new_user_dashboard.dart';
-import 'package:thesis_eul/screens/teacher_Screens/teacher_login.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
