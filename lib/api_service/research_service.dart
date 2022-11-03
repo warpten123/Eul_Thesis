@@ -50,9 +50,9 @@ class ResearchService {
   }
 
   //create note
-  Future<APIResponse<bool>> createNote(NoteManipulation item) {
+  Future<APIResponse<bool>> uploadResearch(ResearchDetails research) {
     return http
-        .post(Uri.parse(API + '/notes'),
+        .post(Uri.parse(API + '/research'),
             headers: headers, body: json.encode(item.toJson()))
         .then((data) {
       if (data.statusCode == 201) {
@@ -66,9 +66,9 @@ class ResearchService {
   }
 
   //update note
-  Future<APIResponse<bool>> updateNote(String noteID, NoteManipulation item) {
+  Future<APIResponse<bool>> updateResearch(String researchID, ResearchDetails research) {
     return http
-        .put(Uri.parse(API + '/notes/' + noteID),
+        .put(Uri.parse(API + '/research/' + noteID),
             headers: headers, body: json.encode(item.toJson()))
         .then((data) {
       if (data.statusCode == 204) {
@@ -82,10 +82,10 @@ class ResearchService {
   }
 
   ///deleteNote
-  Future<APIResponse<bool>> deleteNote(String noteID) {
+  Future<APIResponse<bool>> deleteResearch(String researchID) {
     return http
         .delete(
-      Uri.parse(API + '/notes/' + noteID),
+      Uri.parse(API + '/research/' + researchID),
       headers: headers,
     )
         .then((data) {

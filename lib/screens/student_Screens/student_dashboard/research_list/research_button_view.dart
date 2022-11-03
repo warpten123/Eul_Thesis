@@ -1,9 +1,10 @@
-// ignore_for_file: avoid_unnecessary_containers
+
 import 'package:flutter/material.dart';
 
 
 import '../../../../models/sdg.dart';
-import '../content_userDashboard.dart';
+import '../research_view_pdf/research_view.dart';
+
 
 class DetailsRead extends StatelessWidget {
   final SDG sdg;
@@ -26,7 +27,7 @@ class DetailsRead extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ContentUserDashBoard(sdg),
+                builder: (context) => ResearchView(),
               ));
         },
         child: Container(

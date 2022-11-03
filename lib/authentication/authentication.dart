@@ -11,4 +11,8 @@ class Authentication {
       print(e);
     }
   }
+
+  //Register
+
+  //
 }
