@@ -20,7 +20,7 @@ class DetailsDownload extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 30),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.green,
+          primary: Colors.green,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),

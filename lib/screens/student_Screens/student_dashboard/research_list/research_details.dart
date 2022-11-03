@@ -22,31 +22,50 @@ class Research_Details extends StatelessWidget {
           },
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            ListTile(
-              leading: Image.asset(
-                sdg.image,
-                height: 80,
-                width: 50,
-                fit: BoxFit.cover,
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                leading: Image.asset(
+                  sdg.image,
+                  height: 80,
+                  width: 50,
+                  fit: BoxFit.cover,
+                ),
+                title: Text(researchDetails.title),
+                subtitle: Text(
+                    '${researchDetails.authors[0]}, ${researchDetails.authors[1]}'),
+                trailing: const Text("15 Pages"),
               ),
-              title: Text(researchDetails.title),
-              subtitle: Text(
-                  '${researchDetails.authors[0]}, ${researchDetails.authors[1]}'),
-              trailing: const Text("15 Pages"),
-            ),
-            const Text('Topics in this paper...'),
-            //here scroll row from left to right
-            // end scroll
-            const ListTile(
-              title: Text('Abstract of the Study'),
-              subtitle: Text('Aria ang abstract.'),
-            ),
-            DetailsDownload(sdg),
-            DetailsRead(sdg),
-          ],
+              const SizedBox(
+                height: 20,
+              ),
+              const Text(''),
+              const SizedBox(
+                height: 20,
+              ),
+              //here scroll row from left to right
+              // end scroll
+              const ListTile(
+                isThreeLine: true,
+                title: Text('Abstract of the Study'),
+                subtitle: Text('Aria ang abstract.'),
+              ),
+              const ListTile(
+                isThreeLine: true,
+                title: Text('Date Published'),
+                subtitle: Text('June 15,2022'),
+              ),
+              const ListTile(
+                isThreeLine: true,
+                title: Text('Research Adviser'),
+                subtitle: Text('Mrs. Lorna D. Miro'),
+              ),
+              DetailsDownload(sdg),
+              DetailsRead(sdg),
+            ],
+          ),
         ),
       ),
     );

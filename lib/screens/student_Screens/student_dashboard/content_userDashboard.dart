@@ -10,7 +10,9 @@ import 'package:thesis_eul/models/research.dart';
 import 'package:thesis_eul/screens/student_Screens/header_drawer.dart';
 import 'package:thesis_eul/screens/student_Screens/research_screen.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/department_list.dart';
+import 'package:thesis_eul/screens/student_Screens/student_dashboard/research_list/research_details.dart';
 
+import '../../../models/research_details.dart';
 import '../../../models/sdg.dart';
 
 class ContentUserDashBoard extends StatefulWidget {
@@ -31,27 +33,35 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
     Categories(title: 'Computer Vision', image: 'assets/vision.jpg', count: 4),
   ];
 
-  List<Research> research = [
-    Research(
-        title: 'Eul: An Intelligent Research Repository Management',
-        image: 'assets/cover_page.jpg',
-        department: 'School Of Computer Studies',
-        authors: ['Bohol', 'Premacio']),
-    Research(
-        title: 'A Research Title',
-        image: 'assets/cover_page.jpg',
-        department: 'School Of Computer Studies',
-        authors: ['Cuizon', 'Gadiane']),
-    Research(
-        title: 'Another Research Title',
-        image: 'assets/cover_page.jpg',
-        department: 'School Of Computer Studies',
-        authors: ['Patalita', 'Bandalan']),
-    Research(
-        title: 'StudyUp',
-        image: 'assets/cover_page.jpg',
-        department: 'School Of Computer Studies',
-        authors: ['Daguplo', 'Solis']),
+  List<ResearchDetails> research = [
+    ResearchDetails(
+      title: 'Eul: An Intelligent Research Repository Management',
+      image: 'assets/cover_page.jpg',
+      department: 'School Of Computer Studies',
+      authors: ['Bohol', 'Premacio'],
+      adviser: 'Mrs. Lorna Miro',
+    ),
+    ResearchDetails(
+      title: 'A Research Title',
+      image: 'assets/cover_page.jpg',
+      department: 'School Of Computer Studies',
+      authors: ['Cuizon', 'Gadiane'],
+      adviser: 'Mrs. Lorna Miro',
+    ),
+    ResearchDetails(
+      title: 'Another Research Title',
+      image: 'assets/cover_page.jpg',
+      department: 'School Of Computer Studies',
+      authors: ['Patalita', 'Bandalan'],
+      adviser: 'Mrs. Lorna Miro',
+    ),
+    ResearchDetails(
+      title: 'StudyUp',
+      image: 'assets/cover_page.jpg',
+      department: 'School Of Computer Studies',
+      authors: ['Daguplo', 'Solis'],
+      adviser: 'Mrs. Lorna Miro',
+    ),
   ];
   Future<File?> pickFile() async {
     final result = await FilePicker.platform.pickFiles(
@@ -168,8 +178,8 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => ReseachScreen(
-                                            name: research[index].title)),
+                                        builder: (context) => Research_Details(
+                                            widget.sdg, research[index])),
                                   );
                                 },
                                 leading: Image.asset(

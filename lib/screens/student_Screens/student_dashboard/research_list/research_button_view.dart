@@ -18,13 +18,14 @@ class DetailsRead extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.green,
+          primary: Colors.green,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
         ),
         onPressed: () async {
           final file = await ResearchService.pickFile();
+          print("THIS IS FILE $file");
           if (file == null) return;
           // ignore: use_build_context_synchronously
           openPDF(context, file);
@@ -45,5 +46,5 @@ class DetailsRead extends StatelessWidget {
   }
 
   void openPDF(BuildContext context, File file) => Navigator.of(context)
-      .push(MaterialPageRoute(builder: (context) => PDFViewer(file)));
+      .push(MaterialPageRoute(builder: (context) => PDFViewerWidget(file)));
 }
