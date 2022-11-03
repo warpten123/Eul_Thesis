@@ -1,10 +1,10 @@
+import 'dart:io';
 
 import 'package:flutter/material.dart';
-
+import 'package:thesis_eul/api_service/research_service.dart';
+import 'package:thesis_eul/screens/student_Screens/student_dashboard/pdf_viewer/pdf_viewer.dart';
 
 import '../../../../models/sdg.dart';
-import '../research_view_pdf/research_view.dart';
-
 
 class DetailsRead extends StatelessWidget {
   final SDG sdg;
@@ -23,12 +23,11 @@ class DetailsRead extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
         ),
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ResearchView(),
-              ));
+        onPressed: () async {
+          final file = await ResearchService.pickFile();
+          if (file == null) return;
+          // ignore: use_build_context_synchronously
+          openPDF(context, file);
         },
         child: Container(
           // ignore: prefer_const_constructors
@@ -44,4 +43,7 @@ class DetailsRead extends StatelessWidget {
       ),
     );
   }
+
+  void openPDF(BuildContext context, File file) => Navigator.of(context)
+      .push(MaterialPageRoute(builder: (context) => PDFViewer(file)));
 }

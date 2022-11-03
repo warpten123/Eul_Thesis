@@ -1,10 +1,14 @@
 import 'dart:convert';
 
+import 'package:file_picker/file_picker.dart';
+import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
+import 'dart:io';   // for File
+
 import 'package:thesis_eul/api_service/api_response.dart';
 import 'package:thesis_eul/models/research_details.dart';
+import 'package:path_provider/path_provider.dart';
 
-import '../models/research.dart';
 
 class ResearchService {
   static const API = 'https://tq-notes-api-jkrgrdggbq-el.a.run.app';
@@ -44,9 +48,10 @@ class ResearchService {
           data: ResearchDetails.fromJson(jsonData),
         );
       }
-      return APIResponse<ResearchDetails>(error: true, errorMessage: "An error occured");
-    }).catchError((_) =>
-            APIResponse<ResearchDetails>(error: true, errorMessage: "An error occured"));
+      return APIResponse<ResearchDetails>(
+          error: true, errorMessage: "An error occured");
+    }).catchError((_) => APIResponse<ResearchDetails>(
+            error: true, errorMessage: "An error occured"));
   }
 
   //create note
@@ -66,7 +71,8 @@ class ResearchService {
   }
 
   //update note
-  Future<APIResponse<bool>> updateResearch(String researchID, ResearchDetails research) {
+  Future<APIResponse<bool>> updateResearch(
+      String researchID, ResearchDetails research) {
     return http
         .put(Uri.parse(API + '/research/' + noteID),
             headers: headers, body: json.encode(item.toJson()))
@@ -97,5 +103,28 @@ class ResearchService {
       return APIResponse<bool>(error: true, errorMessage: "An error occured");
     }).catchError((_) =>
             APIResponse<bool>(error: true, errorMessage: "An error occured"));
+  }
+
+  Future<File> loadNetwork(String url) async {
+    final response = await http.get(Uri.parse(url));
+    final bytes = response.bodyBytes;
+
+    return _storeFile(url, bytes);
+  }
+
+  Future<File> _storeFile(String url, List<int> bytes) async {
+    final fileName = basename(url);
+    final dir = await getApplicationDocumentsDirectory();
+
+    final file = File('${dir.path}/$fileName');
+    await file.writeAsBytes(bytes, flush: true);
+    return file;
+  }
+
+  static Future<File?> pickFile() async {
+    final result = await FilePicker.platform
+        .pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
+    if (result == null) return null;
+    return File(result.paths.first!);
   }
 }
