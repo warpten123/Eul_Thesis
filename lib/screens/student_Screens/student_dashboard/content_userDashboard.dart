@@ -78,6 +78,7 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+      // drawer: NavigationDrawer(),
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         actions: [],

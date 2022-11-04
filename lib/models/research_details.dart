@@ -1,10 +1,8 @@
 // import from a filename account.dart
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // research_details class
-import 'dart:convert';
-
-import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:equatable/equatable.dart';
 
 class ResearchDetails extends Equatable {
   final String title;
@@ -33,10 +31,10 @@ class ResearchDetails extends Equatable {
       'title': title,
       'image': image,
       'department': department,
-      'authors': authors,
       'researchId': researchId,
-      'sdgCategory': sdgCategory,
+      'category': sdgCategory,
       'datePublished': datePublished,
+      'authors': authors,
       'adviser': adviser,
       'keywords': keywords,
     };
@@ -47,12 +45,12 @@ class ResearchDetails extends Equatable {
       title: map['title'] as String,
       image: map['image'] as String,
       department: map['department'] as String,
-      authors: List<String>.from((map['authors'] as List<String>),
-      researchId: map['researchId'] != null ? map['researchId'] as String : null,
-      sdgCategory: map['sdgCategory'] != null ? List<String>.from((map['sdgCategory'] as List<String>) : null,
-      datePublished: map['datePublished'] != null ? map['datePublished'] as String : null,
+      researchId: map['researcId'] as String,
+      sdgCategory: map['category'] as List<String>,
+      datePublished: map['datePublished'] as String,
+      authors: map['authors'] as List<String>,
       adviser: map['adviser'] as String,
-      keywords: map['keywords'] != null ? List<String>.from((map['keywords'] as List<String>) : null,
+      keywords: map['keywords'] as List<String>,
     );
   }
   @override
@@ -89,8 +87,4 @@ class ResearchDetails extends Equatable {
         adviser: adviser ?? this.adviser,
         keywords: keywords ?? this.keywords);
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory ResearchDetails.fromJson(String source) => ResearchDetails.fromMap(json.decode(source) as Map<String, dynamic>);
 }//end class

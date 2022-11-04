@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:thesis_eul/models/sdg.dart';
 
@@ -17,7 +15,9 @@ class SDGHeader extends StatelessWidget {
           // ignore: prefer_const_constructors
           image: DecorationImage(
         // ignore: prefer_const_constructors
-        image: NetworkImage(sdg.header),
+        image: sdg.header.toString == null
+            ? NetworkImage(sdg.header)
+            : NetworkImage(sdg.header),
         fit: BoxFit.cover,
       )),
       child: Stack(
