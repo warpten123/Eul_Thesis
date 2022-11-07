@@ -16,7 +16,6 @@ class PlaceItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        print('clicked');
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => SDGDetails(sdg)),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/department_list.dart';
+import 'package:thesis_eul/screens/student_Screens/student_dashboard/place_Item.dart';
 
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/place_gridview.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/profile_user/user_profile.dart';
