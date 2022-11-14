@@ -46,13 +46,40 @@ class ResearchDetails extends Equatable {
       image: map['image'] as String,
       department: map['department'] as String,
       researchId: map['researcId'] as String,
-      sdgCategory: map['category'] as List<String>,
+      sdgCategory: map['sdgCategory'] as List<String>,
       datePublished: map['datePublished'] as String,
       authors: map['authors'] as List<String>,
       adviser: map['adviser'] as String,
       keywords: map['keywords'] as List<String>,
     );
   }
+  factory ResearchDetails.fromJson(Map<String, dynamic> json) =>
+      ResearchDetails(
+        title: json['title'] as String,
+        image: json['image'] as String,
+        department: json['department'] as String,
+        researchId: json['researcId'] as String,
+        sdgCategory: json['category'] as List<String>,
+        datePublished: json['datePublished'] as String,
+        authors: json['authors'] as List<String>,
+        adviser: json['adviser'] as String,
+        keywords: json['keywords'] as List<String>,
+      );
+
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'image': image,
+      'department': department,
+      'researcId': researchId,
+      'sdgCategory': sdgCategory,
+      'datePublished': datePublished,
+      'authors': authors,
+      'adviser': adviser,
+      'keywords': keywords
+    };
+  }
+
   @override
   List<Object?> get props => [
         title,

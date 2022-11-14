@@ -52,6 +52,8 @@ dependencies:
   uuid: ^3.0.6
   flutter_pdfview: ^1.2.1
   equatable: ^2.0.3
+  mysql1: ^0.20.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
