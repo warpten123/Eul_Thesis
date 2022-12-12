@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.thesis_eul">
    <application
+        android:usesCleartextTraffic="true"
         android:label="thesis_eul"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

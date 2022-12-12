@@ -13,7 +13,8 @@ void setupLocator() {
 }
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
+  // await di.init();
   // await Firebase.initializeApp();
   setupLocator();
   runApp(MyApp());

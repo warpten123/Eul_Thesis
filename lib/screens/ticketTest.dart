@@ -1,8 +1,14 @@
+// ignore_for_file: unused_field
+
 import 'package:flutter/material.dart';
 import 'package:thesis_eul/api_service/research_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:thesis_eul/api_service/api_response.dart';
+import 'package:thesis_eul/models/research_details.dart';
 import 'package:thesis_eul/models/ticket.dart';
+
+import '../models/AccountModel.dart';
+import 'package:dio/dio.dart';
 
 class TicketTesting extends StatefulWidget {
   const TicketTesting({super.key});
@@ -13,10 +19,20 @@ class TicketTesting extends StatefulWidget {
 
 class _TicketTestingState extends State<TicketTesting> {
   ResearchService get resService => GetIt.instance<ResearchService>();
-  late APIResponse<List<Ticket>> _apiResponse;
+  late APIResponse<List<Account>> _apiResponse;
+  late APIResponse<List<ResearchDetails>> _apiResponseRes;
 
-  Future<APIResponse<List<Ticket>>> getAllTickets() async {
-    return _apiResponse = await resService.getTicketList();
+  Future<APIResponse<List<Account>>> getAllAccount() async {
+    return _apiResponse = await resService.getAllAccounts();
+  }
+
+  Future<APIResponse<List<ResearchDetails>>> getAllResearch() async {
+    return _apiResponseRes = await resService.getResearchList();
+  }
+
+  Future<APIResponse<bool>> createAccount(Account account) async {
+    APIResponse<bool> reponse;
+    return reponse = await resService.createAccount(account);
   }
 
   @override
@@ -28,15 +44,15 @@ class _TicketTestingState extends State<TicketTesting> {
         backgroundColor: Colors.red,
       ),
       body: FutureBuilder(
-        future: getAllTickets(),
+        future: getAllResearch(),
         builder: (BuildContext context,
-            AsyncSnapshot<APIResponse<List<Ticket>>> snapshot) {
+            AsyncSnapshot<APIResponse<List<ResearchDetails>>> snapshot) {
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
           }
           final ticket = snapshot.data!;
           return ListView.builder(
-              itemCount: ticket.data!.length,
+              itemCount: ticket.data?.length,
               itemBuilder: (context, index) {
                 return Card(
                   elevation: 2,
@@ -57,7 +73,7 @@ class _TicketTestingState extends State<TicketTesting> {
                       padding: const EdgeInsets.all(40),
                       child: Center(
                         child: Text(
-                          ticket.data![index].status,
+                          ticket.data?[index].adviser ?? "shit",
                           style: const TextStyle(
                             fontSize: 25,
                           ),
@@ -71,18 +87,28 @@ class _TicketTestingState extends State<TicketTesting> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          Ticket ticket = Ticket(
-            assignee: "flutter5",
-            status: "flutter pending5",
-            subject: "tesst",
-            description: "test",
-            tracker: "test",
-          );
-          final result = await resService.createTicket(ticket);
+          // ignore: prefer_const_declarations
+          final research = const ResearchDetails(
+              research_id: "bd093555-ae48-4bc5-b1a8-01293296af35",
+              topic_category: ["hello", "were", "are", "you"],
+              sdg_category: ["hello", "were", "are", "you"],
+              date_published: "2012-07-25",
+              adviser: "maam asd",
+              department: "Sheeze",
+              keywords: ["hello", "were", "are", "you"],
+              title: "bohol",
+              abstract: "hshsh shshsh sshsh",
+              qr: "shshshsh dhhshs",
+              number_of_views: 10);
+
+          final result = await resService.updateResearch(research);
+          print(result.errorMessage);
           setState(() {
-            getAllTickets();
+            print("clicked!");
+            getAllResearch();
+            // getAllAccount();
           });
-          print(result.error);
+          // print(result.error);
         },
       ),
     );
