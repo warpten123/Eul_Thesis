@@ -4,6 +4,7 @@ import 'package:thesis_eul/authentication/authentication.dart';
 
 import 'package:thesis_eul/screens/student_Screens/code_screen.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/new_user_dashboard.dart';
+import 'package:thesis_eul/screens/student_Screens/user_dashboard.dart';
 import 'package:thesis_eul/screens/ticketTest.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -154,7 +155,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const TicketTesting()),
+                                  builder: (context) =>
+                                      const UserDashboardNew()),
                             );
                           },
                           child: Text('SIGN IN',

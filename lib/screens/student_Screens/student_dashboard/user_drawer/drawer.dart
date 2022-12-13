@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../login_screen.dart';
+
 class NavigationDrawer extends StatelessWidget {
   const NavigationDrawer({Key? key}) : super(key: key);
 
@@ -60,7 +62,14 @@ class NavigationDrawer extends StatelessWidget {
                 size: 30.0,
               ),
               title: const Text("Logout", style: TextStyle(fontSize: 22.0)),
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginScreen(),
+                    ));
+              },
             ),
           ],
         ),

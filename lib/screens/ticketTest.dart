@@ -100,9 +100,17 @@ class _TicketTestingState extends State<TicketTesting> {
               abstract: "hshsh shshsh sshsh",
               qr: "shshshsh dhhshs",
               number_of_views: 10);
-
-          final result = await resService.updateResearch(research);
-          print(result.errorMessage);
+          final account = Account(
+              school_id: "flutter3",
+              first_name: "Cristopher",
+              last_name: "Bohol",
+              email: "flutter3@gmail.com",
+              department: "School of Department",
+              password: "wtfffff",
+              role: "Student",
+              approve: 1);
+          final result = await resService.createAccount(account);
+          print("ERROR: ${result.errorMessage}");
           setState(() {
             print("clicked!");
             getAllResearch();

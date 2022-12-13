@@ -33,36 +33,36 @@
 //     Categories(title: 'Computer Vision', image: 'assets/vision.jpg', count: 4),
 //   ];
 
-//   List<ResearchDetails> research = [
-//     ResearchDetails(
-//       title: 'Eul: An Intelligent Research Repository Management',
-//       image: 'assets/cover_page.jpg',
-//       department: 'School Of Computer Studies',
-//       authors: ['Bohol', 'Premacio'],
-//       adviser: 'Mrs. Lorna Miro',
-//     ),
-//     ResearchDetails(
-//       title: 'A Research Title',
-//       image: 'assets/cover_page.jpg',
-//       department: 'School Of Computer Studies',
-//       authors: ['Cuizon', 'Gadiane'],
-//       adviser: 'Mrs. Lorna Miro',
-//     ),
-//     ResearchDetails(
-//       title: 'Another Research Title',
-//       image: 'assets/cover_page.jpg',
-//       department: 'School Of Computer Studies',
-//       authors: ['Patalita', 'Bandalan'],
-//       adviser: 'Mrs. Lorna Miro',
-//     ),
-//     ResearchDetails(
-//       title: 'StudyUp',
-//       image: 'assets/cover_page.jpg',
-//       department: 'School Of Computer Studies',
-//       authors: ['Daguplo', 'Solis'],
-//       adviser: 'Mrs. Lorna Miro',
-//     ),
-//   ];
+//   // List<ResearchDetails> research = [
+//   //   ResearchDetails(
+//   //     title: 'Eul: An Intelligent Research Repository Management',
+//   //     image: 'assets/cover_page.jpg',
+//   //     department: 'School Of Computer Studies',
+//   //     authors: ['Bohol', 'Premacio'],
+//   //     adviser: 'Mrs. Lorna Miro',
+//   //   ),
+//   //   ResearchDetails(
+//   //     title: 'A Research Title',
+//   //     image: 'assets/cover_page.jpg',
+//   //     department: 'School Of Computer Studies',
+//   //     authors: ['Cuizon', 'Gadiane'],
+//   //     adviser: 'Mrs. Lorna Miro',
+//   //   ),
+//   //   ResearchDetails(
+//   //     title: 'Another Research Title',
+//   //     image: 'assets/cover_page.jpg',
+//   //     department: 'School Of Computer Studies',
+//   //     authors: ['Patalita', 'Bandalan'],
+//   //     adviser: 'Mrs. Lorna Miro',
+//   //   ),
+//   //   ResearchDetails(
+//   //     title: 'StudyUp',
+//   //     image: 'assets/cover_page.jpg',
+//   //     department: 'School Of Computer Studies',
+//   //     authors: ['Daguplo', 'Solis'],
+//   //     adviser: 'Mrs. Lorna Miro',
+//   //   ),
+//   // ];
 //   Future<File?> pickFile() async {
 //     final result = await FilePicker.platform.pickFiles(
 //         allowMultiple: true,

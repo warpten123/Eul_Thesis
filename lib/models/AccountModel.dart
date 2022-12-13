@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, non_constant_identifier_names
 class Account {
   String school_id;
   String first_name;
@@ -28,7 +28,7 @@ class Account {
         password: json['password'] as String,
         role: json['role'] as String,
         // ignore: unnecessary_null_in_if_null_operators, prefer_if_null_operators
-        approve: json['approve'] == null ? null : json['approve'],
+        approve: json['approve'] as int,
       );
 
   Map<String, dynamic> toJson() {

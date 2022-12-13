@@ -23,7 +23,6 @@ class ResearchService {
     'Content-Type': 'application/json'
   };
   Future<APIResponse<List<ResearchDetails>>> getResearchList() {
-    print("why the fuyck");
     return http
         .get(Uri.parse('${baseURL}api/research/fetchAllResearchList'))
         .then((data) {
@@ -32,7 +31,7 @@ class ResearchService {
             .map((e) => e as Map<String, dynamic>)
             .toList(); //
         final account = <ResearchDetails>[];
-        print("from API: ${jsonData[0]}");
+
         // ignore: unused_local_variable
         for (var item in jsonData) {
           account.add(ResearchDetails.fromJson(item));
@@ -105,24 +104,25 @@ class ResearchService {
   }
 
   Future<APIResponse<bool>> createAccount(Account account) {
-    print("from service ${account.school_id}");
-    print("from service ${account.first_name}");
-    print("from service ${account.last_name}");
-    print("from service ${account.email}");
-    print("from service ${account.department}");
-    print("from service ${account.password}");
-    print("from service ${account.role}");
-    print("from service ${account.approve}");
+    // print("from service ${account.school_id}");
+    // print("from service ${account.first_name}");
+    // print("from service ${account.last_name}");
+    // print("from service ${account.email}");
+    // print("from service ${account.department}");
+    // print("from service ${account.password}");
+    // print("from service ${account.role}");
+    // print("from service ${account.approve}");
     return http
         .post(Uri.parse('http://10.0.2.2:3000/auth/signup'),
-            body: json.encode(account.toJson()))
+            headers: headers, body: json.encode(account.toJson()))
         .then((data) {
       if (data.statusCode == 200) {
         return APIResponse<bool>(
           data: true,
         );
       }
-      return APIResponse<bool>(error: true, errorMessage: "An error occured");
+      return APIResponse<bool>(
+          error: true, errorMessage: data.statusCode.toString());
     }).catchError((_) =>
             APIResponse<bool>(error: true, errorMessage: "An error occured"));
   }

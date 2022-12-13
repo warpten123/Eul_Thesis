@@ -4,16 +4,23 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:open_file/open_file.dart';
+import 'package:thesis_eul/api_service/api_response.dart';
+import 'package:thesis_eul/api_service/research_service.dart';
+import 'package:thesis_eul/models/AccountModel.dart';
 import 'package:thesis_eul/models/res_categories.dart';
 import 'package:thesis_eul/models/research.dart';
+import 'package:thesis_eul/models/research_details.dart';
 import 'package:thesis_eul/screens/student_Screens/header_drawer.dart';
 import 'package:thesis_eul/screens/student_Screens/research_screen.dart';
 import 'package:thesis_eul/models/sdg.dart';
+import 'package:thesis_eul/screens/student_Screens/student_dashboard/research_list/research_details.dart';
 
+// ignore: must_be_immutable
 class ContentUserDashBoard extends StatefulWidget {
   SDG sdg;
-  ContentUserDashBoard(this.sdg);
+  ContentUserDashBoard(this.sdg, {super.key});
   @override
   State<ContentUserDashBoard> createState() => _ContentUserDashBoardState();
 }
@@ -28,29 +35,45 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
     Categories(title: 'Machine Learning', image: 'assets/ml.png', count: 2),
     Categories(title: 'Computer Vision', image: 'assets/vision.jpg', count: 4),
   ];
+  ResearchService get resService => GetIt.instance<ResearchService>();
+  late APIResponse<List<Account>> _apiResponse;
+  late APIResponse<List<ResearchDetails>> _apiResponseRes;
 
-  List<Research> research = [
-    Research(
-        title: 'Eul: An Intelligent Research Repository Management',
-        image: 'assets/cover_page.jpg',
-        department: 'School Of Computer Studies',
-        authors: ['Bohol', 'Premacio']),
-    Research(
-        title: 'A Research Title',
-        image: 'assets/cover_page.jpg',
-        department: 'School Of Computer Studies',
-        authors: ['Cuizon', 'Gadiane']),
-    Research(
-        title: 'Another Research Title',
-        image: 'assets/cover_page.jpg',
-        department: 'School Of Computer Studies',
-        authors: ['Patalita', 'Bandalan']),
-    Research(
-        title: 'StudyUp',
-        image: 'assets/cover_page.jpg',
-        department: 'School Of Computer Studies',
-        authors: ['Daguplo', 'Solis']),
-  ];
+  Future<APIResponse<List<Account>>> getAllAccount() async {
+    return _apiResponse = await resService.getAllAccounts();
+  }
+
+  Future<APIResponse<List<ResearchDetails>>> getAllResearch() async {
+    return _apiResponseRes = await resService.getResearchList();
+  }
+
+  Future<APIResponse<bool>> createAccount(Account account) async {
+    APIResponse<bool> reponse;
+    return reponse = await resService.createAccount(account);
+  }
+
+  // List<Research> research = [
+  //   Research(
+  //       title: 'Eul: An Intelligent Research Repository Management',
+  //       image: 'assets/cover_page.jpg',
+  //       department: 'School Of Computer Studies',
+  //       authors: ['Bohol', 'Premacio']),
+  //   Research(
+  //       title: 'A Research Title',
+  //       image: 'assets/cover_page.jpg',
+  //       department: 'School Of Computer Studies',
+  //       authors: ['Cuizon', 'Gadiane']),
+  //   Research(
+  //       title: 'Another Research Title',
+  //       image: 'assets/cover_page.jpg',
+  //       department: 'School Of Computer Studies',
+  //       authors: ['Patalita', 'Bandalan']),
+  //   Research(
+  //       title: 'StudyUp',
+  //       image: 'assets/cover_page.jpg',
+  //       department: 'School Of Computer Studies',
+  //       authors: ['Daguplo', 'Solis']),
+  // ];
   Future<File?> pickFile() async {
     final result = await FilePicker.platform.pickFiles(
         allowMultiple: true,
@@ -204,87 +227,102 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
             ),
             Container(
               height: 400,
-              child: ListView.builder(
-                itemCount: research.length,
-                shrinkWrap: true,
-                physics: BouncingScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                padding: EdgeInsets.only(left: 20, bottom: 20),
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: Container(
-                      margin: EdgeInsets.only(right: 24),
-                      padding: EdgeInsets.only(top: 10),
-                      width: 100,
-                      decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 241, 239, 239),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Colors.greenAccent)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 20.0),
-                              child: ListTile(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ReseachScreen(
-                                            name: research[index].title)),
-                                  );
-                                },
-                                leading: Image.asset(
-                                  research[index].image,
-                                  height: 80,
-                                  width: 50,
-                                  fit: BoxFit.cover,
-                                ),
-                                contentPadding: EdgeInsets.only(left: 10),
-                                title: Text(
-                                  research[index].title,
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                subtitle: Text(
-                                    '${research[index].authors[0]}, ${research[index].authors[1]}'),
-                                selectedColor: Colors.greenAccent,
-                                trailing: Checkbox(
-                                  value: checkbox,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      print('${research[index].authors[0]}');
-                                      checkbox = value!;
-                                    });
-                                  },
-                                ), //Che
+              child: FutureBuilder(
+                  future: getAllResearch(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<APIResponse<List<ResearchDetails>>>
+                          snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    final research = snapshot.data!;
+                    return ListView.builder(
+                      itemCount: research.data!.length,
+                      shrinkWrap: true,
+                      physics: BouncingScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      padding: EdgeInsets.only(left: 20, bottom: 20),
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: Container(
+                            margin: EdgeInsets.only(right: 24),
+                            padding: EdgeInsets.only(top: 10),
+                            width: 100,
+                            decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 241, 239, 239),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: Colors.greenAccent)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.only(bottom: 20.0),
+                                    child: ListTile(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  Research_Details(widget.sdg,
+                                                      research.data![index])),
+                                        );
+                                      },
+                                      leading: Image.asset(
+                                        "assets/cover_page.jpg",
+                                        height: 80,
+                                        width: 50,
+                                        fit: BoxFit.cover,
+                                      ),
+                                      contentPadding: EdgeInsets.only(left: 10),
+                                      title: Text(
+                                        research.data![index].title,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      subtitle: Text(
+                                          '${research.data![index].sdg_category}, ${research.data![index].title}'),
+                                      selectedColor: Colors.greenAccent,
+                                      trailing: Checkbox(
+                                        value: checkbox,
+                                        onChanged: (value) {
+                                          // setState(() {
+                                          //   print(
+                                          //       '${research[index].authors[0]}');
+                                          //   checkbox = value!;
+                                          // });
+                                        },
+                                      ), //Che
+                                    ),
+                                  ),
+
+                                  // Image.asset(
+                                  //   categories[index].image,
+                                  //   height: 44,
+                                  //   width: 44,
+                                  //   fit: BoxFit.cover,
+                                  // ),
+                                  // SizedBox(
+                                  //   height: 12,
+                                  // ),
+                                  // Text(
+                                  //   categories[index].title,
+                                  //   style: TextStyle(
+                                  //       fontSize: 14, fontWeight: FontWeight.w500),
+                                  // ),
+                                ],
                               ),
                             ),
-
-                            // Image.asset(
-                            //   categories[index].image,
-                            //   height: 44,
-                            //   width: 44,
-                            //   fit: BoxFit.cover,
-                            // ),
-                            // SizedBox(
-                            //   height: 12,
-                            // ),
-                            // Text(
-                            //   categories[index].title,
-                            //   style: TextStyle(
-                            //       fontSize: 14, fontWeight: FontWeight.w500),
-                            // ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
+                          ),
+                        );
+                      },
+                    );
+                  }),
             ),
           ],
         ),

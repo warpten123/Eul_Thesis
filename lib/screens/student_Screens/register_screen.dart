@@ -81,7 +81,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           color: Colors.white,
                         ),
                         decoration: InputDecoration(
-                          hintText: "Full Name",
+                          hintText: "First Name",
+                          hintStyle: TextStyle(color: Colors.grey.shade500),
+                          filled: true,
+                          fillColor: Color(0xff161d27).withOpacity(0.9),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide(color: Colors.green),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 12,
+                    ),
+                    Container(
+                      height: 50,
+                      margin: EdgeInsets.only(left: 40, right: 40),
+                      child: TextField(
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: "Last Name",
                           hintStyle: TextStyle(color: Colors.grey.shade500),
                           filled: true,
                           fillColor: Color(0xff161d27).withOpacity(0.9),
