@@ -4,8 +4,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io'; // for File
-
+import 'package:path/path.dart';
 import 'package:thesis_eul/api_service/api_response.dart';
+import 'package:thesis_eul/models/Files.dart';
+import 'package:thesis_eul/models/department.dart';
 import 'package:thesis_eul/models/research_details.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -66,6 +68,25 @@ class ResearchService {
         error: true, errorMessage: "An error occured"));
   }
 
+  Future<APIResponse<bool>> userLogin(String id, String password) {
+    var userInfo = {
+      'school_id': id,
+      'password': password,
+    };
+    return http
+        .post(Uri.parse('${baseURL}auth/login'),
+            body: json.encode(userInfo), headers: headers)
+        .then((data) {
+      if (data.statusCode == 200) {
+        return APIResponse<bool>(
+          data: true,
+        );
+      }
+      return APIResponse<bool>(error: true, errorMessage: "An error occured");
+    }).catchError((_) =>
+            APIResponse<bool>(error: true, errorMessage: "An error occured"));
+  }
+
   Future<APIResponse<bool>> createTicket(Ticket ticket) {
     return http
         .post(Uri.parse(baseURL + 'ticket/create'),
@@ -103,20 +124,57 @@ class ResearchService {
         error: true, errorMessage: "An error occured"));
   }
 
+  Future<APIResponse<List<Department>>> getAllDepartments() {
+    return http
+        .get(Uri.parse('${baseURL}api/account/departments'))
+        .then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = (jsonDecode(data.body)[0] as List)
+            .map((e) => e as Map<String, dynamic>)
+            .toList(); //
+        print("SETVICE: $jsonData");
+        final account = <Department>[];
+        // print("from API: ${jsonData[0]}");
+        // ignore: unused_local_variable
+        for (var item in jsonData) {
+          account.add(Department.fromJson(item));
+        }
+        return APIResponse<List<Department>>(
+          data: account,
+        );
+      }
+      return APIResponse<List<Department>>(
+          error: true, errorMessage: data.statusCode.toString());
+    }).catchError((_) => APIResponse<List<Department>>(
+            error: true, errorMessage: "An error occured"));
+  }
+
+  Future<APIResponse<Account>> getStudentByID(String id) {
+    return http
+        .get(Uri.parse('${baseURL}api/account/$id'), headers: headers)
+        .then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = jsonDecode(data.body)[0];
+        print("from service: $jsonData");
+        return APIResponse<Account>(
+          data: Account.fromJsonFetchByID(jsonData[0]),
+        );
+      }
+      return APIResponse<Account>(
+          error: true, errorMessage: data.statusCode.toString());
+    }).catchError((_) => APIResponse<Account>(
+            error: true, errorMessage: "An error occured"));
+  }
+
   Future<APIResponse<bool>> createAccount(Account account) {
-    // print("from service ${account.school_id}");
-    // print("from service ${account.first_name}");
-    // print("from service ${account.last_name}");
-    // print("from service ${account.email}");
-    // print("from service ${account.department}");
-    // print("from service ${account.password}");
-    // print("from service ${account.role}");
-    // print("from service ${account.approve}");
+    print("SERVICE ${account.departmentID}");
+    print("SERVICE ${account.email}");
+    print("SERVICE ${account.role_roleID}");
     return http
         .post(Uri.parse('http://10.0.2.2:3000/auth/signup'),
             headers: headers, body: json.encode(account.toJson()))
         .then((data) {
-      if (data.statusCode == 200) {
+      if (data.statusCode == 200 || data.statusCode == 201) {
         return APIResponse<bool>(
           data: true,
         );
@@ -236,5 +294,49 @@ class ResearchService {
         .pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
     if (result == null) return null;
     return File(result.paths.first!);
+  }
+
+  Future<APIResponse<bool>> fileUpload(Files file) async {
+    // var userInfo = {
+    //   'school_id': id,
+    //   'password': password,
+    // };
+    var map = <String, dynamic>{};
+    map['file'] = file.file;
+    map['research_id'] = file.research_id;
+    var uri =
+        Uri.parse('http://10.0.2.2:3000/file/upload-file/${file.research_id}');
+    var request = http.MultipartRequest('POST', uri);
+    // request.files.add(
+    //     await http.MultipartFile.fromPath('research_id', file.research_id));
+
+    request.files.add(await http.MultipartFile.fromPath('file', file.file));
+
+    var response = await request.send();
+
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      print("fromservice: ${response.statusCode}");
+      return APIResponse<bool>(
+        data: true,
+      );
+    }
+    return APIResponse<bool>(
+        error: true, errorMessage: response.statusCode.toString());
+    // return http
+    //     .post(
+    //         Uri.parse(
+    //             'http://10.0.2.2:3000/file/upload-file/${file.research_id}'),
+    //         body: json.encode(map),
+    //         headers: headers)
+    //     .then((data) {
+    //   if (data.statusCode == 200) {
+    //     return APIResponse<bool>(
+    //       data: true,
+    //     );
+    //   }
+    //   return APIResponse<bool>(
+    //       error: true, errorMessage: data.statusCode.toString());
+    // }).catchError((_) =>
+    //         APIResponse<bool>(error: true, errorMessage: "An error occured"));
   }
 }

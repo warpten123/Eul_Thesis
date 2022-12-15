@@ -106,7 +106,7 @@ class SDG {
           description: 'Reduce inequality within and among countries',
           image: 'assets/10.png',
           header:
-              'https://drive.google.com/uc?export=view&id=10jDkf99736leLjzwFA1rqJL_PxsNMc-e'),
+              'https://drive.google.com/uc?export=view&id=13DIxOaZN8kJh51xSvx9P7Aaj67JXfDax'),
       SDG(
           goal: 'Goal 11',
           name: 'Sustainable Cities and Communities',

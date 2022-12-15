@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:thesis_eul/models/AccountModel.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/department_list.dart';
+import 'package:thesis_eul/screens/student_Screens/student_dashboard/file_upload/file_uploadDashboard.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/place_Item.dart';
 
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/place_gridview.dart';
@@ -9,12 +11,13 @@ import 'package:thesis_eul/screens/student_Screens/student_dashboard/search_scre
 import 'user_drawer/drawer.dart';
 
 class UserDashboardNew extends StatelessWidget {
-  const UserDashboardNew({Key? key}) : super(key: key);
-
+  UserDashboardNew(this.account, {super.key});
+  Account account;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.amberAccent,
         drawer: const NavigationDrawer(),
         appBar: appBar(context),
         body: SingleChildScrollView(
@@ -45,51 +48,55 @@ class UserDashboardNew extends StatelessWidget {
           backgroundColor: Colors.green,
           splashColor: Colors.green,
           onPressed: () {
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return Container(
-                    child: AlertDialog(
-                      // ignore: prefer_const_constructors
-                      title: Text(
-                        'Upload File',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20.0),
-                      ),
-                      content: IconButton(
-                        // ignore: prefer_const_constructors
-                        icon: Icon(
-                          Icons.upload,
-                          size: 50.0,
-                        ),
-                        onPressed: () {
-                          // pickFile();
-                        },
-                      ),
-                      actions: [
-                        TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            // ignore: prefer_const_constructors
-                            child: Text('CANCEL',
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                ))),
-                        TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            // ignore: prefer_const_constructors
-                            child: Text('CONFIRM',
-                                // ignore: prefer_const_constructors
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                ))),
-                      ],
-                    ),
-                  );
-                });
+            // showDialog(
+            //     context: context,
+            //     builder: (context) {
+            //       return Container(
+            //         child: AlertDialog(
+            //           // ignore: prefer_const_constructors
+            //           title: Text(
+            //             'Upload File',
+            //             style: const TextStyle(
+            //                 fontWeight: FontWeight.bold, fontSize: 20.0),
+            //           ),
+            //           content: IconButton(
+            //             // ignore: prefer_const_constructors
+            //             icon: Icon(
+            //               Icons.upload,
+            //               size: 50.0,
+            //             ),
+            //             onPressed: () {
+            //               // pickFile();
+            //             },
+            //           ),
+            //           actions: [
+            //             TextButton(
+            //                 onPressed: () {
+            //                   Navigator.pop(context);
+            //                 },
+            //                 // ignore: prefer_const_constructors
+            //                 child: Text('CANCEL',
+            //                     style: const TextStyle(
+            //                       fontSize: 18.0,
+            //                     ))),
+            //             TextButton(
+            //                 onPressed: () {
+            //                   Navigator.pop(context);
+            //                 },
+            //                 // ignore: prefer_const_constructors
+            //                 child: Text('CONFIRM',
+            //                     // ignore: prefer_const_constructors
+            //                     style: TextStyle(
+            //                       fontSize: 18.0,
+            //                     ))),
+            //           ],
+            //         ),
+            //       );
+            //     });
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const File_Upload()),
+            );
           },
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -113,7 +120,7 @@ class UserDashboardNew extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const UserProfile()),
+              MaterialPageRoute(builder: (context) => UserProfile(account)),
             );
           },
           child: Container(

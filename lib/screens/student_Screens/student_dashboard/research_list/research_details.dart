@@ -14,6 +14,7 @@ class Research_Details extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.amberAccent,
       appBar: AppBar(
         title: Text(researchDetails.title),
         leading: IconButton(
@@ -50,13 +51,13 @@ class Research_Details extends StatelessWidget {
               // end scroll
               ListTile(
                 isThreeLine: true,
-                title: Text('Abstract of the Study'),
+                title: const Text('Abstract of the Study'),
                 subtitle: Text(researchDetails.abstract),
               ),
-              const ListTile(
+              ListTile(
                 isThreeLine: true,
-                title: Text('Date Published'),
-                subtitle: Text('June 15,2022'),
+                title: const Text('Date Published'),
+                subtitle: Text(researchDetails.date_published),
               ),
               ListTile(
                 isThreeLine: true,

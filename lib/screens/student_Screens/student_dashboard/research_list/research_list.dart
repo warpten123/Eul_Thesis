@@ -91,31 +91,36 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
         child: Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.logout))
-        ],
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back)),
+        // actions: [
+        //   IconButton(
+        //       onPressed: () {
+        //         Navigator.pop(context);
+        //       },
+        //       icon: Icon(Icons.logout))
+        // ],
         title: Text(
-          'Welcome Josenian!',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          '${widget.sdg.goal} ${widget.sdg.name}',
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
-      drawer: Drawer(
-        child: SingleChildScrollView(
-          child: Container(
-            child: Column(
-              children: <Widget>[
-                HeaderDrawer(),
-                // ListDrawer(),
-              ],
-            ),
-          ),
-        ),
-      ),
-      backgroundColor: Colors.grey.shade100,
+      // drawer: Drawer(
+      //   child: SingleChildScrollView(
+      //     child: Container(
+      //       child: Column(
+      //         children: <Widget>[
+      //           HeaderDrawer(),
+      //           // ListDrawer(),
+      //         ],
+      //       ),
+      //     ),
+      //   ),
+      // ),
+      backgroundColor: Colors.amberAccent,
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(

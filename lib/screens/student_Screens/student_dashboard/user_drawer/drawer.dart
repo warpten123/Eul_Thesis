@@ -35,7 +35,9 @@ class NavigationDrawer extends StatelessWidget {
                 "Home",
                 style: TextStyle(fontSize: 22.0),
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+              },
             ),
             ListTile(
               leading: const Icon(

@@ -1,11 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:thesis_eul/authentication/authentication.dart';
+import 'package:get_it/get_it.dart';
+
+import 'package:thesis_eul/models/AccountModel.dart';
 
 import 'package:thesis_eul/screens/student_Screens/code_screen.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/new_user_dashboard.dart';
-import 'package:thesis_eul/screens/student_Screens/user_dashboard.dart';
-import 'package:thesis_eul/screens/ticketTest.dart';
+import 'package:thesis_eul/screens/utilities/utilities.dart';
+
+import '../api_service/api_response.dart';
+import '../api_service/research_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -16,8 +19,21 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   // final auth = Authentication();
-  final emailController = TextEditingController();
+  // ignore: non_constant_identifier_names
+  final school_id = TextEditingController();
   final passwordController = TextEditingController();
+  ResearchService get resService => GetIt.instance<ResearchService>();
+  late APIResponse<List<Account>> _apiResponse;
+  late APIResponse<Account> _apiResponseAccount;
+
+  Future<APIResponse<bool>> userLogin(String id, String password) async {
+    APIResponse<bool> response;
+    return response = await resService.userLogin(id, password);
+  }
+
+  Future<APIResponse<Account>> getStudentByID(String id) async {
+    return _apiResponseAccount = await resService.getStudentByID(id);
+  }
 
   // @override
   // void dispose() {
@@ -33,8 +49,9 @@ class _LoginScreenState extends State<LoginScreen> {
         body: Stack(
           children: <Widget>[
             Container(
+              // ignore: prefer_const_constructors
               decoration: BoxDecoration(
-                  image: DecorationImage(
+                  image: const DecorationImage(
                       image: AssetImage('assets/newback.jpg'),
                       fit: BoxFit.cover)),
             ),
@@ -53,35 +70,38 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
+                    // ignore: prefer_const_constructors
                     Text(
                       "EUL",
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.white,
                           fontSize: 150,
                           fontWeight: FontWeight.bold),
                     ),
+                    // ignore: prefer_const_constructors
                     SizedBox(
                       height: 30,
                     ),
-                    Text(
+                    const Text(
                       'Your Digital Research Repository System',
                       style: TextStyle(color: Colors.white70, fontSize: 16),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Container(
                       height: 50,
                       margin: EdgeInsets.only(left: 40, right: 40),
                       child: TextField(
-                        controller: emailController,
+                        controller: school_id,
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.white,
                         ),
                         decoration: InputDecoration(
-                          hintText: "School Email",
-                          hintStyle: TextStyle(color: Colors.grey.shade500),
+                          labelText: "School ID",
+                          labelStyle: TextStyle(color: Colors.grey.shade500),
+                          // hintStyle: TextStyle(color: Colors.grey.shade500),
                           filled: true,
                           fillColor: Color(0xff161d27).withOpacity(0.9),
                           enabledBorder: OutlineInputBorder(
@@ -91,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 12,
                     ),
                     Container(
@@ -100,13 +120,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: TextField(
                         controller: passwordController,
                         obscureText: true,
+                        // ignore: prefer_const_constructors
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.white,
                         ),
                         decoration: InputDecoration(
-                          hintText: "Password",
-                          hintStyle: TextStyle(color: Colors.grey.shade500),
+                          labelText: "Password",
+                          labelStyle: TextStyle(color: Colors.grey.shade500),
                           filled: true,
                           fillColor: Color(0xff161d27).withOpacity(0.9),
                           enabledBorder: OutlineInputBorder(
@@ -116,6 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
+                    // ignore: prefer_const_constructors
                     SizedBox(
                       height: 12,
                     ),
@@ -127,6 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               builder: (context) => const CodeScreen()),
                         );
                       },
+                      // ignore: prefer_const_constructors
                       child: Text(
                         'No Account? Enter Code!',
                         style: TextStyle(
@@ -135,12 +158,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             fontWeight: FontWeight.bold),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
                     Container(
                       height: 50,
                       width: double.infinity,
+                      // ignore: prefer_const_constructors
                       decoration: BoxDecoration(
                         color: Colors.green,
                         borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -149,17 +173,33 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: TextButton(
                         onPressed: () {},
                         child: TextButton(
-                          onPressed: () {
+                          onPressed: () async {
                             // auth.signIn(emailController.text.trim(),
                             //     passwordController.text.trim());
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const UserDashboardNew()),
-                            );
+                            final result = await userLogin(
+                                school_id.text, passwordController.text);
+                            // var local = result;
+                            if (result.data != null) {
+                              final result =
+                                  await getStudentByID(school_id.text);
+                              // ignore: use_build_context_synchronously
+                              showSnackBar(
+                                  context, result.errorMessage.toString());
+                              // ignore: use_build_context_synchronously
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        UserDashboardNew(result.data!)),
+                              );
+                            } else {
+                              // ignore: use_build_context_synchronously
+                              showSnackBar(context, "Account doesn't exist!");
+                            }
                           },
+                          // ignore: prefer_const_constructors
                           child: Text('SIGN IN',
+                              // ignore: prefer_const_constructors
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -167,41 +207,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 16,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            'Research Adviser?',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              // Navigator.pushReplacement(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //       builder: (context) => const TeacherLogin()),
-                              // );
-                            },
-                            child: Text(
-                              '  Tap me!',
-                              style: TextStyle(
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 30,
                     ),
                   ],
                 ),

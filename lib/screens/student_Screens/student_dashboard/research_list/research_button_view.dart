@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:thesis_eul/api_service/research_service.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/pdf_viewer/pdf_viewer.dart';
+import 'package:thesis_eul/screens/utilities/utilities.dart';
 
 import '../../../../models/sdg.dart';
 
@@ -44,7 +45,4 @@ class DetailsRead extends StatelessWidget {
       ),
     );
   }
-
-  void openPDF(BuildContext context, File file) => Navigator.of(context)
-      .push(MaterialPageRoute(builder: (context) => PDFViewerWidget(file)));
 }

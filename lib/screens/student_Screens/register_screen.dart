@@ -1,7 +1,16 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:thesis_eul/models/department.dart';
 
 import 'package:thesis_eul/screens/login_screen.dart';
 import 'package:thesis_eul/screens/student_Screens/user_dashboard.dart';
+import 'package:thesis_eul/screens/utilities/utilities.dart';
+
+import '../../api_service/api_response.dart';
+import '../../api_service/research_service.dart';
+import '../../models/AccountModel.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -11,14 +20,35 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  // ignore: non_constant_identifier_names
+  final fist_nameController = TextEditingController();
+  // ignore: non_constant_identifier_names
+  final last_nameController = TextEditingController();
+  // ignore: non_constant_identifier_names
+  final email_Controller = TextEditingController();
+  // ignore: non_constant_identifier_names
+  final password_Controller = TextEditingController();
+
   List<String> deparments = [
     "School of Computer Studies",
-    "School of Medicine",
+    "School of Allied Medicine",
     "School of Arts and Sciences",
     "School of Law",
     "School of Business Administration",
-    "School of Engineering"
+    "School of Engineering",
+    "School of Education"
   ];
+  ResearchService get resService => GetIt.instance<ResearchService>();
+  late APIResponse<List<Department>> _apiResponse;
+  Future<APIResponse<bool>> createAccount(Account account) async {
+    APIResponse<bool> reponse;
+    return reponse = await resService.createAccount(account);
+  }
+
+  Future<APIResponse<List<Department>>> getAllDepartments() async {
+    return _apiResponse = await resService.getAllDepartments();
+  }
+
   String? value;
   DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
         value: item,
@@ -37,7 +67,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         body: Stack(
           children: <Widget>[
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage('assets/usjr2.jpg'),
                       fit: BoxFit.cover)),
@@ -47,8 +77,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 gradient: LinearGradient(colors: [
                   Colors.transparent,
                   Colors.transparent,
-                  Color(0xff161d27).withOpacity(0.9),
-                  Color(0xff161d27),
+                  const Color(0xff161d27).withOpacity(0.9),
+                  const Color(0xff161d27),
                 ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
               ),
             ),
@@ -57,7 +87,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Text(
+                    const Text(
                       "Register Account",
                       style: TextStyle(
                           color: Colors.white,
@@ -69,107 +99,112 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       style:
                           TextStyle(color: Colors.grey.shade500, fontSize: 16),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Container(
                       height: 50,
-                      margin: EdgeInsets.only(left: 40, right: 40),
+                      margin: const EdgeInsets.only(left: 40, right: 40),
                       child: TextField(
+                        controller: fist_nameController,
+                        // ignore: prefer_const_constructors
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.white,
                         ),
                         decoration: InputDecoration(
-                          hintText: "First Name",
-                          hintStyle: TextStyle(color: Colors.grey.shade500),
+                          labelText: "First Name",
+                          labelStyle: TextStyle(color: Colors.grey.shade500),
                           filled: true,
-                          fillColor: Color(0xff161d27).withOpacity(0.9),
+                          fillColor: const Color(0xff161d27).withOpacity(0.9),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide(color: Colors.green),
+                            borderSide: const BorderSide(color: Colors.green),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 12,
                     ),
                     Container(
                       height: 50,
-                      margin: EdgeInsets.only(left: 40, right: 40),
+                      margin: const EdgeInsets.only(left: 40, right: 40),
                       child: TextField(
-                        style: TextStyle(
+                        controller: last_nameController,
+                        style: const TextStyle(
                           fontSize: 16,
                           color: Colors.white,
                         ),
                         decoration: InputDecoration(
-                          hintText: "Last Name",
-                          hintStyle: TextStyle(color: Colors.grey.shade500),
+                          labelText: "Last Name",
+                          labelStyle: TextStyle(color: Colors.grey.shade500),
                           filled: true,
-                          fillColor: Color(0xff161d27).withOpacity(0.9),
+                          fillColor: const Color(0xff161d27).withOpacity(0.9),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide(color: Colors.green),
+                            borderSide: const BorderSide(color: Colors.green),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 12,
                     ),
                     Container(
                       height: 50,
-                      margin: EdgeInsets.only(left: 40, right: 40),
+                      margin: const EdgeInsets.only(left: 40, right: 40),
                       child: TextField(
-                        style: TextStyle(
+                        controller: email_Controller,
+                        style: const TextStyle(
                           fontSize: 16,
                           color: Colors.white,
                         ),
                         decoration: InputDecoration(
-                          hintText: "School Email",
-                          hintStyle: TextStyle(color: Colors.grey.shade500),
+                          labelText: "School Email",
+                          labelStyle: TextStyle(color: Colors.grey.shade500),
                           filled: true,
-                          fillColor: Color(0xff161d27).withOpacity(0.9),
+                          fillColor: const Color(0xff161d27).withOpacity(0.9),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide(color: Colors.green),
+                            borderSide: const BorderSide(color: Colors.green),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 12,
                     ),
                     Container(
                       height: 50,
-                      margin: EdgeInsets.only(left: 40, right: 40),
+                      margin: const EdgeInsets.only(left: 40, right: 40),
                       child: TextField(
+                        controller: password_Controller,
                         obscureText: true,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           color: Colors.white,
                         ),
                         decoration: InputDecoration(
-                          hintText: "Password",
-                          hintStyle: TextStyle(color: Colors.grey.shade500),
+                          labelText: "Password",
+                          labelStyle: TextStyle(color: Colors.grey.shade500),
                           filled: true,
-                          fillColor: Color(0xff161d27).withOpacity(0.9),
+                          fillColor: const Color(0xff161d27).withOpacity(0.9),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide(color: Colors.green),
+                            borderSide: const BorderSide(color: Colors.green),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 12,
                     ),
                     Container(
                         height: 50,
-                        margin: EdgeInsets.only(left: 40, right: 40),
+                        margin: const EdgeInsets.only(left: 40, right: 40),
                         decoration: BoxDecoration(
-                          color: Color(0xff161d27).withOpacity(0.9),
+                          color: const Color(0xff161d27).withOpacity(0.9),
                           borderRadius: BorderRadius.circular(30),
                           border: Border.all(color: Colors.green),
                         ),
@@ -183,7 +218,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           },
                           items: deparments.map(buildMenuItem).toList(),
                         )),
-                    SizedBox(
+                    const SizedBox(
                       height: 12,
                     ),
                     InkWell(
@@ -194,7 +229,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               builder: (context) => const LoginScreen()),
                         );
                       },
-                      child: Text(
+                      child: const Text(
                         'Take me back!',
                         style: TextStyle(
                             color: Colors.green,
@@ -202,33 +237,72 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             fontWeight: FontWeight.bold),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
                     Container(
                       height: 50,
                       width: double.infinity,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.green,
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
-                      margin: EdgeInsets.only(left: 40, right: 40),
+                      margin: const EdgeInsets.only(left: 40, right: 40),
                       child: TextButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          String pass = generatePassword();
+                          int deptID = 0;
+                          final resultDept = await getAllDepartments();
+                          print(resultDept.errorMessage);
+                          List<Department> department;
+                          department = resultDept.data!;
+                          for (int i = 0; i < department.length; i++) {
+                            if (department[i].departmentName == value) {
+                              deptID = department[i].departmentID;
+                            }
+                          }
+
+                          final account = Account(
+                            school_id: pass,
+                            first_name: fist_nameController.text,
+                            last_name: last_nameController.text,
+                            email: email_Controller.text,
+                            password: password_Controller.text,
+                            role_roleID: 1,
+                            departmentID: deptID,
+                            approve: 1,
+                          );
+
+                          final result = await createAccount(account);
+                          if (result.data != null) {
+                            // ignore: use_build_context_synchronously
+                            showSnackBar(
+                                context, "Sign in using your new account!");
+                            // ignore: use_build_context_synchronously
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginScreen()),
+                            );
+                          } else {
+                            // ignore: use_build_context_synchronously
+                            showSnackBar(
+                                context, result.errorMessage.toString());
+                          }
                           // Navigator.push(
                           //   context,
                           //   MaterialPageRoute(
                           //       builder: (context) => const UserDashboard()),
                           // );
                         },
-                        child: Text('REGISTER',
+                        child: const Text('REGISTER',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18)),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 16,
                     ),
                     // Padding(
