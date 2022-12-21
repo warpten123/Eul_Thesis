@@ -39,5 +39,5 @@ String generateID() {
   return id;
 }
 
-void openPDF(BuildContext context, File file) => Navigator.of(context)
+void openPDF(BuildContext context, String file) => Navigator.of(context)
     .push(MaterialPageRoute(builder: (context) => PDFViewerWidget(file)));

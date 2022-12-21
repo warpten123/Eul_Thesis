@@ -29,7 +29,7 @@ class DetailsRead extends StatelessWidget {
           print("THIS IS FILE $file");
           if (file == null) return;
           // ignore: use_build_context_synchronously
-          openPDF(context, file);
+          openPDF(context, file.path);
         },
         child: Container(
           // ignore: prefer_const_constructors

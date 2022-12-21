@@ -242,11 +242,11 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
                     }
                     final research = snapshot.data!;
                     return ListView.builder(
-                      itemCount: research.data!.length,
+                      itemCount: research.data?.length ?? 0,
                       shrinkWrap: true,
-                      physics: BouncingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.vertical,
-                      padding: EdgeInsets.only(left: 20, bottom: 20),
+                      padding: const EdgeInsets.only(left: 20, bottom: 20),
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: EdgeInsets.all(5.0),

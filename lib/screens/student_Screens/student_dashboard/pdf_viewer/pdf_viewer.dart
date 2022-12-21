@@ -6,7 +6,7 @@ import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 
 class PDFViewerWidget extends StatefulWidget {
-  final File file;
+  final String file;
   const PDFViewerWidget(this.file, {super.key});
   @override
   // ignore: library_private_types_in_public_api
@@ -16,14 +16,14 @@ class PDFViewerWidget extends StatefulWidget {
 class _PDFViewerState extends State<PDFViewerWidget> {
   @override
   Widget build(BuildContext context) {
-    final name = basename(widget.file.path);
+    final name = basename(widget.file);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(name),
       ),
       body: PDFView(
-        filePath: widget.file.path,
+        filePath: widget.file,
         nightMode: false,
       ),
     );

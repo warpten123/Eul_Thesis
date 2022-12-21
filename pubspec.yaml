@@ -53,6 +53,7 @@ dependencies:
   equatable: ^2.0.3
   mysql1: ^0.20.0
   font_awesome_flutter: ^10.3.0
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:

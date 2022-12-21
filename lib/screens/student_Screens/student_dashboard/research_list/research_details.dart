@@ -52,7 +52,7 @@ class Research_Details extends StatelessWidget {
               ListTile(
                 isThreeLine: true,
                 title: const Text('Abstract of the Study'),
-                subtitle: Text(researchDetails.abstract),
+                subtitle: Text(researchDetails.abstracts),
               ),
               ListTile(
                 isThreeLine: true,

@@ -90,8 +90,7 @@ class _File_UploadState extends State<File_Upload> {
 
   Files uploadFunc(File files) {
     var id = generateID();
-    Files payload =
-        Files(file: files.path, research_id: id, url: file.toString());
+    Files payload = Files(file: files.path, research_id: id, url: file.path);
     return payload;
   }
 

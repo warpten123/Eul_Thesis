@@ -183,8 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               final result =
                                   await getStudentByID(school_id.text);
                               // ignore: use_build_context_synchronously
-                              showSnackBar(
-                                  context, result.errorMessage.toString());
+                              showSnackBar(context, "Welcome to EUL!");
                               // ignore: use_build_context_synchronously
                               Navigator.push(
                                 context,

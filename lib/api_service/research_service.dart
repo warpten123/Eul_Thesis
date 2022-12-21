@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:mysql1/mysql1.dart';
 import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io'; // for File
@@ -28,18 +29,44 @@ class ResearchService {
     return http
         .get(Uri.parse('${baseURL}api/research/fetchAllResearchList'))
         .then((data) {
+      print("get res ${data.statusCode}");
       if (data.statusCode == 200) {
         final jsonData = (jsonDecode(data.body)[0] as List)
             .map((e) => e as Map<String, dynamic>)
             .toList(); //
-        final account = <ResearchDetails>[];
+        final research = <ResearchDetails>[];
 
         // ignore: unused_local_variable
         for (var item in jsonData) {
-          account.add(ResearchDetails.fromJson(item));
+          research.add(ResearchDetails.fromJson(item));
         }
         return APIResponse<List<ResearchDetails>>(
-          data: account,
+          data: research,
+        );
+      }
+      return APIResponse<List<ResearchDetails>>(
+          error: true, errorMessage: "An error occured");
+    }).catchError((_) => APIResponse<List<ResearchDetails>>(
+            error: true, errorMessage: "An error occured"));
+  }
+
+  Future<APIResponse<List<ResearchDetails>>> getUserLibray(String schooldID) {
+    return http
+        .get(Uri.parse('${baseURL}api/research/fetchLibrary/$schooldID'))
+        .then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = (jsonDecode(data.body)[0] as List)
+            .map((e) => e as Map<String, dynamic>)
+            .toList(); //
+        print("get res $jsonData");
+        final research = <ResearchDetails>[];
+
+        // ignore: unused_local_variable
+        for (var item in jsonData) {
+          research.add(ResearchDetails.fromMapLibrary(item));
+        }
+        return APIResponse<List<ResearchDetails>>(
+          data: research,
         );
       }
       return APIResponse<List<ResearchDetails>>(
@@ -304,6 +331,8 @@ class ResearchService {
     var map = <String, dynamic>{};
     map['file'] = file.file;
     map['research_id'] = file.research_id;
+    map['url'] = file.url;
+    print(file.url);
     var uri =
         Uri.parse('http://10.0.2.2:3000/file/upload-file/${file.research_id}');
     var request = http.MultipartRequest('POST', uri);
@@ -311,7 +340,7 @@ class ResearchService {
     //     await http.MultipartFile.fromPath('research_id', file.research_id));
 
     request.files.add(await http.MultipartFile.fromPath('file', file.file));
-
+    request.fields['url'] = file.url;
     var response = await request.send();
 
     if (response.statusCode == 201 || response.statusCode == 200) {
@@ -338,5 +367,24 @@ class ResearchService {
     //       error: true, errorMessage: data.statusCode.toString());
     // }).catchError((_) =>
     //         APIResponse<bool>(error: true, errorMessage: "An error occured"));
+  }
+
+  Future<APIResponse<dynamic>> getResearchFile(String id) {
+    return http
+        .get(Uri.parse('${baseURL}file/download/$id'), headers: headers)
+        .then((data) {
+      if (data.statusCode == 200) {
+        print("from file: {$data.toString()}");
+        final jsonData = jsonDecode(data.body);
+        print("from file: $jsonData");
+        return APIResponse<dynamic>(
+          data: jsonData,
+        );
+      }
+
+      return APIResponse<dynamic>(
+          error: true, errorMessage: data.statusCode.toString());
+    }).catchError((_) => APIResponse<dynamic>(
+            error: true, errorMessage: "An error occured"));
   }
 }

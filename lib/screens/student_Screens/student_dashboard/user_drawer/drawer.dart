@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:thesis_eul/api_service/research_service.dart';
+import 'package:thesis_eul/screens/student_Screens/student_dashboard/user_library/user_research_dashboard.dart';
 
+import '../../../../api_service/api_response.dart';
+import '../../../../models/AccountModel.dart';
+import '../../../../models/research_details.dart';
 import '../../../login_screen.dart';
 
 class NavigationDrawer extends StatelessWidget {
-  const NavigationDrawer({Key? key}) : super(key: key);
+  NavigationDrawer(this.loggedAccount, {super.key});
+  Account loggedAccount;
+  late List<ResearchDetails> research;
+  ResearchService get resService => GetIt.instance<ResearchService>();
+  late APIResponse<List<ResearchDetails>> _apiResponseRes;
+  Future<APIResponse<List<ResearchDetails>>> getUserLibrary(
+      String schoolID) async {
+    return _apiResponseRes = await resService.getUserLibray(schoolID);
+  }
 
   @override
   Widget build(BuildContext context) => Drawer(
@@ -45,7 +59,18 @@ class NavigationDrawer extends StatelessWidget {
                 size: 30.0,
               ),
               title: const Text("My Papers", style: TextStyle(fontSize: 22.0)),
-              onTap: () {},
+              onTap: () async {
+                Navigator.pop(context);
+                final result = await getUserLibrary(loggedAccount.school_id);
+                research = result.data!;
+                print(research.length);
+                // ignore: use_build_context_synchronously
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UserLibrary(research),
+                    ));
+              },
             ),
             ListTile(
               leading: const Icon(

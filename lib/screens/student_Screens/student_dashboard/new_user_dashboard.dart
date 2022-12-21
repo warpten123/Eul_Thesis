@@ -18,7 +18,7 @@ class UserDashboardNew extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.amberAccent,
-        drawer: const NavigationDrawer(),
+        drawer: NavigationDrawer(account),
         appBar: appBar(context),
         body: SingleChildScrollView(
           child: Column(
