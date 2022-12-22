@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, non_constant_identifier_names
 class Account {
-  String school_id;
+  String? school_id;
   int role_roleID;
   int departmentID;
   String first_name;
@@ -9,7 +9,7 @@ class Account {
   String? password;
   int? approve;
   Account({
-    required this.school_id,
+    this.school_id,
     required this.first_name,
     required this.last_name,
     required this.email,

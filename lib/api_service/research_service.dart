@@ -129,6 +129,24 @@ class ResearchService {
             APIResponse<bool>(error: true, errorMessage: "An error occured"));
   }
 
+  Future<APIResponse<bool>> updateAccount(Account account) {
+    print("${baseURL}api/account/update/${account.school_id}");
+    return http
+        .post(Uri.parse('${baseURL}api/account/update/${account.school_id}'),
+            body: json.encode(account.toJson()), headers: headers)
+        .then((data) {
+      if (data.statusCode == 200) {
+        print("yehey!");
+        return APIResponse<bool>(
+          data: true,
+        );
+      }
+      return APIResponse<bool>(
+          error: true, errorMessage: data.statusCode.toString());
+    }).catchError((_) =>
+            APIResponse<bool>(error: true, errorMessage: "An error occured"));
+  }
+
   Future<APIResponse<List<Account>>> getAllAccounts() {
     return http.get(Uri.parse(baseURL + 'api/account/')).then((data) {
       if (data.statusCode == 200) {

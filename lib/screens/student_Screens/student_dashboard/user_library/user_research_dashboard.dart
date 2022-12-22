@@ -13,8 +13,8 @@ import 'package:thesis_eul/screens/student_Screens/student_dashboard/user_librar
 import '../../../../api_service/api_response.dart';
 
 class UserLibrary extends StatefulWidget {
-  UserLibrary(this.research, {super.key});
-  List<ResearchDetails> research;
+  UserLibrary(this.schoolID, {super.key});
+  String schoolID;
 
   @override
   State<UserLibrary> createState() => _UserLibraryState();
@@ -29,6 +29,23 @@ class _UserLibraryState extends State<UserLibrary> {
     return _apiResponseRes = await resService.getUserLibray(schoolID);
   }
 
+  @override
+  void initState() {
+    getResearchUser();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  void getResearchUser() async {
+    final result = await getUserLibrary(widget.schoolID);
+    research = result.data!;
+  }
+
+  late List<ResearchDetails> research;
   int _current = 0;
   bool isSelected = false;
   dynamic _selected = {};
@@ -37,12 +54,20 @@ class _UserLibraryState extends State<UserLibrary> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            color: Colors.black,
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
           elevation: 0,
           backgroundColor: Colors.transparent,
           // ignore: prefer_const_constructors
           centerTitle: true,
+          // ignore: prefer_const_constructors
           title: Text(
-            'My Research Papers',
+            'My Papers',
             style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -72,13 +97,13 @@ class _UserLibraryState extends State<UserLibrary> {
                 viewportFraction: 0.70,
                 enlargeCenterPage: true,
               ),
-              items: widget.research.map((res) {
+              items: research.map((res) {
                 return Builder(builder: (context) {
                   return GestureDetector(
                     onTap: () {
                       setState(() {
                         if (_selected == res) {
-                          print("LENGTH: ${widget.research.length}");
+                          print("LENGTH: ${research.length}");
                           _selected = {};
                           isSelected = false;
                         } else {
@@ -127,9 +152,12 @@ class _UserLibraryState extends State<UserLibrary> {
                             ),
                             Text(res.title,
                                 style: TextStyle(fontWeight: FontWeight.bold)),
-                            Text(res.date_published,
+                            Text("Published: ${res.date_published}",
                                 style: TextStyle(
                                     fontSize: 14, color: Colors.grey.shade600)),
+                            // Text("# ${research.indexOf(res)}",
+                            //     style: TextStyle(
+                            //         fontSize: 14, color: Colors.grey.shade600)),
                           ],
                         ),
                       ),

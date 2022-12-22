@@ -61,14 +61,15 @@ class NavigationDrawer extends StatelessWidget {
               title: const Text("My Papers", style: TextStyle(fontSize: 22.0)),
               onTap: () async {
                 Navigator.pop(context);
-                final result = await getUserLibrary(loggedAccount.school_id);
-                research = result.data!;
-                print(research.length);
+                // final result = await getUserLibrary(loggedAccount.school_id!);
+                // research = result.data!;
+                // print(research.length);
                 // ignore: use_build_context_synchronously
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => UserLibrary(research),
+                      builder: (context) =>
+                          UserLibrary(loggedAccount.school_id!),
                     ));
               },
             ),

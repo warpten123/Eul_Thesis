@@ -179,9 +179,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             final result = await userLogin(
                                 school_id.text, passwordController.text);
                             // var local = result;
+                            print("wtf ${result.data}");
                             if (result.data != null) {
                               final result =
                                   await getStudentByID(school_id.text);
+
                               // ignore: use_build_context_synchronously
                               showSnackBar(context, "Welcome to EUL!");
                               // ignore: use_build_context_synchronously
