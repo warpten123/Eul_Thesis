@@ -52,7 +52,7 @@ class ResearchService {
 
   Future<APIResponse<List<ResearchDetails>>> getUserLibray(String schooldID) {
     return http
-        .get(Uri.parse('${baseURL}api/research/fetchLibrary/$schooldID'))
+        .get(Uri.parse('${baseURL}api/research/fetchMyResearchList/$schooldID'))
         .then((data) {
       if (data.statusCode == 200) {
         final jsonData = (jsonDecode(data.body)[0] as List)
@@ -249,18 +249,40 @@ class ResearchService {
 
   // //create note
   Future<APIResponse<bool>> addResearch(ResearchDetails research) {
-    print(research.number_of_views);
+    print(research.abstracts);
     return http
         .post(Uri.parse('http://10.0.2.2:3000/api/research/addResearchDetails'),
             headers: headers, body: json.encode(research.toJson()))
         .then((data) {
       print("from add ${data.body}");
-      if (data.statusCode == 201) {
+      if (data.statusCode == 201 || data.statusCode == 200) {
         return APIResponse<bool>(
           data: true,
         );
       }
-      return APIResponse<bool>(error: true, errorMessage: "An error occured");
+      return APIResponse<bool>(
+          error: true, errorMessage: data.statusCode.toString());
+    }).catchError((_) =>
+            APIResponse<bool>(error: true, errorMessage: "An error occured"));
+  }
+
+  Future<APIResponse<bool>> addAuthored(String researchID, String studentID) {
+    var payload = {
+      'research_id': researchID,
+      'school_id': studentID,
+    };
+    return http
+        .post(Uri.parse('http://10.0.2.2:3000/api/research/addAuthored'),
+            headers: headers, body: json.encode(payload))
+        .then((data) {
+      print("from add ${data.body}");
+      if (data.statusCode == 201 || data.statusCode == 200) {
+        return APIResponse<bool>(
+          data: true,
+        );
+      }
+      return APIResponse<bool>(
+          error: true, errorMessage: data.statusCode.toString());
     }).catchError((_) =>
             APIResponse<bool>(error: true, errorMessage: "An error occured"));
   }

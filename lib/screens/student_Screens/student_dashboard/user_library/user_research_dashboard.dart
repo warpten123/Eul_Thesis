@@ -29,21 +29,21 @@ class _UserLibraryState extends State<UserLibrary> {
     return _apiResponseRes = await resService.getUserLibray(schoolID);
   }
 
-  @override
-  void initState() {
-    getResearchUser();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   getResearchUser();
+  //   super.initState();
+  // }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  // }
 
-  void getResearchUser() async {
-    final result = await getUserLibrary(widget.schoolID);
-    research = result.data!;
-  }
+  // void getResearchUser() async {
+  //   final result = await getUserLibrary(widget.schoolID);
+  //   research = result.data!;
+  // }
 
   late List<ResearchDetails> research;
   int _current = 0;
@@ -87,85 +87,102 @@ class _UserLibraryState extends State<UserLibrary> {
               )
             : null,
         // ignore: sized_box_for_whitespace
-        body: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: CarouselSlider(
-              options: CarouselOptions(
-                height: 450,
-                aspectRatio: 16 / 9,
-                viewportFraction: 0.70,
-                enlargeCenterPage: true,
-              ),
-              items: research.map((res) {
-                return Builder(builder: (context) {
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        if (_selected == res) {
-                          print("LENGTH: ${research.length}");
-                          _selected = {};
-                          isSelected = false;
-                        } else {
-                          isSelected = true;
-                          _selected = res;
-                        }
-                      });
-                    },
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        border: _selected == res
-                            ? Border.all(color: Colors.blue.shade500, width: 3)
-                            : null,
-                        boxShadow: _selected == res
-                            ? [
-                                BoxShadow(
-                                    color: Colors.blue.shade100,
-                                    blurRadius: 30,
-                                    offset: Offset(0, 10)),
-                              ]
-                            : [
-                                BoxShadow(
-                                    color: Colors.grey.withOpacity(0.2),
-                                    blurRadius: 20,
-                                    offset: Offset(0, 5)),
-                              ],
-                      ),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Container(
-                                clipBehavior: Clip.hardEdge,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
+        body: FutureBuilder(
+          future: getUserLibrary(widget.schoolID),
+          builder: (BuildContext context,
+              AsyncSnapshot<APIResponse<List<ResearchDetails>>> snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            final research = snapshot.data!;
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: CarouselSlider(
+                  options: CarouselOptions(
+                    height: 450,
+                    aspectRatio: 16 / 9,
+                    viewportFraction: 0.70,
+                    enlargeCenterPage: true,
+                  ),
+                  items: research.data!.map((res) {
+                    return Builder(builder: (context) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            if (_selected == res) {
+                              _selected = {};
+                              isSelected = false;
+                            } else {
+                              isSelected = true;
+                              _selected = res;
+                            }
+                          });
+                        },
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            border: _selected == res
+                                ? Border.all(
+                                    color: Colors.blue.shade500, width: 3)
+                                : null,
+                            boxShadow: _selected == res
+                                ? [
+                                    BoxShadow(
+                                        color: Colors.blue.shade100,
+                                        blurRadius: 30,
+                                        offset: Offset(0, 10)),
+                                  ]
+                                : [
+                                    BoxShadow(
+                                        color: Colors.grey.withOpacity(0.2),
+                                        blurRadius: 20,
+                                        offset: Offset(0, 5)),
+                                  ],
+                          ),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                Container(
+                                    clipBehavior: Clip.hardEdge,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    height: 320,
+                                    margin: EdgeInsets.only(top: 10),
+                                    child: Image.asset('assets/cover_page.jpg',
+                                        fit: BoxFit.cover)),
+                                SizedBox(
+                                  height: 20,
                                 ),
-                                height: 320,
-                                margin: EdgeInsets.only(top: 10),
-                                child: Image.asset('assets/cover_page.jpg',
-                                    fit: BoxFit.cover)),
-                            SizedBox(
-                              height: 20,
+                                Text(res.title,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                Text("Published: ${res.date_published}",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey.shade600)),
+                                Text(
+                                    "Research #${research.data!.indexOf(res) + 1}",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                        color: Colors.grey.shade600)),
+                              ],
                             ),
-                            Text(res.title,
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            Text("Published: ${res.date_published}",
-                                style: TextStyle(
-                                    fontSize: 14, color: Colors.grey.shade600)),
-                            // Text("# ${research.indexOf(res)}",
-                            //     style: TextStyle(
-                            //         fontSize: 14, color: Colors.grey.shade600)),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                  );
-                });
-              }).toList()),
+                      );
+                    });
+                  }).toList()),
+            );
+          },
         ),
+        //
+        //
       ),
     );
   }

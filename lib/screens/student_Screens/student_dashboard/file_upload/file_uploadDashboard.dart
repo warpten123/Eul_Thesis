@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get_it/get_it.dart';
+import 'package:thesis_eul/models/AccountModel.dart';
+import 'package:thesis_eul/models/research_details.dart';
 import 'package:thesis_eul/screens/utilities/utilities.dart';
 import 'package:path/path.dart';
 import '../../../../api_service/api_response.dart';
@@ -11,8 +13,8 @@ import '../../../../api_service/research_service.dart';
 import '../../../../models/Files.dart';
 
 class File_Upload extends StatefulWidget {
-  const File_Upload({super.key});
-
+  File_Upload(this.account, {super.key});
+  Account account;
   @override
   State<File_Upload> createState() => _File_UploadState();
 }
@@ -27,11 +29,24 @@ class _File_UploadState extends State<File_Upload> {
   bool upload = false;
   var baseName;
   var file = null;
+  String resID = "";
   ResearchService get resService => GetIt.instance<ResearchService>();
 
   Future<APIResponse<bool>> fileUpload(Files file) async {
     APIResponse<bool> reponse;
     return await resService.fileUpload(file);
+  }
+
+  Future<APIResponse<bool>> addResearch(ResearchDetails researchDetails) async {
+    // ignore: unused_local_variable
+    APIResponse<bool> reponse;
+    return reponse = await resService.addResearch(researchDetails);
+  }
+
+  Future<APIResponse<bool>> addAuthored(String resID, String schoolID) async {
+    // ignore: unused_local_variable
+    APIResponse<bool> reponse;
+    return reponse = await resService.addAuthored(resID, schoolID);
   }
 
   @override
@@ -89,8 +104,7 @@ class _File_UploadState extends State<File_Upload> {
   }
 
   Files uploadFunc(File files) {
-    var id = generateID();
-    Files payload = Files(file: files.path, research_id: id, url: file.path);
+    Files payload = Files(file: files.path, research_id: resID, url: file.path);
     return payload;
   }
 
@@ -126,6 +140,7 @@ class _File_UploadState extends State<File_Upload> {
                       child: ElevatedButton(
                         onPressed: () async {
                           if (file != null) {
+                            resID = generateID();
                             Files payload = uploadFunc(file);
                             final result = await fileUpload(payload);
                             setState(() {
@@ -211,12 +226,40 @@ class _File_UploadState extends State<File_Upload> {
                       Padding(
                         padding: EdgeInsets.all(12.0),
                         child: ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              if (_formKey.currentState!.validate()) {
-                                currentStep += 1;
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              final payload = ResearchDetails(
+                                  research_id: resID,
+                                  departmentID: widget.account.departmentID,
+                                  topic_category: const ["AI", "ML"],
+                                  sdg_category: const ["Goal 1", "Goal 2"],
+                                  date_published: researchDate.text,
+                                  adviser: researchAdviser.text,
+                                  keywords: const ["shit", "ficlers"],
+                                  title: researchTitle.text,
+                                  abstracts:
+                                      "A research digital research motherfucker",
+                                  qr: "1ss",
+                                  number_of_views: 69);
+
+                              final result = await addResearch(payload);
+                              if (result.data != null) {
+                                showSnackBar(
+                                    context, "Research Uploaded Successfully!");
+                              } else {
+                                showSnackBar(context, result.errorMessage!);
                               }
-                            });
+                              final resultAuthored = await addAuthored(
+                                  resID, widget.account.school_id!);
+                              if (resultAuthored.data != null) {
+                                showSnackBar(
+                                    context, "Authors Added Successfully!");
+                              } else {
+                                showSnackBar(
+                                    context, resultAuthored.errorMessage!);
+                              }
+                              currentStep += 1;
+                            }
                           },
                           child: const Text('CONTINUE'),
                         ),

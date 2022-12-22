@@ -95,7 +95,7 @@ class UserDashboardNew extends StatelessWidget {
             //     });
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const File_Upload()),
+              MaterialPageRoute(builder: (context) => File_Upload(account)),
             );
           },
         ),
