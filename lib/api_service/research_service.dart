@@ -1,4 +1,7 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:mysql1/mysql1.dart';
@@ -11,6 +14,7 @@ import 'package:thesis_eul/models/Files.dart';
 import 'package:thesis_eul/models/department.dart';
 import 'package:thesis_eul/models/research_details.dart';
 import 'package:path_provider/path_provider.dart';
+import 'dart:convert';
 
 import '../models/AccountModel.dart';
 import '../models/student.dart';
@@ -19,7 +23,6 @@ import '../models/ticket.dart';
 import 'package:dio/dio.dart';
 
 class ResearchService {
-  static const API = 'https://tq-notes-api-jkrgrdggbq-el.a.run.app';
   static const baseURL = 'http://10.0.2.2:3000/';
   static const headers = {
     'apiKey': 'abaf3c8e-72c0-498b-9862-47afad7add14',
@@ -53,6 +56,32 @@ class ResearchService {
   Future<APIResponse<List<ResearchDetails>>> getUserLibray(String schooldID) {
     return http
         .get(Uri.parse('${baseURL}api/research/fetchMyResearchList/$schooldID'))
+        .then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = (jsonDecode(data.body)[0] as List)
+            .map((e) => e as Map<String, dynamic>)
+            .toList(); //
+        print("get res $jsonData");
+        final research = <ResearchDetails>[];
+
+        // ignore: unused_local_variable
+        for (var item in jsonData) {
+          research.add(ResearchDetails.fromMapLibrary(item));
+        }
+        return APIResponse<List<ResearchDetails>>(
+          data: research,
+        );
+      }
+      return APIResponse<List<ResearchDetails>>(
+          error: true, errorMessage: "An error occured");
+    }).catchError((_) => APIResponse<List<ResearchDetails>>(
+            error: true, errorMessage: "An error occured"));
+  }
+
+  Future<APIResponse<List<ResearchDetails>>> getUserBookmarks(
+      String schooldID) {
+    return http
+        .get(Uri.parse('${baseURL}api/research/fetchLibrary/$schooldID'))
         .then((data) {
       if (data.statusCode == 200) {
         final jsonData = (jsonDecode(data.body)[0] as List)
@@ -249,7 +278,7 @@ class ResearchService {
 
   // //create note
   Future<APIResponse<bool>> addResearch(ResearchDetails research) {
-    print(research.abstracts);
+    print("service ${research.abstracts}");
     return http
         .post(Uri.parse('http://10.0.2.2:3000/api/research/addResearchDetails'),
             headers: headers, body: json.encode(research.toJson()))
@@ -273,6 +302,29 @@ class ResearchService {
     };
     return http
         .post(Uri.parse('http://10.0.2.2:3000/api/research/addAuthored'),
+            headers: headers, body: json.encode(payload))
+        .then((data) {
+      print("from add ${data.body}");
+      if (data.statusCode == 201 || data.statusCode == 200) {
+        return APIResponse<bool>(
+          data: true,
+        );
+      }
+      return APIResponse<bool>(
+          error: true, errorMessage: data.statusCode.toString());
+    }).catchError((_) =>
+            APIResponse<bool>(error: true, errorMessage: "An error occured"));
+  }
+
+  Future<APIResponse<bool>> addResearchList(
+      String research_id, String school_id) {
+    var payload = {
+      'research_id': research_id,
+      'school_id': school_id,
+    };
+
+    return http
+        .post(Uri.parse('http://10.0.2.2:3000/api/research/addMyResearchList'),
             headers: headers, body: json.encode(payload))
         .then((data) {
       print("from add ${data.body}");
@@ -391,22 +443,27 @@ class ResearchService {
     }
     return APIResponse<bool>(
         error: true, errorMessage: response.statusCode.toString());
-    // return http
-    //     .post(
-    //         Uri.parse(
-    //             'http://10.0.2.2:3000/file/upload-file/${file.research_id}'),
-    //         body: json.encode(map),
-    //         headers: headers)
-    //     .then((data) {
-    //   if (data.statusCode == 200) {
-    //     return APIResponse<bool>(
-    //       data: true,
-    //     );
-    //   }
-    //   return APIResponse<bool>(
-    //       error: true, errorMessage: data.statusCode.toString());
-    // }).catchError((_) =>
-    //         APIResponse<bool>(error: true, errorMessage: "An error occured"));
+  }
+
+  Future<APIResponse<bool>> addUserProfile(Files file) async {
+    var uri = Uri.parse(
+        'http://10.0.2.2:3000/image/upload-avatar/${file.research_id}');
+    var request = http.MultipartRequest('POST', uri);
+    // request.files.add(
+    //     await http.MultipartFile.fromPath('research_id', file.research_id));
+
+    request.files.add(await http.MultipartFile.fromPath('file', file.file));
+    // request.fields['url'] = file.url;
+    var response = await request.send();
+
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      print("fromservice: ${response.statusCode}");
+      return APIResponse<bool>(
+        data: true,
+      );
+    }
+    return APIResponse<bool>(
+        error: true, errorMessage: response.statusCode.toString());
   }
 
   Future<APIResponse<dynamic>> getResearchFile(String id) {
@@ -419,6 +476,26 @@ class ResearchService {
         print("from file: $jsonData");
         return APIResponse<dynamic>(
           data: jsonData,
+        );
+      }
+
+      return APIResponse<dynamic>(
+          error: true, errorMessage: data.statusCode.toString());
+    }).catchError((_) => APIResponse<dynamic>(
+            error: true, errorMessage: "An error occured"));
+  }
+
+  Future<APIResponse<dynamic>> getUserProfile(String id) {
+    return http
+        .get(Uri.parse('${baseURL}image/download/$id'), headers: headers)
+        .then((data) {
+      if (data.statusCode == 200) {
+        print("data ${data.body}");
+        dynamic blob = data.body;
+        Uint8List image = Uint8List.fromList(blob.toBytes());
+        print("IMAGE: $image");
+        return APIResponse<dynamic>(
+          data: image,
         );
       }
 

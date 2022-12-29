@@ -27,6 +27,7 @@ class _UserProfileState extends State<UserProfile> {
   // ignore: unused_field
   late APIResponse<List<Account>> _apiResponse;
   late APIResponse<bool> _apiResponseUpdate;
+  late APIResponse<dynamic> _apiResponseProfile;
   late List<Account> allAccounts;
   Future<APIResponse<List<Account>>> getAllAccounts() async {
     return _apiResponse = await resService.getAllAccounts();
@@ -34,6 +35,10 @@ class _UserProfileState extends State<UserProfile> {
 
   Future<APIResponse<bool>> updateAccount(Account account) async {
     return _apiResponseUpdate = await resService.updateAccount(account);
+  }
+
+  Future<APIResponse<dynamic>> getProfile(String schoold_id) async {
+    return _apiResponseProfile = await resService.getUserProfile(schoold_id);
   }
 
   bool isUpdate = false;
@@ -391,6 +396,10 @@ class _UserProfileState extends State<UserProfile> {
       margin: const EdgeInsets.only(left: 40, right: 40),
       child: TextButton(
           onPressed: () async {
+            dynamic shit;
+            final resultProfile = await getProfile(widget.account.school_id!);
+            shit = resultProfile.data;
+            print("SHIT: $shit");
             checkForChanges(
                 firstName_Controller, lastName_Controller, email_Controller);
             setState(() {

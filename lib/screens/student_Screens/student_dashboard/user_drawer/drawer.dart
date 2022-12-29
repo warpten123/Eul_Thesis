@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:thesis_eul/api_service/research_service.dart';
+import 'package:thesis_eul/screens/student_Screens/student_dashboard/user_bookmarks/user_bookmarks.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/user_library/user_research_dashboard.dart';
 
 import '../../../../api_service/api_response.dart';
@@ -79,7 +80,14 @@ class NavigationDrawer extends StatelessWidget {
                 size: 30.0,
               ),
               title: const Text("Bookmarks", style: TextStyle(fontSize: 22.0)),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          UserBookmarks(loggedAccount.school_id!),
+                    ));
+              },
             ),
             const Divider(
               color: Colors.black54,

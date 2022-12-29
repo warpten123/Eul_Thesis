@@ -27,7 +27,7 @@ class SDGDetails extends StatelessWidget {
               SDGHeader(sdg),
               SDGName(sdg),
               SDGDescription(sdg),
-              SDGIconList(),
+              // SDGIconList(),
               SDGButton(sdg),
             ],
           ),

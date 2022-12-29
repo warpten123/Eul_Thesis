@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -7,10 +8,11 @@ import 'package:thesis_eul/models/department.dart';
 import 'package:thesis_eul/screens/login_screen.dart';
 import 'package:thesis_eul/screens/student_Screens/user_dashboard.dart';
 import 'package:thesis_eul/screens/utilities/utilities.dart';
-
+import 'package:path/path.dart';
 import '../../api_service/api_response.dart';
 import '../../api_service/research_service.dart';
 import '../../models/AccountModel.dart';
+import '../../models/Files.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -28,7 +30,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final email_Controller = TextEditingController();
   // ignore: non_constant_identifier_names
   final password_Controller = TextEditingController();
-
+  File? image = null;
+  String pass = "";
+  var baseName;
   List<String> deparments = [
     "School of Computer Studies",
     "School of Allied Medicine",
@@ -45,8 +49,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return reponse = await resService.createAccount(account);
   }
 
+  Future<APIResponse<bool>> addUserProfile(Files file) async {
+    APIResponse<bool> reponse;
+    return reponse = await resService.addUserProfile(file);
+  }
+
   Future<APIResponse<List<Department>>> getAllDepartments() async {
     return _apiResponse = await resService.getAllDepartments();
+  }
+
+  Files uploadFunc(File files) {
+    Files payload =
+        Files(file: files.path, research_id: pass, url: image!.path);
+    return payload;
   }
 
   String? value;
@@ -219,7 +234,104 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           items: deparments.map(buildMenuItem).toList(),
                         )),
                     const SizedBox(
-                      height: 12,
+                      height: 15,
+                    ),
+                    Container(
+                      height: 50,
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      margin: const EdgeInsets.only(left: 40, right: 40),
+                      child: TextButton(
+                        onPressed: () async {
+                          image = await ResearchService.pickFile();
+                          setState(() {
+                            baseName = basename(image!.path);
+                          });
+                        },
+                        child: image == null
+                            ? const Text('Pick Profile Picture',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18))
+                            : Text('$baseName',
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18)),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Container(
+                      height: 50,
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      margin: const EdgeInsets.only(left: 40, right: 40),
+                      child: TextButton(
+                        onPressed: () async {
+                          int deptID = 0;
+                          final resultDept = await getAllDepartments();
+                          print(resultDept.errorMessage);
+                          List<Department> department;
+                          department = resultDept.data!;
+                          for (int i = 0; i < department.length; i++) {
+                            if (department[i].departmentName == value) {
+                              deptID = department[i].departmentID;
+                            }
+                          }
+                          pass = generatePassword();
+                          final account = Account(
+                            school_id: pass,
+                            first_name: fist_nameController.text,
+                            last_name: last_nameController.text,
+                            email: email_Controller.text,
+                            password: password_Controller.text,
+                            role_roleID: 1,
+                            departmentID: deptID,
+                            approve: 1,
+                          );
+
+                          final result = await createAccount(account);
+                          print("WTF: SC");
+                          if (result.data != null) {
+                            // ignore: use_build_context_synchronously
+                            showSnackBar(context, "Registered Successfully!");
+                            // ignore: use_build_context_synchronously
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginScreen()),
+                            );
+                          } else {
+                            // ignore: use_build_context_synchronously
+                            showSnackBar(
+                                context, result.errorMessage.toString());
+                          }
+                          Files payload = uploadFunc(image!);
+                          final resultAvatar = await addUserProfile(payload);
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => const UserDashboard()),
+                          // );
+                        },
+                        child: const Text('REGISTER',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18)),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16,
                     ),
                     InkWell(
                       onTap: () {
@@ -237,97 +349,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             fontWeight: FontWeight.bold),
                       ),
                     ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Container(
-                      height: 50,
-                      width: double.infinity,
-                      decoration: const BoxDecoration(
-                        color: Colors.green,
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                      ),
-                      margin: const EdgeInsets.only(left: 40, right: 40),
-                      child: TextButton(
-                        onPressed: () async {
-                          String pass = generatePassword();
-                          int deptID = 0;
-                          final resultDept = await getAllDepartments();
-                          print(resultDept.errorMessage);
-                          List<Department> department;
-                          department = resultDept.data!;
-                          for (int i = 0; i < department.length; i++) {
-                            if (department[i].departmentName == value) {
-                              deptID = department[i].departmentID;
-                            }
-                          }
-
-                          final account = Account(
-                            school_id: pass,
-                            first_name: fist_nameController.text,
-                            last_name: last_nameController.text,
-                            email: email_Controller.text,
-                            password: password_Controller.text,
-                            role_roleID: 1,
-                            departmentID: deptID,
-                            approve: 1,
-                          );
-
-                          final result = await createAccount(account);
-                          if (result.data != null) {
-                            // ignore: use_build_context_synchronously
-                            showSnackBar(
-                                context, "Sign in using your new account!");
-                            // ignore: use_build_context_synchronously
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const LoginScreen()),
-                            );
-                          } else {
-                            // ignore: use_build_context_synchronously
-                            showSnackBar(
-                                context, result.errorMessage.toString());
-                          }
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => const UserDashboard()),
-                          // );
-                        },
-                        child: const Text('REGISTER',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18)),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    // Padding(
-                    //   padding: const EdgeInsets.all(8.0),
-                    //   child: Row(
-                    //     mainAxisAlignment: MainAxisAlignment.center,
-                    //     children: <Widget>[
-                    //       Text(
-                    //         'Research Adviser?',
-                    //         style: TextStyle(color: Colors.white),
-                    //       ),
-                    //       SizedBox(
-                    //         height: 15,
-                    //       ),
-                    //       Text(
-                    //         '  Tap me!',
-                    //         style: TextStyle(
-                    //             color: Colors.green, fontWeight: FontWeight.bold),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
-                    // SizedBox(
-                    //   height: 30,
-                    // ),
                   ],
                 ),
               ),

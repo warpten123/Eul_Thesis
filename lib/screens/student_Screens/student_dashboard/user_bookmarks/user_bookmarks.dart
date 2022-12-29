@@ -1,54 +1,48 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get_it/get_it.dart';
-import 'package:thesis_eul/api_service/research_service.dart';
-import 'package:thesis_eul/models/research.dart';
 import 'package:thesis_eul/models/research_details.dart';
-import 'package:thesis_eul/screens/student_Screens/student_dashboard/research_list/research_details.dart';
-import 'package:thesis_eul/screens/student_Screens/student_dashboard/user_library/user_view_research.dart';
+import 'package:thesis_eul/screens/utilities/utilities.dart';
 
 import '../../../../api_service/api_response.dart';
+import '../../../../api_service/research_service.dart';
+import '../user_library/user_view_research.dart';
 
-class UserLibrary extends StatefulWidget {
-  UserLibrary(this.schoolID, {super.key});
-  String schoolID;
+class UserBookmarks extends StatefulWidget {
+  UserBookmarks(this.schoolID, {super.key});
+  final String schoolID;
 
   @override
-  State<UserLibrary> createState() => _UserLibraryState();
+  State<UserBookmarks> createState() => _UserBookmarksState();
 }
 
-class _UserLibraryState extends State<UserLibrary> {
+class _UserBookmarksState extends State<UserBookmarks> {
   ResearchService get resService => GetIt.instance<ResearchService>();
-  late APIResponse<List<ResearchDetails>> _apiResponseRes;
-
-  Future<APIResponse<List<ResearchDetails>>> getUserLibrary(
-      String schoolID) async {
-    return _apiResponseRes = await resService.getUserLibray(schoolID);
+  bool isSelected = false;
+  dynamic _selected = {};
+  late APIResponse<List<ResearchDetails>> _apiResponse;
+  late List<ResearchDetails> userBookMarks;
+  Future<APIResponse<List<ResearchDetails>>> getUserBookmarks(
+      String school_id) async {
+    return _apiResponse = await resService.getUserBookmarks(school_id);
   }
 
   // @override
   // void initState() {
-  //   getResearchUser();
   //   super.initState();
+  //   getBookMarks();
   // }
 
-  // @override
-  // void dispose() {
-  //   super.dispose();
+  // void getBookMarks() async {
+  //   try {
+  //     final result = await getUserBookmarks(widget.schoolID);
+  //     userBookMarks = result.data!;
+  //   } catch (e) {
+  //     // ignore: use_build_context_synchronously
+  //     showSnackBar(context, e.toString());
+  //   }
   // }
 
-  // void getResearchUser() async {
-  //   final result = await getUserLibrary(widget.schoolID);
-  //   research = result.data!;
-  // }
-
-  late List<ResearchDetails> research;
-
-  bool isSelected = false;
-  dynamic _selected = {};
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -67,7 +61,7 @@ class _UserLibraryState extends State<UserLibrary> {
           centerTitle: true,
           // ignore: prefer_const_constructors
           title: Text(
-            'My Papers',
+            'My Bookmarks',
             style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -88,7 +82,7 @@ class _UserLibraryState extends State<UserLibrary> {
             : null,
         // ignore: sized_box_for_whitespace
         body: FutureBuilder(
-          future: getUserLibrary(widget.schoolID),
+          future: getUserBookmarks(widget.schoolID),
           builder: (BuildContext context,
               AsyncSnapshot<APIResponse<List<ResearchDetails>>> snapshot) {
             if (!snapshot.hasData) {

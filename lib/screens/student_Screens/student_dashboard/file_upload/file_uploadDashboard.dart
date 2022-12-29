@@ -25,6 +25,7 @@ class _File_UploadState extends State<File_Upload> {
   final researchTitle = TextEditingController();
   final researchDate = TextEditingController();
   final researchAdviser = TextEditingController();
+  final researchAbstract = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool upload = false;
   var baseName;
@@ -41,6 +42,13 @@ class _File_UploadState extends State<File_Upload> {
     // ignore: unused_local_variable
     APIResponse<bool> reponse;
     return reponse = await resService.addResearch(researchDetails);
+  }
+
+  Future<APIResponse<bool>> addResearchList(
+      String research_id, String student_id) async {
+    // ignore: unused_local_variable
+    APIResponse<bool> reponse;
+    return reponse = await resService.addResearchList(research_id, student_id);
   }
 
   Future<APIResponse<bool>> addAuthored(String resID, String schoolID) async {
@@ -163,7 +171,7 @@ class _File_UploadState extends State<File_Upload> {
                       child: ElevatedButton(
                         onPressed: () async {
                           if (file != null) {
-                            openPDF(context, file);
+                            openPDF(context, file.path);
                           } else {
                             showSnackBar(context, "No PDF to be viewed.");
                           }
@@ -216,6 +224,17 @@ class _File_UploadState extends State<File_Upload> {
                     decoration:
                         const InputDecoration(labelText: 'Date Accepted'),
                   ),
+                  TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please Enter Text';
+                      }
+                      return null;
+                    },
+                    controller: researchAbstract,
+                    decoration:
+                        const InputDecoration(labelText: 'Paper Abstract'),
+                  ),
                   // TextFormField(
                   //   controller: researchTitle,
                   //   decoration: const InputDecoration(labelText: ''),
@@ -237,29 +256,28 @@ class _File_UploadState extends State<File_Upload> {
                                   adviser: researchAdviser.text,
                                   keywords: const ["shit", "ficlers"],
                                   title: researchTitle.text,
-                                  abstracts:
-                                      "A research digital research motherfucker",
+                                  abstracts: researchAbstract.text,
                                   qr: "1ss",
                                   number_of_views: 69);
-
+                              print(payload.abstracts);
                               final result = await addResearch(payload);
-                              if (result.data != null) {
-                                showSnackBar(
-                                    context, "Research Uploaded Successfully!");
-                              } else {
-                                showSnackBar(context, result.errorMessage!);
-                              }
+
                               final resultAuthored = await addAuthored(
                                   resID, widget.account.school_id!);
-                              if (resultAuthored.data != null) {
+                              final resultList = await addResearchList(
+                                  resID, widget.account.school_id!);
+
+                              if (result.data != null &&
+                                  resultAuthored.data != null &&
+                                  resultList.data != null) {
                                 showSnackBar(
-                                    context, "Authors Added Successfully!");
+                                    context, "Research Uploaded Sucessfully!");
                               } else {
                                 showSnackBar(
-                                    context, resultAuthored.errorMessage!);
+                                    context, "Error Uploading your research!");
                               }
-                              currentStep += 1;
                             }
+                            currentStep += 1;
                           },
                           child: const Text('CONTINUE'),
                         ),

@@ -60,8 +60,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 gradient: LinearGradient(colors: [
                   Colors.transparent,
                   Colors.transparent,
-                  Color(0xff161d27).withOpacity(0.9),
-                  Color(0xff161d27),
+                  const Color(0xff161d27).withOpacity(0.9),
+                  const Color(0xff161d27),
                 ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
               ),
             ),
@@ -94,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       margin: EdgeInsets.only(left: 40, right: 40),
                       child: TextField(
                         controller: school_id,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           color: Colors.white,
                         ),
@@ -103,10 +103,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           labelStyle: TextStyle(color: Colors.grey.shade500),
                           // hintStyle: TextStyle(color: Colors.grey.shade500),
                           filled: true,
-                          fillColor: Color(0xff161d27).withOpacity(0.9),
+                          fillColor: const Color(0xff161d27).withOpacity(0.9),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide(color: Colors.green),
+                            borderSide: const BorderSide(color: Colors.green),
                           ),
                         ),
                       ),
@@ -116,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     Container(
                       height: 50,
-                      margin: EdgeInsets.only(left: 40, right: 40),
+                      margin: const EdgeInsets.only(left: 40, right: 40),
                       child: TextField(
                         controller: passwordController,
                         obscureText: true,
@@ -152,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       // ignore: prefer_const_constructors
                       child: Text(
                         'No Account? Enter Code!',
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Colors.green,
                             fontSize: 14,
                             fontWeight: FontWeight.bold),
@@ -167,9 +167,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       // ignore: prefer_const_constructors
                       decoration: BoxDecoration(
                         color: Colors.green,
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(20)),
                       ),
-                      margin: EdgeInsets.only(left: 40, right: 40),
+                      margin: const EdgeInsets.only(left: 40, right: 40),
                       child: TextButton(
                         onPressed: () {},
                         child: TextButton(

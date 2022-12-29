@@ -20,6 +20,7 @@ class User_View_Research extends StatefulWidget {
 }
 
 class _User_View_ResearchState extends State<User_View_Research> {
+  bool isFavorite = false;
   ResearchService get resService => GetIt.instance<ResearchService>();
   late APIResponse<dynamic> _apiResponseRes;
   Future<APIResponse<dynamic>> getResearchFile(String schoolID) async {
@@ -82,15 +83,28 @@ class _User_View_ResearchState extends State<User_View_Research> {
           Positioned(
             right: 5,
             bottom: 5,
-            child: Container(
-              height: 100,
-              // padding: EdgeInsets.all(8),
-              // decoration: BoxDecoration(
-              //     color: Colors.white, borderRadius: BorderRadius.circular(36)),
-              child: const Image(
-                image: AssetImage("assets/cover_page.jpg"),
-              ),
-            ),
+            child: SizedBox(
+                height: 100,
+                // padding: EdgeInsets.all(8),
+                // decoration: BoxDecoration(
+                //     color: Colors.white, borderRadius: BorderRadius.circular(36)),
+                child: IconButton(
+                  isSelected: isFavorite,
+                  color: Colors.red,
+                  iconSize: 50.0,
+                  icon: isFavorite == false
+                      ? const Icon(Icons.favorite_border_outlined)
+                      : const Icon(Icons.favorite),
+                  onPressed: () {
+                    setState(() {
+                      if (isFavorite == false) {
+                        isFavorite = true;
+                      } else {
+                        isFavorite = false;
+                      }
+                    });
+                  },
+                )),
           ),
         ],
       ),

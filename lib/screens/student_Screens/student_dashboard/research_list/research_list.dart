@@ -16,6 +16,7 @@ import 'package:thesis_eul/screens/student_Screens/header_drawer.dart';
 import 'package:thesis_eul/screens/student_Screens/research_screen.dart';
 import 'package:thesis_eul/models/sdg.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/research_list/research_details.dart';
+import 'package:thesis_eul/screens/student_Screens/student_dashboard/user_library/user_view_research.dart';
 
 // ignore: must_be_immutable
 class ContentUserDashBoard extends StatefulWidget {
@@ -274,7 +275,7 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  Research_Details(widget.sdg,
+                                                  User_View_Research(
                                                       research.data![index])),
                                         );
                                       },
