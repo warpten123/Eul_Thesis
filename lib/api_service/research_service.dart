@@ -66,7 +66,7 @@ class ResearchService {
 
         // ignore: unused_local_variable
         for (var item in jsonData) {
-          research.add(ResearchDetails.fromMapLibrary(item));
+          research.add(ResearchDetails.fromJson(item));
         }
         return APIResponse<List<ResearchDetails>>(
           data: research,
@@ -102,6 +102,27 @@ class ResearchService {
           error: true, errorMessage: "An error occured");
     }).catchError((_) => APIResponse<List<ResearchDetails>>(
             error: true, errorMessage: "An error occured"));
+  }
+
+//removeMyResearchList
+  Future<APIResponse<bool>> removeBookmark(
+      String research_id, String school_id) {
+    var userInfo = {
+      'research_id': research_id,
+      'school_id': school_id,
+    };
+    return http
+        .post(Uri.parse('${baseURL}api/research/removeMyResearchList/'),
+            body: json.encode(userInfo), headers: headers)
+        .then((data) {
+      if (data.statusCode == 200) {
+        return APIResponse<bool>(
+          data: true,
+        );
+      }
+      return APIResponse<bool>(error: true, errorMessage: "An error occured");
+    }).catchError((_) =>
+            APIResponse<bool>(error: true, errorMessage: "An error occured"));
   }
 
   Future<APIResponse<List<Ticket>>> getTicketList() {
@@ -295,6 +316,24 @@ class ResearchService {
             APIResponse<bool>(error: true, errorMessage: "An error occured"));
   }
 
+  Future<APIResponse<bool>> addBookmarks(ResearchDetails research) {
+    print("service ${research.abstracts}");
+    return http
+        .post(Uri.parse('http://10.0.2.2:3000/api/research/addResearchDetails'),
+            headers: headers, body: json.encode(research.toJson()))
+        .then((data) {
+      print("from add ${data.body}");
+      if (data.statusCode == 201 || data.statusCode == 200) {
+        return APIResponse<bool>(
+          data: true,
+        );
+      }
+      return APIResponse<bool>(
+          error: true, errorMessage: data.statusCode.toString());
+    }).catchError((_) =>
+            APIResponse<bool>(error: true, errorMessage: "An error occured"));
+  }
+
   Future<APIResponse<bool>> addAuthored(String researchID, String studentID) {
     var payload = {
       'research_id': researchID,
@@ -457,7 +496,6 @@ class ResearchService {
     var response = await request.send();
 
     if (response.statusCode == 201 || response.statusCode == 200) {
-      print("fromservice: ${response.statusCode}");
       return APIResponse<bool>(
         data: true,
       );
@@ -466,42 +504,41 @@ class ResearchService {
         error: true, errorMessage: response.statusCode.toString());
   }
 
-  Future<APIResponse<dynamic>> getResearchFile(String id) {
+  Future<APIResponse<Uint8List>> getResearchFile(String id) {
     return http
         .get(Uri.parse('${baseURL}file/download/$id'), headers: headers)
         .then((data) {
       if (data.statusCode == 200) {
-        print("from file: {$data.toString()}");
-        final jsonData = jsonDecode(data.body);
-        print("from file: $jsonData");
-        return APIResponse<dynamic>(
-          data: jsonData,
-        );
-      }
-
-      return APIResponse<dynamic>(
-          error: true, errorMessage: data.statusCode.toString());
-    }).catchError((_) => APIResponse<dynamic>(
-            error: true, errorMessage: "An error occured"));
-  }
-
-  Future<APIResponse<dynamic>> getUserProfile(String id) {
-    return http
-        .get(Uri.parse('${baseURL}image/download/$id'), headers: headers)
-        .then((data) {
-      if (data.statusCode == 200) {
-        print("data ${data.body}");
-        dynamic blob = data.body;
-        Uint8List image = Uint8List.fromList(blob.toBytes());
-        print("IMAGE: $image");
-        return APIResponse<dynamic>(
+        dynamic blob = data.bodyBytes;
+        Uint8List image = blob.buffer.asUint8List();
+        print("FILE $image");
+        return APIResponse<Uint8List>(
           data: image,
         );
       }
 
-      return APIResponse<dynamic>(
+      return APIResponse<Uint8List>(
           error: true, errorMessage: data.statusCode.toString());
-    }).catchError((_) => APIResponse<dynamic>(
+    }).catchError((_) => APIResponse<Uint8List>(
+            error: true, errorMessage: "An error occured"));
+  }
+
+  Future<APIResponse<Uint8List>> getUserProfile(String id) {
+    return http
+        .get(Uri.parse('${baseURL}image/download/$id'), headers: headers)
+        .then((data) {
+      if (data.statusCode == 200) {
+        dynamic blob = data.bodyBytes;
+        Uint8List image = blob.buffer.asUint8List();
+
+        return APIResponse<Uint8List>(
+          data: image,
+        );
+      }
+
+      return APIResponse<Uint8List>(
+          error: true, errorMessage: data.statusCode.toString());
+    }).catchError((_) => APIResponse<Uint8List>(
             error: true, errorMessage: "An error occured"));
   }
 }

@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:thesis_eul/models/AccountModel.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/department_list.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/file_upload/file_uploadDashboard.dart';
@@ -8,17 +11,43 @@ import 'package:thesis_eul/screens/student_Screens/student_dashboard/place_gridv
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/profile_user/user_profile.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/search_screen.dart';
 
+import '../../../api_service/api_response.dart';
+import '../../../api_service/research_service.dart';
 import 'user_drawer/drawer.dart';
 
-class UserDashboardNew extends StatelessWidget {
+class UserDashboardNew extends StatefulWidget {
   UserDashboardNew(this.account, {super.key});
   Account account;
+
+  @override
+  State<UserDashboardNew> createState() => _UserDashboardNewState();
+}
+
+class _UserDashboardNewState extends State<UserDashboardNew> {
+  late Uint8List url;
+  late APIResponse<Uint8List> _apiResponseProfile;
+  ResearchService get resService => GetIt.instance<ResearchService>();
+  Future<APIResponse<Uint8List>> getProfile(String schoold_id) async {
+    return _apiResponseProfile = await resService.getUserProfile(schoold_id);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUrl();
+  }
+
+  void getUrl() async {
+    final result = await getProfile(widget.account.school_id!);
+    url = result.data!;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.amberAccent,
-        drawer: NavigationDrawer(account),
+        drawer: NavigationDrawer(widget.account),
         appBar: appBar(context),
         body: SingleChildScrollView(
           child: Column(
@@ -39,7 +68,7 @@ class UserDashboardNew extends StatelessWidget {
               ),
               Department_List(),
               // PlaceItem(),
-              PlaceGridView(),
+              PlaceGridView(widget.account.school_id!),
             ],
           ),
         ),
@@ -95,7 +124,8 @@ class UserDashboardNew extends StatelessWidget {
             //     });
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => File_Upload(account)),
+              MaterialPageRoute(
+                  builder: (context) => File_Upload(widget.account)),
             );
           },
         ),
@@ -120,7 +150,8 @@ class UserDashboardNew extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => UserProfile(account)),
+              MaterialPageRoute(
+                  builder: (context) => UserProfile(widget.account, url)),
             );
           },
           child: Container(

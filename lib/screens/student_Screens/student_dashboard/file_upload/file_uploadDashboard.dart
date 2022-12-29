@@ -264,12 +264,9 @@ class _File_UploadState extends State<File_Upload> {
 
                               final resultAuthored = await addAuthored(
                                   resID, widget.account.school_id!);
-                              final resultList = await addResearchList(
-                                  resID, widget.account.school_id!);
 
                               if (result.data != null &&
-                                  resultAuthored.data != null &&
-                                  resultList.data != null) {
+                                  resultAuthored.data != null) {
                                 showSnackBar(
                                     context, "Research Uploaded Sucessfully!");
                               } else {
@@ -277,7 +274,9 @@ class _File_UploadState extends State<File_Upload> {
                                     context, "Error Uploading your research!");
                               }
                             }
-                            currentStep += 1;
+                            setState(() {
+                              currentStep += 1;
+                            });
                           },
                           child: const Text('CONTINUE'),
                         ),

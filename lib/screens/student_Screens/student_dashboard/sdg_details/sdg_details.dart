@@ -11,9 +11,9 @@ import 'package:thesis_eul/screens/student_Screens/student_dashboard/sdg_details
 
 class SDGDetails extends StatelessWidget {
   final SDG sdg;
-
+  final String id;
   // ignore: use_key_in_widget_constructors, prefer_const_constructors_in_immutables
-  SDGDetails(this.sdg);
+  SDGDetails(this.sdg, this.id);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class SDGDetails extends StatelessWidget {
               SDGName(sdg),
               SDGDescription(sdg),
               // SDGIconList(),
-              SDGButton(sdg),
+              SDGButton(sdg, id),
             ],
           ),
         ),

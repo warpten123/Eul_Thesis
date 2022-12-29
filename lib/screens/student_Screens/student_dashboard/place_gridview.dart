@@ -6,8 +6,8 @@ import 'package:thesis_eul/screens/student_Screens/student_dashboard/place_Item.
 
 class PlaceGridView extends StatelessWidget {
   final sdgList = SDG.generateList();
-
-  PlaceGridView({Key? key}) : super(key: key);
+  final String id;
+  PlaceGridView(this.id, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class PlaceGridView extends StatelessWidget {
           mainAxisSpacing: 16,
           itemCount: sdgList.length,
           crossAxisCount: 4,
-          itemBuilder: ((context, index) => PlaceItem(sdgList[index])),
+          itemBuilder: ((context, index) => PlaceItem(sdgList[index], id)),
           staggeredTileBuilder: (_) => const StaggeredTile.fit(2)),
     );
   }

@@ -9,8 +9,9 @@ import 'package:thesis_eul/screens/student_Screens/student_dashboard/sdg_details
 
 class PlaceItem extends StatelessWidget {
   final SDG sdg;
+  final String id;
   // ignore: prefer_const_constructors_in_immutables, use_key_in_widget_constructors
-  PlaceItem(this.sdg);
+  PlaceItem(this.sdg, this.id);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class PlaceItem extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => SDGDetails(sdg)),
+          MaterialPageRoute(builder: (context) => SDGDetails(sdg, id)),
         );
       },
       child: Stack(

@@ -11,7 +11,8 @@ import 'research_list.dart';
 
 class DetailsDownload extends StatelessWidget {
   final SDG sdg;
-  const DetailsDownload(this.sdg, {super.key});
+  final String id;
+  const DetailsDownload(this.sdg, this.id, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class DetailsDownload extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ContentUserDashBoard(sdg),
+                builder: (context) => ContentUserDashBoard(sdg, id),
               ));
         },
         child: Container(

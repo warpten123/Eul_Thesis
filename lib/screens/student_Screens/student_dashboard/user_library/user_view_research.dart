@@ -1,19 +1,23 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get_it/get_it.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:thesis_eul/models/research_details.dart';
 
 import '../../../../api_service/api_response.dart';
 import '../../../../api_service/research_service.dart';
+import '../../../../models/AccountModel.dart';
 import '../../../utilities/utilities.dart';
 
 class User_View_Research extends StatefulWidget {
-  User_View_Research(this.research, {super.key});
+  User_View_Research(this.research, this.id, {super.key});
   ResearchDetails research;
+  String id;
 
   @override
   State<User_View_Research> createState() => _User_View_ResearchState();
@@ -23,8 +27,22 @@ class _User_View_ResearchState extends State<User_View_Research> {
   bool isFavorite = false;
   ResearchService get resService => GetIt.instance<ResearchService>();
   late APIResponse<dynamic> _apiResponseRes;
-  Future<APIResponse<dynamic>> getResearchFile(String schoolID) async {
+  Future<APIResponse<Uint8List>> getResearchFile(String schoolID) async {
     return _apiResponseRes = await resService.getResearchFile(schoolID);
+  }
+
+  Future<APIResponse<bool>> addResearchList(
+      String research_id, String student_id) async {
+    // ignore: unused_local_variable
+    APIResponse<bool> reponse;
+    return reponse = await resService.addResearchList(research_id, student_id);
+  }
+
+  Future<APIResponse<bool>> removeBookMark(
+      String research_id, String student_id) async {
+    // ignore: unused_local_variable
+    APIResponse<bool> reponse;
+    return reponse = await resService.removeBookmark(research_id, student_id);
   }
 
   @override
@@ -95,12 +113,16 @@ class _User_View_ResearchState extends State<User_View_Research> {
                   icon: isFavorite == false
                       ? const Icon(Icons.favorite_border_outlined)
                       : const Icon(Icons.favorite),
-                  onPressed: () {
+                  onPressed: () async {
                     setState(() {
                       if (isFavorite == false) {
                         isFavorite = true;
+                        addBookMarks();
+                        showSnackBar(context, "Research Bookmarked!");
                       } else {
                         isFavorite = false;
+
+                        showSnackBar(context, "Removed from Bookmarks!");
                       }
                     });
                   },
@@ -109,6 +131,16 @@ class _User_View_ResearchState extends State<User_View_Research> {
         ],
       ),
     );
+  }
+
+  void addBookMarks() async {
+    final resultList =
+        await addResearchList(widget.research.research_id!, widget.id);
+  }
+
+  void removeBookMarks() async {
+    final result =
+        await removeBookMark(widget.research.research_id!, widget.id);
   }
 
   // ignore: non_constant_identifier_names
@@ -245,14 +277,16 @@ class _User_View_ResearchState extends State<User_View_Research> {
           ),
         ),
         onPressed: () async {
+          print("my id ${widget.research.research_id}");
           // final file = await ResearchService.pickFile();
           // print("THIS IS FILE $file");
           // if (file == null) return;
           // ignore: use_build_context_synchronously
-          final result = await getResearchFile("04117");
+          final result = await getResearchFile(widget.research.research_id!);
+          var file = await writeToFile(result.data!);
           print("result");
-          // openPDF(context,
-          //     '/data/user/0/com.example.thesis_eul/cache/file_picker/Kelly_Vickie.pdf');
+          // ignore: use_build_context_synchronously
+          openPDF(context, file.path);
         },
         child: Container(
           // ignore: prefer_const_constructors
@@ -267,5 +301,14 @@ class _User_View_ResearchState extends State<User_View_Research> {
         ),
       ),
     );
+  }
+
+  Future<File> writeToFile(Uint8List data) async {
+    final buffer = data.buffer;
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    var filePath = '$tempPath/file.pdf';
+    return File(filePath).writeAsBytes(
+        buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
   }
 }

@@ -1,13 +1,18 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
+import 'package:http/http.dart';
 import 'package:thesis_eul/models/research_details.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/profile_user/appBar.dart';
+import 'package:thesis_eul/screens/student_Screens/student_dashboard/profile_user/fuck.dart';
 import 'package:thesis_eul/screens/utilities/utilities.dart';
 
 import '../../../../api_service/api_response.dart';
@@ -15,9 +20,9 @@ import '../../../../api_service/research_service.dart';
 import '../../../../models/AccountModel.dart';
 
 class UserProfile extends StatefulWidget {
-  UserProfile(this.account, {super.key});
+  UserProfile(this.account, this.url, {super.key});
   Account account;
-
+  Uint8List url;
   @override
   State<UserProfile> createState() => _UserProfileState();
 }
@@ -25,9 +30,10 @@ class UserProfile extends StatefulWidget {
 class _UserProfileState extends State<UserProfile> {
   ResearchService get resService => GetIt.instance<ResearchService>();
   // ignore: unused_field
+
   late APIResponse<List<Account>> _apiResponse;
   late APIResponse<bool> _apiResponseUpdate;
-  late APIResponse<dynamic> _apiResponseProfile;
+  late APIResponse<Uint8List> _apiResponseProfile;
   late List<Account> allAccounts;
   Future<APIResponse<List<Account>>> getAllAccounts() async {
     return _apiResponse = await resService.getAllAccounts();
@@ -37,7 +43,7 @@ class _UserProfileState extends State<UserProfile> {
     return _apiResponseUpdate = await resService.updateAccount(account);
   }
 
-  Future<APIResponse<dynamic>> getProfile(String schoold_id) async {
+  Future<APIResponse<Uint8List>> getProfile(String schoold_id) async {
     return _apiResponseProfile = await resService.getUserProfile(schoold_id);
   }
 
@@ -50,10 +56,12 @@ class _UserProfileState extends State<UserProfile> {
   late String test3;
   String firstName = "";
   String lastName = "";
+  bool testPic = false;
 
   @override
   void initState() {
     super.initState();
+
     switch (widget.account.departmentID) {
       case 1:
         dept = "School of Law";
@@ -277,8 +285,7 @@ class _UserProfileState extends State<UserProfile> {
       radius: profileHeight / 2,
       backgroundColor: Colors.grey.shade800,
       // ignore: prefer_const_constructors
-      backgroundImage: NetworkImage(
-          "https://drive.google.com/uc?export=view&id=1U_BiAs3u3Nuz4d8BBtjSISWWEoYo-dzK"),
+      backgroundImage: MemoryImage(widget.url),
     );
   }
 
@@ -396,13 +403,12 @@ class _UserProfileState extends State<UserProfile> {
       margin: const EdgeInsets.only(left: 40, right: 40),
       child: TextButton(
           onPressed: () async {
-            dynamic shit;
-            final resultProfile = await getProfile(widget.account.school_id!);
-            shit = resultProfile.data;
-            print("SHIT: $shit");
+            // ignore: use_build_context_synchronously
+
             checkForChanges(
                 firstName_Controller, lastName_Controller, email_Controller);
             setState(() {
+              testPic = true;
               if (isUpdate == false) {
                 isUpdate = true;
               } else if ((isUpdate)) {

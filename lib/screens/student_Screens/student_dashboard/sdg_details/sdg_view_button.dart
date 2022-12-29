@@ -11,7 +11,8 @@ import '../research_list/research_list.dart';
 
 class SDGButton extends StatelessWidget {
   SDG sdg;
-  SDGButton(this.sdg);
+  String id;
+  SDGButton(this.sdg, this.id);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class SDGButton extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ContentUserDashBoard(sdg),
+                builder: (context) => ContentUserDashBoard(sdg, id),
               ));
         },
         child: Container(

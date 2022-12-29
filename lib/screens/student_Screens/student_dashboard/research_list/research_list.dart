@@ -21,7 +21,8 @@ import 'package:thesis_eul/screens/student_Screens/student_dashboard/user_librar
 // ignore: must_be_immutable
 class ContentUserDashBoard extends StatefulWidget {
   SDG sdg;
-  ContentUserDashBoard(this.sdg, {super.key});
+  String id;
+  ContentUserDashBoard(this.sdg, this.id, {super.key});
   @override
   State<ContentUserDashBoard> createState() => _ContentUserDashBoardState();
 }
@@ -276,7 +277,8 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   User_View_Research(
-                                                      research.data![index])),
+                                                      research.data![index],
+                                                      widget.id)),
                                         );
                                       },
                                       leading: Image.asset(

@@ -77,10 +77,12 @@ class _UserLibraryState extends State<UserLibrary> {
         floatingActionButton: isSelected == true
             ? FloatingActionButton(
                 onPressed: () {
+                  print("selected ${_selected}");
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => User_View_Research(_selected)),
+                        builder: (context) =>
+                            User_View_Research(_selected, widget.schoolID)),
                   );
                 },
                 child: const Icon(Icons.arrow_forward_ios),

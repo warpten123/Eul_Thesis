@@ -10,7 +10,8 @@ import '../../../../models/sdg.dart';
 class Research_Details extends StatelessWidget {
   final SDG sdg;
   final ResearchDetails researchDetails;
-  const Research_Details(this.sdg, this.researchDetails, {super.key});
+  final String id;
+  const Research_Details(this.sdg, this.researchDetails, this.id, {super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +65,7 @@ class Research_Details extends StatelessWidget {
                 title: const Text('Research Adviser'),
                 subtitle: Text(researchDetails.adviser),
               ),
-              DetailsDownload(sdg),
+              DetailsDownload(sdg, id),
               DetailsRead(sdg),
             ],
           ),
