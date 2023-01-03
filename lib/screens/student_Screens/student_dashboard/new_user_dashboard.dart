@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:thesis_eul/api_service/user_service.dart';
 import 'package:thesis_eul/models/AccountModel.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/department_list.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/file_upload/file_uploadDashboard.dart';
@@ -16,31 +17,32 @@ import '../../../api_service/research_service.dart';
 import 'user_drawer/drawer.dart';
 
 class UserDashboardNew extends StatefulWidget {
-  UserDashboardNew(this.account, {super.key});
+  UserDashboardNew(this.account, this.url, {super.key});
   Account account;
+  Uint8List url;
 
   @override
   State<UserDashboardNew> createState() => _UserDashboardNewState();
 }
 
 class _UserDashboardNewState extends State<UserDashboardNew> {
-  late Uint8List url;
   late APIResponse<Uint8List> _apiResponseProfile;
   ResearchService get resService => GetIt.instance<ResearchService>();
+  UserService get userService => GetIt.instance<UserService>();
   Future<APIResponse<Uint8List>> getProfile(String schoold_id) async {
-    return _apiResponseProfile = await resService.getUserProfile(schoold_id);
+    return _apiResponseProfile = await userService.getUserProfile(schoold_id);
   }
 
   @override
   void initState() {
     super.initState();
-    getUrl();
+    // getUrl();
   }
 
-  void getUrl() async {
-    final result = await getProfile(widget.account.school_id!);
-    url = result.data!;
-  }
+  // void getUrl() async {
+  //   final result = await getProfile(widget.account.school_id!);
+  //   url = result.data!;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +75,6 @@ class _UserDashboardNewState extends State<UserDashboardNew> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
           backgroundColor: Colors.green,
           splashColor: Colors.green,
           onPressed: () {
@@ -128,6 +129,7 @@ class _UserDashboardNewState extends State<UserDashboardNew> {
                   builder: (context) => File_Upload(widget.account)),
             );
           },
+          child: const Icon(Icons.add),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         bottomNavigationBar: BottomAppBar(
@@ -151,7 +153,8 @@ class _UserDashboardNewState extends State<UserDashboardNew> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => UserProfile(widget.account, url)),
+                  builder: (context) =>
+                      UserProfile(widget.account, widget.url)),
             );
           },
           child: Container(
@@ -161,9 +164,10 @@ class _UserDashboardNewState extends State<UserDashboardNew> {
               color: Theme.of(context).primaryColor,
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Image.asset(
-              'assets/pj.jpg',
-              width: 36,
+            child: CircleAvatar(
+              backgroundColor: Colors.grey.shade800,
+              // ignore: prefer_const_constructors
+              backgroundImage: MemoryImage(widget.url),
             ),
           ),
         ),

@@ -1,15 +1,15 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:thesis_eul/api_service/file_service.dart';
 import 'package:thesis_eul/api_service/research_service.dart';
+import 'package:thesis_eul/api_service/user_service.dart';
 
 import 'package:thesis_eul/screens/login_screen.dart';
-import 'package:thesis_eul/screens/student_Screens/user_dashboard.dart';
 
 void setupLocator() {
   GetIt.instance.registerLazySingleton(() => ResearchService());
+  GetIt.instance.registerLazySingleton(() => UserService());
+  GetIt.instance.registerLazySingleton(() => FileService());
 }
 
 void main() async {
@@ -17,10 +17,12 @@ void main() async {
   // await di.init();
   // await Firebase.initializeApp();
   setupLocator();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,7 @@ class MyApp extends StatelessWidget {
       //       return LoginScreen();
       //     }
       //   }),
-      home: LoginScreen(),
+      home: const LoginScreen(),
 
       debugShowCheckedModeBanner: false,
     );

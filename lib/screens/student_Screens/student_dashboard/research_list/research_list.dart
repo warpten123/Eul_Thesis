@@ -1,21 +1,20 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:open_file/open_file.dart';
+
 import 'package:thesis_eul/api_service/api_response.dart';
 import 'package:thesis_eul/api_service/research_service.dart';
+import 'package:thesis_eul/api_service/user_service.dart';
 import 'package:thesis_eul/models/AccountModel.dart';
 import 'package:thesis_eul/models/res_categories.dart';
-import 'package:thesis_eul/models/research.dart';
+
 import 'package:thesis_eul/models/research_details.dart';
-import 'package:thesis_eul/screens/student_Screens/header_drawer.dart';
-import 'package:thesis_eul/screens/student_Screens/research_screen.dart';
+
 import 'package:thesis_eul/models/sdg.dart';
-import 'package:thesis_eul/screens/student_Screens/student_dashboard/research_list/research_details.dart';
+
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/user_library/user_view_research.dart';
 
 // ignore: must_be_immutable
@@ -38,11 +37,12 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
     Categories(title: 'Computer Vision', image: 'assets/vision.jpg', count: 4),
   ];
   ResearchService get resService => GetIt.instance<ResearchService>();
+  UserService get userService => GetIt.instance<UserService>();
   late APIResponse<List<Account>> _apiResponse;
   late APIResponse<List<ResearchDetails>> _apiResponseRes;
 
   Future<APIResponse<List<Account>>> getAllAccount() async {
-    return _apiResponse = await resService.getAllAccounts();
+    return _apiResponse = await userService.getAllAccounts();
   }
 
   Future<APIResponse<List<ResearchDetails>>> getAllResearch() async {
@@ -51,7 +51,7 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
 
   Future<APIResponse<bool>> createAccount(Account account) async {
     APIResponse<bool> reponse;
-    return reponse = await resService.createAccount(account);
+    return reponse = await userService.createAccount(account);
   }
 
   // List<Research> research = [

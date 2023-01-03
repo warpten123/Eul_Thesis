@@ -1,5 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:thesis_eul/api_service/user_service.dart';
 
 import 'package:thesis_eul/models/AccountModel.dart';
 
@@ -23,16 +26,24 @@ class _LoginScreenState extends State<LoginScreen> {
   final school_id = TextEditingController();
   final passwordController = TextEditingController();
   ResearchService get resService => GetIt.instance<ResearchService>();
-  late APIResponse<List<Account>> _apiResponse;
+  UserService get userService => GetIt.instance<UserService>();
+  // ignore: unused_field
   late APIResponse<Account> _apiResponseAccount;
-
+  // ignore: unused_field
+  late APIResponse<Uint8List> _apiResponseProfile;
   Future<APIResponse<bool>> userLogin(String id, String password) async {
+    // ignore: unused_local_variable
     APIResponse<bool> response;
-    return response = await resService.userLogin(id, password);
+    return response = await userService.userLogin(id, password);
   }
 
   Future<APIResponse<Account>> getStudentByID(String id) async {
-    return _apiResponseAccount = await resService.getStudentByID(id);
+    return _apiResponseAccount = await userService.getStudentByID(id);
+  }
+
+  // ignore: non_constant_identifier_names
+  Future<APIResponse<Uint8List>> getProfile(String schoold_id) async {
+    return _apiResponseProfile = await userService.getUserProfile(schoold_id);
   }
 
   // @override
@@ -41,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
   //   passwordController.dispose();
   //   super.dispose();
   // }
-
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -67,138 +78,153 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             Center(
               child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    // ignore: prefer_const_constructors
-                    Text(
-                      "EUL",
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 150,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    // ignore: prefer_const_constructors
-                    SizedBox(
-                      height: 30,
-                    ),
-                    const Text(
-                      'Your Digital Research Repository System',
-                      style: TextStyle(color: Colors.white70, fontSize: 16),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      height: 50,
-                      margin: EdgeInsets.only(left: 40, right: 40),
-                      child: TextField(
-                        controller: school_id,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
-                        decoration: InputDecoration(
-                          labelText: "School ID",
-                          labelStyle: TextStyle(color: Colors.grey.shade500),
-                          // hintStyle: TextStyle(color: Colors.grey.shade500),
-                          filled: true,
-                          fillColor: const Color(0xff161d27).withOpacity(0.9),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: const BorderSide(color: Colors.green),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Container(
-                      height: 50,
-                      margin: const EdgeInsets.only(left: 40, right: 40),
-                      child: TextField(
-                        controller: passwordController,
-                        obscureText: true,
-                        // ignore: prefer_const_constructors
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
-                        decoration: InputDecoration(
-                          labelText: "Password",
-                          labelStyle: TextStyle(color: Colors.grey.shade500),
-                          filled: true,
-                          fillColor: Color(0xff161d27).withOpacity(0.9),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide(color: Colors.green),
-                          ),
-                        ),
-                      ),
-                    ),
-                    // ignore: prefer_const_constructors
-                    SizedBox(
-                      height: 12,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const CodeScreen()),
-                        );
-                      },
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
                       // ignore: prefer_const_constructors
-                      child: Text(
-                        'No Account? Enter Code!',
+                      Text(
+                        "EUL",
                         style: const TextStyle(
-                            color: Colors.green,
-                            fontSize: 14,
+                            color: Colors.white,
+                            fontSize: 150,
                             fontWeight: FontWeight.bold),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Container(
-                      height: 50,
-                      width: double.infinity,
                       // ignore: prefer_const_constructors
-                      decoration: BoxDecoration(
-                        color: Colors.green,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(20)),
+                      SizedBox(
+                        height: 30,
                       ),
-                      margin: const EdgeInsets.only(left: 40, right: 40),
-                      child: TextButton(
-                        onPressed: () {},
+                      const Text(
+                        'Your Digital Research Repository System',
+                        style: TextStyle(color: Colors.white70, fontSize: 16),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        height: 50,
+                        margin: const EdgeInsets.only(left: 40, right: 40),
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please Enter Text';
+                            }
+                            return null;
+                          },
+                          controller: school_id,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
+                          decoration: InputDecoration(
+                            labelText: "School ID",
+                            labelStyle: TextStyle(color: Colors.grey.shade500),
+                            // hintStyle: TextStyle(color: Colors.grey.shade500),
+                            filled: true,
+                            fillColor: const Color(0xff161d27).withOpacity(0.9),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: const BorderSide(color: Colors.green),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Container(
+                        height: 50,
+                        margin: const EdgeInsets.only(left: 40, right: 40),
+                        child: TextFormField(
+                          obscureText: true,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please Enter Text';
+                            }
+                            return null;
+                          },
+                          controller: passwordController,
+                          // ignore: prefer_const_constructors
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
+                          decoration: InputDecoration(
+                            labelText: "Password",
+                            labelStyle: TextStyle(color: Colors.grey.shade500),
+                            filled: true,
+                            fillColor: const Color(0xff161d27).withOpacity(0.9),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: const BorderSide(color: Colors.green),
+                            ),
+                          ),
+                        ),
+                      ),
+                      // ignore: prefer_const_constructors
+                      SizedBox(
+                        height: 12,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const CodeScreen()),
+                          );
+                        },
+                        // ignore: prefer_const_constructors
+                        child: Text(
+                          'No Account? Enter Code!',
+                          style: const TextStyle(
+                              color: Colors.green,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Container(
+                        height: 50,
+                        width: double.infinity,
+                        // ignore: prefer_const_constructors
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20)),
+                        ),
+                        margin: const EdgeInsets.only(left: 40, right: 40),
                         child: TextButton(
                           onPressed: () async {
-                            // auth.signIn(emailController.text.trim(),
-                            //     passwordController.text.trim());
-                            final result = await userLogin(
-                                school_id.text, passwordController.text);
-                            // var local = result;
-                            print("wtf ${result.data}");
-                            if (result.data != null) {
-                              final result =
-                                  await getStudentByID(school_id.text);
+                            if (_formKey.currentState!.validate()) {
+                              final result = await userLogin(
+                                  school_id.text, passwordController.text);
+                              // var local = result;
+                              if (result.data != null) {
+                                final result =
+                                    await getStudentByID(school_id.text);
 
-                              // ignore: use_build_context_synchronously
-                              showSnackBar(context, "Welcome to EUL!");
-                              // ignore: use_build_context_synchronously
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        UserDashboardNew(result.data!)),
-                              );
-                            } else {
-                              // ignore: use_build_context_synchronously
-                              showSnackBar(context, "Account doesn't exist!");
+                                // ignore: use_build_context_synchronously
+                                showSnackBarSucess(context, "Welcome to EUL!");
+                                final resultUrl =
+                                    await getProfile(school_id.text);
+                                // ignore: use_build_context_synchronously
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => UserDashboardNew(
+                                          result.data!, resultUrl.data!)),
+                                );
+                              } else {
+                                // ignore: use_build_context_synchronously
+                                showSnackBarError(
+                                    context, "Account doesn't exist!");
+                              }
                             }
                           },
+
                           // ignore: prefer_const_constructors
                           child: Text('SIGN IN',
                               // ignore: prefer_const_constructors
@@ -208,11 +234,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   fontSize: 18)),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                  ],
+                      const SizedBox(
+                        height: 16,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

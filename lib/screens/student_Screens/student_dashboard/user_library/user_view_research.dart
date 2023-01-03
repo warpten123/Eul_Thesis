@@ -7,6 +7,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get_it/get_it.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:thesis_eul/api_service/file_service.dart';
 import 'package:thesis_eul/models/research_details.dart';
 
 import '../../../../api_service/api_response.dart';
@@ -26,9 +27,10 @@ class User_View_Research extends StatefulWidget {
 class _User_View_ResearchState extends State<User_View_Research> {
   bool isFavorite = false;
   ResearchService get resService => GetIt.instance<ResearchService>();
+  FileService get fileService => GetIt.instance<FileService>();
   late APIResponse<dynamic> _apiResponseRes;
   Future<APIResponse<Uint8List>> getResearchFile(String schoolID) async {
-    return _apiResponseRes = await resService.getResearchFile(schoolID);
+    return _apiResponseRes = await fileService.getResearchFile(schoolID);
   }
 
   Future<APIResponse<bool>> addResearchList(
@@ -118,11 +120,11 @@ class _User_View_ResearchState extends State<User_View_Research> {
                       if (isFavorite == false) {
                         isFavorite = true;
                         addBookMarks();
-                        showSnackBar(context, "Research Bookmarked!");
+                        showSnackBarSucess(context, "Research Bookmarked!");
                       } else {
                         isFavorite = false;
 
-                        showSnackBar(context, "Removed from Bookmarks!");
+                        showSnackBarError(context, "Removed from Bookmarks!");
                       }
                     });
                   },

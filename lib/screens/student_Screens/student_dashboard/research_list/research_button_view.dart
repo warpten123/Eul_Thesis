@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:thesis_eul/api_service/file_service.dart';
 import 'package:thesis_eul/api_service/research_service.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/pdf_viewer/pdf_viewer.dart';
 import 'package:thesis_eul/screens/utilities/utilities.dart';
@@ -25,7 +26,7 @@ class DetailsRead extends StatelessWidget {
           ),
         ),
         onPressed: () async {
-          final file = await ResearchService.pickFile();
+          final file = await FileService.pickFile();
           print("THIS IS FILE $file");
           if (file == null) return;
           // ignore: use_build_context_synchronously

@@ -1,23 +1,17 @@
 // ignore_for_file: non_constant_identifier_names
-
-import 'dart:typed_data';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
-import 'package:http/http.dart';
-import 'package:thesis_eul/models/research_details.dart';
-import 'package:thesis_eul/screens/student_Screens/student_dashboard/profile_user/appBar.dart';
-import 'package:thesis_eul/screens/student_Screens/student_dashboard/profile_user/fuck.dart';
+
 import 'package:thesis_eul/screens/utilities/utilities.dart';
 
 import '../../../../api_service/api_response.dart';
 import '../../../../api_service/research_service.dart';
+import '../../../../api_service/user_service.dart';
 import '../../../../models/AccountModel.dart';
+import '../../../../models/research_details.dart';
 
 class UserProfile extends StatefulWidget {
   UserProfile(this.account, this.url, {super.key});
@@ -29,22 +23,37 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   ResearchService get resService => GetIt.instance<ResearchService>();
+  UserService get userService => GetIt.instance<UserService>();
   // ignore: unused_field
-
+  late int numberOfResearch = 0;
+  late int numberOfBookmarks = 0;
   late APIResponse<List<Account>> _apiResponse;
   late APIResponse<bool> _apiResponseUpdate;
   late APIResponse<Uint8List> _apiResponseProfile;
   late List<Account> allAccounts;
   Future<APIResponse<List<Account>>> getAllAccounts() async {
-    return _apiResponse = await resService.getAllAccounts();
+    return _apiResponse = await userService.getAllAccounts();
   }
 
   Future<APIResponse<bool>> updateAccount(Account account) async {
-    return _apiResponseUpdate = await resService.updateAccount(account);
+    return _apiResponseUpdate = await userService.updateAccount(account);
   }
 
   Future<APIResponse<Uint8List>> getProfile(String schoold_id) async {
-    return _apiResponseProfile = await resService.getUserProfile(schoold_id);
+    return _apiResponseProfile = await userService.getUserProfile(schoold_id);
+  }
+
+  late List<ResearchDetails> userBookMarks;
+  Future<APIResponse<List<ResearchDetails>>> getUserBookmarks(
+      String school_id) async {
+    late APIResponse<List<ResearchDetails>> _apiResponseRes;
+    return _apiResponseRes = await resService.getUserBookmarks(school_id);
+  }
+
+  Future<APIResponse<List<ResearchDetails>>> getUserLibrary(
+      String schoolID) async {
+    late APIResponse<List<ResearchDetails>> _apiResponseRes;
+    return _apiResponseRes = await resService.getUserLibray(schoolID);
   }
 
   bool isUpdate = false;
@@ -92,6 +101,8 @@ class _UserProfileState extends State<UserProfile> {
         break;
     }
     getAccounts();
+    getAllBookmarks();
+    getAllResearch();
   }
 
   @override
@@ -101,6 +112,16 @@ class _UserProfileState extends State<UserProfile> {
     email_Controller.dispose();
 
     super.dispose();
+  }
+
+  void getAllResearch() async {
+    final result = await getUserLibrary(widget.account.school_id!);
+    numberOfResearch = result.data!.length;
+  }
+
+  void getAllBookmarks() async {
+    final result = await getUserBookmarks(widget.account.school_id!);
+    numberOfBookmarks = result.data!.length;
   }
 
   void getAccounts() async {
@@ -125,7 +146,7 @@ class _UserProfileState extends State<UserProfile> {
       });
       // ignore: empty_catches
     } catch (e) {
-      showSnackBar(context, "Error Getting User Information!");
+      showSnackBarError(context, "Error Getting User Information!");
     }
 
     // password_Controller.text = finalAccount.password!;
@@ -294,9 +315,9 @@ class _UserProfileState extends State<UserProfile> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         const Divider(),
-        NumberButton(text: "Papers", value: 5),
+        NumberButton(text: "Papers", value: numberOfResearch),
         NumberDivider(),
-        NumberButton(text: "Bookmarks", value: 10),
+        NumberButton(text: "Bookmarks", value: numberOfBookmarks),
         NumberDivider(),
         NumberButton(text: "Citations", value: 10),
       ],
@@ -413,7 +434,7 @@ class _UserProfileState extends State<UserProfile> {
                 isUpdate = true;
               } else if ((isUpdate)) {
                 if (!listenChanges) {
-                  showSnackBar(context, "No Changes!");
+                  showSnackBarSucess(context, "No Changes!");
                   isUpdate = false;
                   listenChanges = false;
                 }
@@ -433,7 +454,7 @@ class _UserProfileState extends State<UserProfile> {
                 final result = await updateAccount(payload);
 
                 // ignore: use_build_context_synchronously
-                showSnackBar(context, "Profile Updated! ");
+                showSnackBarSucess(context, "Profile Updated! ");
                 setState(() {
                   getAccounts();
                   isUpdate = false;

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-import 'package:thesis_eul/screens/login_screen.dart';
 import 'package:thesis_eul/screens/student_Screens/register_screen.dart';
 
 import 'input_box.dart';
@@ -17,7 +15,7 @@ class CodeScreen extends StatelessWidget {
           child: Stack(
             children: <Widget>[
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage('assets/usjr.jpg'),
                         fit: BoxFit.cover)),
@@ -27,8 +25,8 @@ class CodeScreen extends StatelessWidget {
                   gradient: LinearGradient(colors: [
                     Colors.transparent,
                     Colors.transparent,
-                    Color(0xff161d27).withOpacity(0.9),
-                    Color(0xff161d27),
+                    const Color(0xff161d27).withOpacity(0.9),
+                    const Color(0xff161d27),
                   ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
                 ),
               ),
@@ -36,18 +34,18 @@ class CodeScreen extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Text(
+                    const Text(
                       "Verification Code",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 38,
                           fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
-                    Input_Box(),
-                    SizedBox(
+                    const Input_Box(),
+                    const SizedBox(
                       height: 30,
                     ),
                     Text(
@@ -55,17 +53,17 @@ class CodeScreen extends StatelessWidget {
                       style:
                           TextStyle(color: Colors.grey.shade500, fontSize: 16),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Container(
                       height: 50,
                       width: double.infinity,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.green,
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
-                      margin: EdgeInsets.only(left: 40, right: 40),
+                      margin: const EdgeInsets.only(left: 40, right: 40),
                       child: TextButton(
                         onPressed: () {
                           Navigator.pushReplacement(
@@ -74,14 +72,14 @@ class CodeScreen extends StatelessWidget {
                                 builder: (context) => const RegisterScreen()),
                           );
                         },
-                        child: Text('Continue',
+                        child: const Text('Continue',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18)),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
                   ],

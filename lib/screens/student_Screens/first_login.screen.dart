@@ -10,7 +10,7 @@ class FirstLoginScreen extends StatelessWidget {
         body: Stack(
           children: <Widget>[
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage('assets/usjr3.jpg'),
                       fit: BoxFit.cover)),
@@ -20,8 +20,8 @@ class FirstLoginScreen extends StatelessWidget {
                 gradient: LinearGradient(colors: [
                   Colors.transparent,
                   Colors.transparent,
-                  Color(0xff161d27).withOpacity(0.9),
-                  Color(0xff161d27),
+                  const Color(0xff161d27).withOpacity(0.9),
+                  const Color(0xff161d27),
                 ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
               ),
             ),
@@ -29,24 +29,24 @@ class FirstLoginScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  Text(
+                  const Text(
                     "Welcome Josenian!",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 38,
                         fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  Text(
+                  const Text(
                     'To get started, pick topics that you like',
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 16,
                         fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Padding(
@@ -69,7 +69,7 @@ class FirstLoginScreen extends StatelessWidget {
                             child: Card(
                               child: GridTile(
                                 header: Image.asset('assets/pj.jpg'),
-                                child: Text('1'),
+                                child: const Text('1'),
                               ),
                             ),
                           );

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get_it/get_it.dart';
+import 'package:thesis_eul/api_service/file_service.dart';
 import 'package:thesis_eul/models/AccountModel.dart';
 import 'package:thesis_eul/models/research_details.dart';
 import 'package:thesis_eul/screens/utilities/utilities.dart';
@@ -32,10 +33,10 @@ class _File_UploadState extends State<File_Upload> {
   var file = null;
   String resID = "";
   ResearchService get resService => GetIt.instance<ResearchService>();
-
+  FileService get fileService => GetIt.instance<FileService>();
   Future<APIResponse<bool>> fileUpload(Files file) async {
     APIResponse<bool> reponse;
-    return await resService.fileUpload(file);
+    return await fileService.fileUpload(file);
   }
 
   Future<APIResponse<bool>> addResearch(ResearchDetails researchDetails) async {
@@ -124,7 +125,7 @@ class _File_UploadState extends State<File_Upload> {
               children: <Widget>[
                 TextButton(
                     onPressed: () async {
-                      file = await ResearchService.pickFile();
+                      file = await FileService.pickFile();
                       setState(() {
                         baseName = basename(file!.path);
                       });
@@ -154,13 +155,14 @@ class _File_UploadState extends State<File_Upload> {
                             setState(() {
                               if (result.data != null) {
                                 currentStep += 1;
-                                showSnackBar(context, 'PDF Uploaded!');
+                                showSnackBarSucess(context, 'PDF Uploaded!');
                               } else {
-                                showSnackBar(context, 'Error Uploading!');
+                                showSnackBarError(context, 'Error Uploading!');
                               }
                             });
                           } else {
-                            showSnackBar(context, "Try uploading a pdf file.");
+                            showSnackBarError(
+                                context, "Try uploading a pdf file.");
                           }
                         },
                         child: const Text('CONTINUE'),
@@ -173,7 +175,7 @@ class _File_UploadState extends State<File_Upload> {
                           if (file != null) {
                             openPDF(context, file.path);
                           } else {
-                            showSnackBar(context, "No PDF to be viewed.");
+                            showSnackBarError(context, "No PDF to be viewed.");
                           }
                         },
                         child: const Text('VIEW PDF'),
@@ -267,10 +269,10 @@ class _File_UploadState extends State<File_Upload> {
 
                               if (result.data != null &&
                                   resultAuthored.data != null) {
-                                showSnackBar(
+                                showSnackBarSucess(
                                     context, "Research Uploaded Sucessfully!");
                               } else {
-                                showSnackBar(
+                                showSnackBarError(
                                     context, "Error Uploading your research!");
                               }
                             }
