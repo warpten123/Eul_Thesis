@@ -123,7 +123,6 @@ class _User_View_ResearchState extends State<User_View_Research> {
                         showSnackBarSucess(context, "Research Bookmarked!");
                       } else {
                         isFavorite = false;
-
                         showSnackBarError(context, "Removed from Bookmarks!");
                       }
                     });
@@ -191,10 +190,11 @@ class _User_View_ResearchState extends State<User_View_Research> {
           Row(
             // ignore: prefer_const_constructors
             children: [
-              Icon(Icons.remove_red_eye),
+              const Icon(Icons.remove_red_eye),
               Text(
                 widget.research.number_of_views.toString(),
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               )
             ],
           ),
@@ -279,16 +279,17 @@ class _User_View_ResearchState extends State<User_View_Research> {
           ),
         ),
         onPressed: () async {
-          print("my id ${widget.research.research_id}");
-          // final file = await ResearchService.pickFile();
-          // print("THIS IS FILE $file");
-          // if (file == null) return;
+          print("BOOK ${widget.research.research_id}");
           // ignore: use_build_context_synchronously
           final result = await getResearchFile(widget.research.research_id!);
-          var file = await writeToFile(result.data!);
-          print("result");
-          // ignore: use_build_context_synchronously
-          openPDF(context, file.path);
+          if (result.data == null) {
+            // ignore: use_build_context_synchronously
+            showSnackBarError(context, "Paper not found!");
+          } else {
+            var file = await writeToFile(result.data!);
+            // ignore: use_build_context_synchronously
+            openPDF(context, file.path);
+          }
         },
         child: Container(
           // ignore: prefer_const_constructors

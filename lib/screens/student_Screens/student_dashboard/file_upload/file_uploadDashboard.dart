@@ -1,9 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 import 'package:thesis_eul/api_service/file_service.dart';
 import 'package:thesis_eul/models/AccountModel.dart';
 import 'package:thesis_eul/models/research_details.dart';
@@ -21,16 +20,43 @@ class File_Upload extends StatefulWidget {
 }
 
 class _File_UploadState extends State<File_Upload> {
+  String? date = "Date Published";
+  showDatePicker(BuildContext context) async {
+    bool go = false;
+    //DateTime date;
+    newDateTime = await showRoundedDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      // initialDatePickerMode: DatePickerMode.day,
+      firstDate: DateTime(DateTime.now().year),
+      //lastDate: DateTime(DateTime.now().year),
+      borderRadius: 16,
+      theme: ThemeData(
+        accentColor: Colors.green,
+        dialogBackgroundColor: Colors.green[50],
+        disabledColor: Colors.red,
+      ),
+      imageHeader: const AssetImage("assets/usjr2.jpg"),
+      textPositiveButton: "SAVE",
+      textNegativeButton: "",
+    );
+
+    setState(() {
+      date = DateFormat("yyyy-MM-dd").format(newDateTime!);
+    });
+  }
+
   late APIResponse<bool> _apiResponse;
   int currentStep = 0;
   final researchTitle = TextEditingController();
-  final researchDate = TextEditingController();
+
   final researchAdviser = TextEditingController();
   final researchAbstract = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool upload = false;
   var baseName;
   var file = null;
+  DateTime? newDateTime;
   String resID = "";
   ResearchService get resService => GetIt.instance<ResearchService>();
   FileService get fileService => GetIt.instance<FileService>();
@@ -126,6 +152,7 @@ class _File_UploadState extends State<File_Upload> {
                 TextButton(
                     onPressed: () async {
                       file = await FileService.pickFile();
+                      if (file == null) return;
                       setState(() {
                         baseName = basename(file!.path);
                       });
@@ -145,7 +172,7 @@ class _File_UploadState extends State<File_Upload> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.all(12.0),
+                      padding: const EdgeInsets.all(12.0),
                       child: ElevatedButton(
                         onPressed: () async {
                           if (file != null) {
@@ -169,7 +196,7 @@ class _File_UploadState extends State<File_Upload> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(12.0),
+                      padding: const EdgeInsets.all(12.0),
                       child: ElevatedButton(
                         onPressed: () async {
                           if (file != null) {
@@ -215,17 +242,7 @@ class _File_UploadState extends State<File_Upload> {
                     decoration:
                         const InputDecoration(labelText: 'Paper Adviser'),
                   ),
-                  TextFormField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please Enter Text';
-                      }
-                      return null;
-                    },
-                    controller: researchDate,
-                    decoration:
-                        const InputDecoration(labelText: 'Date Accepted'),
-                  ),
+
                   TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -237,6 +254,41 @@ class _File_UploadState extends State<File_Upload> {
                     decoration:
                         const InputDecoration(labelText: 'Paper Abstract'),
                   ),
+
+                  // child: TextFormField(
+                  //   validator: (value) {
+                  //     if (value == null || value.isEmpty) {
+                  //       return 'Please Enter Text';
+                  //     }
+                  //     return null;
+                  //   },
+                  //   controller: researchDate,
+                  //   decoration: const InputDecoration(labelText: 'Date '),
+                  // ),
+                  Row(
+                    children: <Widget>[
+                      IconButton(
+                        onPressed: () {
+                          showDatePicker(context);
+                        },
+                        icon: const Icon(
+                          Icons.calendar_month,
+                          size: 40.0,
+                          color: Colors.green,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          date!,
+                          style: TextStyle(
+                              fontSize: 18.0,
+                              color: Color.fromARGB(255, 102, 100, 100)),
+                        ),
+                      ),
+                    ],
+                  ),
+
                   // TextFormField(
                   //   controller: researchTitle,
                   //   decoration: const InputDecoration(labelText: ''),
@@ -245,16 +297,17 @@ class _File_UploadState extends State<File_Upload> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.all(12.0),
+                        padding: const EdgeInsets.all(12.0),
                         child: ElevatedButton(
                           onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
+                            if (_formKey.currentState!.validate() &&
+                                date != "Date Published") {
                               final payload = ResearchDetails(
                                   research_id: resID,
                                   departmentID: widget.account.departmentID,
                                   topic_category: const ["AI", "ML"],
                                   sdg_category: const ["Goal 1", "Goal 2"],
-                                  date_published: researchDate.text,
+                                  date_published: date!,
                                   adviser: researchAdviser.text,
                                   keywords: const ["shit", "ficlers"],
                                   title: researchTitle.text,
@@ -275,16 +328,18 @@ class _File_UploadState extends State<File_Upload> {
                                 showSnackBarError(
                                     context, "Error Uploading your research!");
                               }
+                              setState(() {
+                                currentStep += 1;
+                              });
+                            } else {
+                              showSnackBarError(context, "Complete the form!");
                             }
-                            setState(() {
-                              currentStep += 1;
-                            });
                           },
                           child: const Text('CONTINUE'),
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.all(12.0),
+                        padding: const EdgeInsets.all(12.0),
                         child: ElevatedButton(
                           onPressed: () {
                             setState(() {

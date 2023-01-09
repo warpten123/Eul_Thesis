@@ -7,8 +7,6 @@ import 'package:http/http.dart' as http;
 import 'package:thesis_eul/api_service/api_response.dart';
 import 'package:thesis_eul/models/research_details.dart';
 
-
-
 class ResearchService {
   static const baseURL = 'http://10.0.2.2:3000/';
   static const headers = {
@@ -76,7 +74,7 @@ class ResearchService {
 
         // ignore: unused_local_variable
         for (var item in jsonData) {
-          research.add(ResearchDetails.fromMapLibrary(item));
+          research.add(ResearchDetails.fromMap(item));
         }
         return APIResponse<List<ResearchDetails>>(
           data: research,

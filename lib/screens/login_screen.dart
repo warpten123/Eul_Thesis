@@ -207,16 +207,25 @@ class _LoginScreenState extends State<LoginScreen> {
                                     await getStudentByID(school_id.text);
 
                                 // ignore: use_build_context_synchronously
-                                showSnackBarSucess(context, "Welcome to EUL!");
-                                final resultUrl =
-                                    await getProfile(school_id.text);
-                                // ignore: use_build_context_synchronously
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => UserDashboardNew(
-                                          result.data!, resultUrl.data!)),
-                                );
+                                Account test = result.data!;
+                                if (test.approve == 1) {
+                                  // ignore: use_build_context_synchronously
+                                  showSnackBarSucess(
+                                      context, "Welcome to EUL!");
+                                  final resultUrl =
+                                      await getProfile(school_id.text);
+                                  // ignore: use_build_context_synchronously
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => UserDashboardNew(
+                                            result.data!, resultUrl.data!)),
+                                  );
+                                } else {
+                                  // ignore: use_build_context_synchronously
+                                  showSnackBarError(context,
+                                      "Your account is still pending confirmation.");
+                                }
                               } else {
                                 // ignore: use_build_context_synchronously
                                 showSnackBarError(

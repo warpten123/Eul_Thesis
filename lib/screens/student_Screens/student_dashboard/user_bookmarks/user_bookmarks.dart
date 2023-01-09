@@ -71,6 +71,7 @@ class _UserBookmarksState extends State<UserBookmarks> {
         floatingActionButton: isSelected == true
             ? FloatingActionButton(
                 onPressed: () {
+                  print("VROM $_selected");
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -175,6 +176,7 @@ class _UserBookmarksState extends State<UserBookmarks> {
                                       height: 20,
                                     ),
                                     Text(res.title,
+                                        // ignore: prefer_const_constructors
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold)),
                                     Text("Published: ${res.date_published}",
