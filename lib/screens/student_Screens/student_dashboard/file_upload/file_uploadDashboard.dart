@@ -311,10 +311,10 @@ class _File_UploadState extends State<File_Upload> {
                                   adviser: researchAdviser.text,
                                   keywords: const ["shit", "ficlers"],
                                   title: researchTitle.text,
-                                  abstracts: researchAbstract.text,
+                                  abstract: researchAbstract.text,
                                   qr: "1ss",
                                   number_of_views: 69);
-                              print(payload.abstracts);
+                              print(payload.abstract);
                               final result = await addResearch(payload);
 
                               final resultAuthored = await addAuthored(

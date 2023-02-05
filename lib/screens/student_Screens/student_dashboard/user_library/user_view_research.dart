@@ -245,7 +245,7 @@ class _User_View_ResearchState extends State<User_View_Research> {
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           Text(
-            widget.research.abstracts,
+            widget.research.abstract,
             textAlign: TextAlign.justify,
             style: TextStyle(fontSize: 18, height: 1.5),
           ),

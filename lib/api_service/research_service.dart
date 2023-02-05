@@ -108,6 +108,7 @@ class ResearchService {
   }
 
   Future<APIResponse<bool>> addResearch(ResearchDetails research) {
+    print("research abs ${research.abstract}");
     return http
         .post(Uri.parse('http://10.0.2.2:3000/api/research/addResearchDetails'),
             headers: headers, body: json.encode(research.toJson()))
