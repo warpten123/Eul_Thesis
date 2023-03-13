@@ -65,6 +65,7 @@ class _UserProfileState extends State<UserProfile> {
   late String test3;
   String firstName = "";
   String lastName = "";
+  String id = "";
   bool testPic = false;
 
   @override
@@ -139,7 +140,7 @@ class _UserProfileState extends State<UserProfile> {
         email_Controller.text = finalAccount.email;
         firstName = finalAccount.first_name;
         lastName = finalAccount.last_name;
-
+        id = finalAccount.school_id!;
         test = firstName_Controller.text;
         test2 = lastName_Controller.text;
         test3 = email_Controller.text;

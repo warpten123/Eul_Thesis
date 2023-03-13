@@ -11,9 +11,9 @@ import 'package:thesis_eul/models/department.dart';
 
 import '../models/AccountModel.dart';
 
-
 class UserService {
   static const baseURL = 'http://10.0.2.2:3000/';
+  static const baseURL2 = 'http://10.0.2.2:5000/';
   static const headers = {
     'apiKey': 'abaf3c8e-72c0-498b-9862-47afad7add14',
     'Content-Type': 'application/json'
@@ -118,7 +118,7 @@ class UserService {
 
   Future<APIResponse<bool>> createAccount(Account account) {
     return http
-        .post(Uri.parse('http://10.0.2.2:3000/auth/signup'),
+        .post(Uri.parse('${baseURL}auth/signup'),
             headers: headers, body: json.encode(account.toJson()))
         .then((data) {
       if (data.statusCode == 200 || data.statusCode == 201) {
@@ -133,8 +133,7 @@ class UserService {
   }
 
   Future<APIResponse<bool>> addUserProfile(Files file) async {
-    var uri = Uri.parse(
-        'http://10.0.2.2:3000/image/upload-avatar/${file.research_id}');
+    var uri = Uri.parse('${baseURL}image/upload-avatar/${file.research_id}');
     var request = http.MultipartRequest('POST', uri);
     // request.files.add(
     //     await http.MultipartFile.fromPath('research_id', file.research_id));
@@ -169,5 +168,21 @@ class UserService {
           error: true, errorMessage: data.statusCode.toString());
     }).catchError((_) => APIResponse<Uint8List>(
             error: true, errorMessage: "An error occured"));
+  }
+
+  Future<APIResponse<String>> flaskTest(String id) {
+    return http
+        .get(Uri.parse("${baseURL2}api?query=$id"), headers: headers)
+        .then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = jsonDecode(data.body);
+        return APIResponse<String>(
+          data: jsonData.toString(),
+        );
+      }
+      return APIResponse<String>(
+          error: true, errorMessage: data.statusCode.toString());
+    }).catchError((_) =>
+            APIResponse<String>(error: true, errorMessage: "An error occured"));
   }
 }

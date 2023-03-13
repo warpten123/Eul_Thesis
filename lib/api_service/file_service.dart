@@ -9,8 +9,6 @@ import 'package:thesis_eul/api_service/api_response.dart';
 import 'package:thesis_eul/models/Files.dart';
 import 'package:path_provider/path_provider.dart';
 
-
-
 class FileService {
   static const baseURL = 'http://10.0.2.2:3000/';
   static const headers = {
@@ -49,8 +47,7 @@ class FileService {
     map['file'] = file.file;
     map['research_id'] = file.research_id;
     map['url'] = file.url;
-    var uri =
-        Uri.parse('http://10.0.2.2:3000/file/upload-file/${file.research_id}');
+    var uri = Uri.parse('${baseURL}file/upload-file/${file.research_id}');
     var request = http.MultipartRequest('POST', uri);
     // request.files.add(
     //     await http.MultipartFile.fromPath('research_id', file.research_id));

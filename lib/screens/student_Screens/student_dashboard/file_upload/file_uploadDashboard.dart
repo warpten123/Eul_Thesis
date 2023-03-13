@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
@@ -6,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:thesis_eul/api_service/file_service.dart';
 import 'package:thesis_eul/models/AccountModel.dart';
 import 'package:thesis_eul/models/research_details.dart';
+import 'package:thesis_eul/screens/student_Screens/student_dashboard/file_upload/review.dart';
 import 'package:thesis_eul/screens/utilities/utilities.dart';
 import 'package:path/path.dart';
 import '../../../../api_service/api_response.dart';
@@ -20,6 +22,12 @@ class File_Upload extends StatefulWidget {
 }
 
 class _File_UploadState extends State<File_Upload> {
+  @override
+  void initState() {
+    super.initState();
+    currentStep = 0;
+  }
+
   String? date = "Date Published";
   showDatePicker(BuildContext context) async {
     bool go = false;
@@ -86,54 +94,61 @@ class _File_UploadState extends State<File_Upload> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Research Upload'),
-      ),
-      body: Stepper(
-        controlsBuilder: (BuildContext context, ControlsDetails controls) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              // children: <Widget>[
-              //   ElevatedButton(
-              //     onPressed: controls.onStepContinue,
-              //     child: const Text('CONTINUE'),
-              //   ),
-              //   Padding(
-              //     padding: const EdgeInsets.only(left: 5.0),
-              //     child: ElevatedButton(
-              //       onPressed: controls.onStepCancel,
-              //       child: const Text('CANCEL'),
-              //     ),
-              //   ),
-              // ],
+    return SafeArea(
+      child: Scaffold(
+        // appBar: AppBar(
+        //   centerTitle: true,
+        //   title: const Text('Research Upload'),
+        // ),
+        body: Column(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Stepper(
+              controlsBuilder:
+                  (BuildContext context, ControlsDetails controls) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    // children: <Widget>[
+                    //   ElevatedButton(
+                    //     onPressed: controls.onStepContinue,
+                    //     child: const Text('CONTINUE'),
+                    //   ),
+                    //   Padding(
+                    //     padding: const EdgeInsets.only(left: 5.0),
+                    //     child: ElevatedButton(
+                    //       onPressed: controls.onStepCancel,
+                    //       child: const Text('CANCEL'),
+                    //     ),
+                    //   ),
+                    // ],
+                  ),
+                );
+              },
+              type: StepperType.vertical,
+              steps: getSteps(context),
+              currentStep: currentStep,
+              onStepContinue: () {
+                final isLastStep = currentStep == getSteps(context).length - 1;
+                setState(() {
+                  if (isLastStep) {
+                  } else {
+                    currentStep += 1;
+                  }
+                  print(currentStep);
+                });
+              },
+              onStepCancel: () {
+                setState(() {
+                  if (currentStep != 0) {
+                    currentStep -= 1;
+                  }
+                });
+              },
             ),
-          );
-        },
-        type: StepperType.horizontal,
-        steps: getSteps(context),
-        currentStep: currentStep,
-        onStepContinue: () {
-          final isLastStep = currentStep == getSteps(context).length - 1;
-          setState(() {
-            if (isLastStep) {
-              print("Compeleted");
-            } else {
-              currentStep += 1;
-            }
-            print(currentStep);
-          });
-        },
-        onStepCancel: () {
-          setState(() {
-            if (currentStep != 0) {
-              currentStep -= 1;
-            }
-          });
-        },
+          ],
+        ),
       ),
     );
   }
@@ -145,74 +160,75 @@ class _File_UploadState extends State<File_Upload> {
 
   List<Step> getSteps(context) => [
         Step(
-            state: currentStep > 0 ? StepState.complete : StepState.indexed,
-            title: const Text('Upload'),
-            content: Column(
-              children: <Widget>[
-                TextButton(
-                    onPressed: () async {
-                      file = await FileService.pickFile();
-                      if (file == null) return;
-                      setState(() {
-                        baseName = basename(file!.path);
-                      });
+          isActive: currentStep >= 0,
+          state: currentStep > 0 ? StepState.complete : StepState.indexed,
+          title: const Text('Upload'),
+          content: Column(
+            children: <Widget>[
+              TextButton(
+                  onPressed: () async {
+                    file = await FileService.pickFile();
+                    if (file == null) return;
+                    setState(() {
+                      baseName = basename(file!.path);
+                    });
 
-                      // if (result.data == null) {
-                      //   showSnackBar(context, result.errorMessage.toString());
-                      // } else {
-                      //   upload = true;
-                      //   showSnackBar(context, 'File Uploaded!');
-                      // }
-                    },
-                    child: const Text('Upload PDF')),
-                baseName != null
-                    ? Text('Filename: $baseName')
-                    : const Text('Filename: '),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          if (file != null) {
-                            resID = generateID();
-                            Files payload = uploadFunc(file);
-                            final result = await fileUpload(payload);
-                            setState(() {
-                              if (result.data != null) {
-                                currentStep += 1;
-                                showSnackBarSucess(context, 'PDF Uploaded!');
-                              } else {
-                                showSnackBarError(context, 'Error Uploading!');
-                              }
-                            });
-                          } else {
-                            showSnackBarError(
-                                context, "Try uploading a pdf file.");
-                          }
-                        },
-                        child: const Text('CONTINUE'),
-                      ),
+                    // if (result.data == null) {
+                    //   showSnackBar(context, result.errorMessage.toString());
+                    // } else {
+                    //   upload = true;
+                    //   showSnackBar(context, 'File Uploaded!');
+                    // }
+                  },
+                  child: const Text('Upload PDF')),
+              baseName != null
+                  ? Text('Filename: $baseName')
+                  : const Text('Filename: '),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (file != null) {
+                          resID = generateID();
+                          Files payload = uploadFunc(file);
+                          final result = await fileUpload(payload);
+                          setState(() {
+                            if (result.data != null) {
+                              currentStep += 1;
+                              showSnackBarSucess(context, 'PDF Uploaded!');
+                            } else {
+                              showSnackBarError(context, 'Error Uploading!');
+                            }
+                          });
+                        } else {
+                          showSnackBarError(
+                              context, "Try uploading a pdf file.");
+                        }
+                      },
+                      child: const Text('CONTINUE'),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          if (file != null) {
-                            openPDF(context, file.path);
-                          } else {
-                            showSnackBarError(context, "No PDF to be viewed.");
-                          }
-                        },
-                        child: const Text('VIEW PDF'),
-                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (file != null) {
+                          openPDF(context, file.path);
+                        } else {
+                          showSnackBarError(context, "No PDF to be viewed.");
+                        }
+                      },
+                      child: const Text('VIEW PDF'),
                     ),
-                  ],
-                )
-              ],
-            ),
-            isActive: currentStep >= 0),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
         Step(
             state: currentStep > 1 ? StepState.complete : StepState.indexed,
             title: const Text('Information'),
@@ -281,7 +297,7 @@ class _File_UploadState extends State<File_Upload> {
                         padding: EdgeInsets.all(8.0),
                         child: Text(
                           date!,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 18.0,
                               color: Color.fromARGB(255, 102, 100, 100)),
                         ),
@@ -358,7 +374,7 @@ class _File_UploadState extends State<File_Upload> {
         Step(
             state: currentStep > 2 ? StepState.complete : StepState.indexed,
             title: const Text('Review'),
-            content: Container(),
+            content: Upload_Review(),
             isActive: currentStep >= 2),
       ];
 }

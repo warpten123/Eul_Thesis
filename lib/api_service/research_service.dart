@@ -108,9 +108,8 @@ class ResearchService {
   }
 
   Future<APIResponse<bool>> addResearch(ResearchDetails research) {
-    print("research abs ${research.abstract}");
     return http
-        .post(Uri.parse('http://10.0.2.2:3000/api/research/addResearchDetails'),
+        .post(Uri.parse('${baseURL}api/research/addResearchDetails'),
             headers: headers, body: json.encode(research.toJson()))
         .then((data) {
       if (data.statusCode == 201 || data.statusCode == 200) {
@@ -126,7 +125,7 @@ class ResearchService {
 
   Future<APIResponse<bool>> addBookmarks(ResearchDetails research) {
     return http
-        .post(Uri.parse('http://10.0.2.2:3000/api/research/addResearchDetails'),
+        .post(Uri.parse('${baseURL}api/research/addResearchDetails'),
             headers: headers, body: json.encode(research.toJson()))
         .then((data) {
       if (data.statusCode == 201 || data.statusCode == 200) {
@@ -146,7 +145,7 @@ class ResearchService {
       'school_id': studentID,
     };
     return http
-        .post(Uri.parse('http://10.0.2.2:3000/api/research/addAuthored'),
+        .post(Uri.parse('${baseURL}api/research/addAuthored'),
             headers: headers, body: json.encode(payload))
         .then((data) {
       if (data.statusCode == 201 || data.statusCode == 200) {
@@ -168,7 +167,7 @@ class ResearchService {
     };
 
     return http
-        .post(Uri.parse('http://10.0.2.2:3000/api/research/addMyResearchList'),
+        .post(Uri.parse('${baseURL}api/research/addMyResearchList'),
             headers: headers, body: json.encode(payload))
         .then((data) {
       if (data.statusCode == 201 || data.statusCode == 200) {

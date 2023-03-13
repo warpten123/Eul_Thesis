@@ -59,6 +59,7 @@ dependencies:
   flutter_svg: ^1.1.6
   syncfusion_flutter_datepicker: ^20.4.42
   flutter_rounded_date_picker: ^3.0.2
+  modal_bottom_sheet: ^2.1.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -115,6 +116,7 @@ flutter:
     - assets/16.png
     - assets/17.png
     - assets/library.jpg
+    - assets/testLib.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

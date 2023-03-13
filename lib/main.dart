@@ -1,16 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:thesis_eul/api_service/comments_service.dart';
 import 'package:thesis_eul/api_service/file_service.dart';
 import 'package:thesis_eul/api_service/research_service.dart';
 import 'package:thesis_eul/api_service/user_service.dart';
+// ignore: depend_on_referenced_packages
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:thesis_eul/screens/login_screen.dart';
+import 'package:thesis_eul/screens/ticketTest.dart';
 
 void setupLocator() {
   GetIt.instance.registerLazySingleton(() => ResearchService());
   GetIt.instance.registerLazySingleton(() => UserService());
   GetIt.instance.registerLazySingleton(() => FileService());
+  GetIt.instance.registerLazySingleton(() => CommentService());
 }
 
 void main() async {

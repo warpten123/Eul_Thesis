@@ -9,7 +9,7 @@ import 'package:get_it/get_it.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:thesis_eul/api_service/file_service.dart';
 import 'package:thesis_eul/models/research_details.dart';
-
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import '../../../../api_service/api_response.dart';
 import '../../../../api_service/research_service.dart';
 import '../../../../models/AccountModel.dart';
@@ -279,7 +279,6 @@ class _User_View_ResearchState extends State<User_View_Research> {
           ),
         ),
         onPressed: () async {
-          print("BOOK ${widget.research.research_id}");
           // ignore: use_build_context_synchronously
           final result = await getResearchFile(widget.research.research_id!);
           if (result.data == null) {

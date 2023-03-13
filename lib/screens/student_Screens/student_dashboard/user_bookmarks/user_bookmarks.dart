@@ -71,7 +71,6 @@ class _UserBookmarksState extends State<UserBookmarks> {
         floatingActionButton: isSelected == true
             ? FloatingActionButton(
                 onPressed: () {
-                  print("VROM $_selected");
                   Navigator.push(
                     context,
                     MaterialPageRoute(

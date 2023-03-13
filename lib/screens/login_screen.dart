@@ -31,6 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late APIResponse<Account> _apiResponseAccount;
   // ignore: unused_field
   late APIResponse<Uint8List> _apiResponseProfile;
+  late APIResponse<String> test;
   Future<APIResponse<bool>> userLogin(String id, String password) async {
     // ignore: unused_local_variable
     APIResponse<bool> response;
@@ -44,6 +45,10 @@ class _LoginScreenState extends State<LoginScreen> {
   // ignore: non_constant_identifier_names
   Future<APIResponse<Uint8List>> getProfile(String schoold_id) async {
     return _apiResponseProfile = await userService.getUserProfile(schoold_id);
+  }
+
+  Future<APIResponse<String>> testFlask(String schoold_id) async {
+    return test = await userService.flaskTest(schoold_id);
   }
 
   // @override
@@ -106,9 +111,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 50,
                         margin: const EdgeInsets.only(left: 40, right: 40),
                         child: TextFormField(
+                          keyboardType: TextInputType.number,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please Enter Text';
+                              return 'Please Enter ID';
                             }
                             return null;
                           },
@@ -140,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           obscureText: true,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please Enter Text';
+                              return 'Please Enter Password';
                             }
                             return null;
                           },
@@ -209,6 +215,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 // ignore: use_build_context_synchronously
                                 Account test = result.data!;
                                 if (test.approve == 1) {
+                                  // final result2 = await testFlask("a");
                                   // ignore: use_build_context_synchronously
                                   showSnackBarSucess(
                                       context, "Welcome to EUL!");
