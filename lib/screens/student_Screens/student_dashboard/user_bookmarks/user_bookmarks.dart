@@ -27,22 +27,6 @@ class _UserBookmarksState extends State<UserBookmarks> {
     return _apiResponse = await resService.getUserBookmarks(school_id);
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   getBookMarks();
-  // }
-
-  // void getBookMarks() async {
-  //   try {
-  //     final result = await getUserBookmarks(widget.schoolID);
-  //     userBookMarks = result.data!;
-  //   } catch (e) {
-  //     // ignore: use_build_context_synchronously
-  //     showSnackBar(context, e.toString());
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(

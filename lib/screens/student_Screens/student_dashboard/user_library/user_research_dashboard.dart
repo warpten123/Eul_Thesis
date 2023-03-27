@@ -182,6 +182,7 @@ class _UserLibraryState extends State<UserLibrary> {
                                       height: 20,
                                     ),
                                     Text(res.title,
+                                        // ignore: prefer_const_constructors
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold)),
                                     Text("Published: ${res.date_published}",

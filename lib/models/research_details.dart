@@ -14,7 +14,7 @@ class ResearchDetails extends Equatable {
 
   final List<dynamic> keywords;
   final String title;
-  final String abstract;
+  final String abstracts;
   final String qr;
   final int number_of_views;
 
@@ -27,7 +27,7 @@ class ResearchDetails extends Equatable {
     required this.adviser,
     required this.keywords,
     required this.title,
-    required this.abstract,
+    required this.abstracts,
     required this.qr,
     required this.number_of_views,
   });
@@ -42,7 +42,7 @@ class ResearchDetails extends Equatable {
       'adviser': adviser,
       'keywords': keywords,
       'title': title,
-      'abstract': abstract,
+      'abstracts': abstracts,
       'qr': keywords,
       'number_of_views': number_of_views,
     };
@@ -58,7 +58,7 @@ class ResearchDetails extends Equatable {
       adviser: map['adviser'] as String,
       keywords: map['keywords'] as List<dynamic>,
       title: map['title'] as String,
-      abstract: map['abstracts'] as String,
+      abstracts: map['abstracts'] as String,
       qr: map['qr'] as String,
       number_of_views: map['number_of_views'] as int,
     );
@@ -72,7 +72,7 @@ class ResearchDetails extends Equatable {
       adviser: map['adviser'] as String,
       keywords: map['keywords'] as List<dynamic>,
       title: map['title'] as String,
-      abstract: map['abstracts'] as String,
+      abstracts: map['abstracts'] as String,
       qr: map['qr'] as String,
       number_of_views: map['number_of_views'] as int,
     );
@@ -87,7 +87,7 @@ class ResearchDetails extends Equatable {
         adviser: json['adviser'] as String,
         keywords: json['keywords'] as List<dynamic>,
         title: json['title'] as String,
-        abstract: json['abstracts'] as String,
+        abstracts: json['abstracts'] as String,
         qr: json['qr'] as String,
         number_of_views: json['number_of_views'] as int,
       );
@@ -102,7 +102,7 @@ class ResearchDetails extends Equatable {
       'adviser': adviser,
       'keywords': keywords,
       'title': title,
-      'abstract': abstract,
+      'abstracts': abstracts,
       'qr': qr,
       'number_of_views': number_of_views,
     };
@@ -118,7 +118,7 @@ class ResearchDetails extends Equatable {
         adviser,
         keywords,
         title,
-        abstract,
+        abstracts,
         qr,
         number_of_views
       ];
@@ -144,7 +144,7 @@ class ResearchDetails extends Equatable {
         adviser: adviser ?? this.adviser,
         keywords: keywords ?? this.keywords,
         title: title ?? this.title,
-        abstract: abstract ?? this.abstract,
+        abstracts: abstract ?? this.abstracts,
         qr: qr ?? this.qr,
         number_of_views: number_of_views ?? this.number_of_views);
   }

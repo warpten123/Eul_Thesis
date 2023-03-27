@@ -54,28 +54,6 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
     return reponse = await userService.createAccount(account);
   }
 
-  // List<Research> research = [
-  //   Research(
-  //       title: 'Eul: An Intelligent Research Repository Management',
-  //       image: 'assets/cover_page.jpg',
-  //       department: 'School Of Computer Studies',
-  //       authors: ['Bohol', 'Premacio']),
-  //   Research(
-  //       title: 'A Research Title',
-  //       image: 'assets/cover_page.jpg',
-  //       department: 'School Of Computer Studies',
-  //       authors: ['Cuizon', 'Gadiane']),
-  //   Research(
-  //       title: 'Another Research Title',
-  //       image: 'assets/cover_page.jpg',
-  //       department: 'School Of Computer Studies',
-  //       authors: ['Patalita', 'Bandalan']),
-  //   Research(
-  //       title: 'StudyUp',
-  //       image: 'assets/cover_page.jpg',
-  //       department: 'School Of Computer Studies',
-  //       authors: ['Daguplo', 'Solis']),
-  // ];
   Future<File?> pickFile() async {
     final result = await FilePicker.platform.pickFiles(
         allowMultiple: true,
@@ -110,32 +88,21 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
-      // drawer: Drawer(
-      //   child: SingleChildScrollView(
-      //     child: Container(
-      //       child: Column(
-      //         children: <Widget>[
-      //           HeaderDrawer(),
-      //           // ListDrawer(),
-      //         ],
-      //       ),
-      //     ),
-      //   ),
-      // ),
       backgroundColor: Colors.amberAccent,
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
             Padding(
-              padding: EdgeInsets.only(left: 20, right: 20),
+              padding: const EdgeInsets.only(left: 20, right: 20),
               child: TextField(
                 decoration: InputDecoration(
                   hintText: 'Search Thesis...',
+                  // ignore: prefer_const_constructors
                   prefixIcon: Icon(
                     Icons.search,
                     color: Colors.greenAccent,
@@ -290,6 +257,7 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
                                       contentPadding: EdgeInsets.only(left: 10),
                                       title: Text(
                                         research.data![index].title,
+                                        // ignore: prefer_const_constructors
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold),
                                       ),
@@ -308,21 +276,6 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
                                       ), //Che
                                     ),
                                   ),
-
-                                  // Image.asset(
-                                  //   categories[index].image,
-                                  //   height: 44,
-                                  //   width: 44,
-                                  //   fit: BoxFit.cover,
-                                  // ),
-                                  // SizedBox(
-                                  //   height: 12,
-                                  // ),
-                                  // Text(
-                                  //   categories[index].title,
-                                  //   style: TextStyle(
-                                  //       fontSize: 14, fontWeight: FontWeight.w500),
-                                  // ),
                                 ],
                               ),
                             ),

@@ -27,7 +27,8 @@ class CommentService {
             APIResponse<bool>(error: true, errorMessage: "An error occured"));
   }
 
-  Future<APIResponse<List<Comments>>> getResearchComments(String researchID) {
+  Future<APIResponse<List<Comments>>> getResearchCommentsByID(
+      String researchID) {
     print("bruh wtf");
     return http
         .get(Uri.parse('${baseURL}comment/getAllComments/$researchID'))

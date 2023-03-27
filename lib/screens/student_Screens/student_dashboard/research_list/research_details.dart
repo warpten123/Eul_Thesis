@@ -5,6 +5,7 @@ import 'package:thesis_eul/screens/student_Screens/student_dashboard/research_li
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/research_list/research_button_view.dart';
 
 import '../../../../models/sdg.dart';
+import 'comment_button.dart';
 
 // ignore: camel_case_types
 class Research_Details extends StatelessWidget {
@@ -53,7 +54,7 @@ class Research_Details extends StatelessWidget {
               ListTile(
                 isThreeLine: true,
                 title: const Text('Abstract of the Study'),
-                subtitle: Text(researchDetails.abstract),
+                subtitle: Text(researchDetails.abstracts),
               ),
               ListTile(
                 isThreeLine: true,

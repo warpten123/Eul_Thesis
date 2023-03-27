@@ -64,6 +64,19 @@ String generatePassword() {
   return password;
 }
 
+int generateCommentID() {
+  String comment;
+  var rnd = Random();
+
+  String start = "5000", rndNumber = "";
+  for (var i = 0; i < 5; i++) {
+    rndNumber = rndNumber + rnd.nextInt(9).toString();
+  }
+  comment = start + rndNumber;
+
+  return int.parse(comment);
+}
+
 String generateID() {
   String id;
   var rnd = Random();

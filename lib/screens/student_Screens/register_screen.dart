@@ -327,9 +327,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   last_name: last_nameController.text,
                                   email: email_Controller.text,
                                   password: password_Controller.text,
-                                  role_roleID: 1,
+                                  role_roleID: 4,
                                   departmentID: deptID,
-                                  approve: 1,
+                                  approve: 0,
                                 );
 
                                 final result = await createAccount(account);

@@ -100,54 +100,48 @@ class _File_UploadState extends State<File_Upload> {
         //   centerTitle: true,
         //   title: const Text('Research Upload'),
         // ),
-        body: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Stepper(
-              controlsBuilder:
-                  (BuildContext context, ControlsDetails controls) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    // children: <Widget>[
-                    //   ElevatedButton(
-                    //     onPressed: controls.onStepContinue,
-                    //     child: const Text('CONTINUE'),
-                    //   ),
-                    //   Padding(
-                    //     padding: const EdgeInsets.only(left: 5.0),
-                    //     child: ElevatedButton(
-                    //       onPressed: controls.onStepCancel,
-                    //       child: const Text('CANCEL'),
-                    //     ),
-                    //   ),
-                    // ],
-                  ),
-                );
-              },
-              type: StepperType.vertical,
-              steps: getSteps(context),
-              currentStep: currentStep,
-              onStepContinue: () {
-                final isLastStep = currentStep == getSteps(context).length - 1;
-                setState(() {
-                  if (isLastStep) {
-                  } else {
-                    currentStep += 1;
-                  }
-                  print(currentStep);
-                });
-              },
-              onStepCancel: () {
-                setState(() {
-                  if (currentStep != 0) {
-                    currentStep -= 1;
-                  }
-                });
-              },
-            ),
-          ],
+        body: Stepper(
+          controlsBuilder: (BuildContext context, ControlsDetails controls) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                // children: <Widget>[
+                //   ElevatedButton(
+                //     onPressed: controls.onStepContinue,
+                //     child: const Text('CONTINUE'),
+                //   ),
+                //   Padding(
+                //     padding: const EdgeInsets.only(left: 5.0),
+                //     child: ElevatedButton(
+                //       onPressed: controls.onStepCancel,
+                //       child: const Text('CANCEL'),
+                //     ),
+                //   ),
+                // ],
+              ),
+            );
+          },
+          type: StepperType.horizontal,
+          steps: getSteps(context),
+          currentStep: currentStep,
+          onStepContinue: () {
+            final isLastStep = currentStep == getSteps(context).length - 1;
+            setState(() {
+              if (isLastStep) {
+              } else {
+                currentStep += 1;
+              }
+              print(currentStep);
+            });
+          },
+          onStepCancel: () {
+            setState(() {
+              if (currentStep != 0) {
+                currentStep -= 1;
+              }
+            });
+          },
         ),
       ),
     );
@@ -327,10 +321,10 @@ class _File_UploadState extends State<File_Upload> {
                                   adviser: researchAdviser.text,
                                   keywords: const ["shit", "ficlers"],
                                   title: researchTitle.text,
-                                  abstract: researchAbstract.text,
+                                  abstracts: researchAbstract.text,
                                   qr: "1ss",
                                   number_of_views: 69);
-                              print(payload.abstract);
+                              print(payload.abstracts);
                               final result = await addResearch(payload);
 
                               final resultAuthored = await addAuthored(

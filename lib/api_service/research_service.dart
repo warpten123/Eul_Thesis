@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 // for File
 import 'package:thesis_eul/api_service/api_response.dart';
+import 'package:thesis_eul/models/authored.dart';
 import 'package:thesis_eul/models/research_details.dart';
 
 class ResearchService {
@@ -215,6 +216,24 @@ class ResearchService {
             APIResponse<bool>(error: true, errorMessage: "An error occured"));
   }
 
+  Future<APIResponse<Authored>> getAuthored(String researchID) {
+    return http
+        .get(Uri.parse('${baseURL}api/research/getAuthored/$researchID'),
+            headers: headers)
+        .then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = jsonDecode(data.body)[0];
+        return APIResponse<Authored>(
+          data: Authored.fromJson(jsonData[0]),
+        );
+      } else {
+        print(data.statusCode.toString());
+      }
+      return APIResponse<Authored>(
+          error: true, errorMessage: data.statusCode.toString());
+    }).catchError((_) => APIResponse<Authored>(
+            error: true, errorMessage: "An error occured"));
+  }
   // ///deleteNote
   // Future<APIResponse<bool>> deleteResearch(String researchID) {
   //   return http

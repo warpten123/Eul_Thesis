@@ -10,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:thesis_eul/api_service/file_service.dart';
 import 'package:thesis_eul/models/research_details.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:thesis_eul/screens/student_Screens/student_dashboard/research_list/comment_button.dart';
 import '../../../../api_service/api_response.dart';
 import '../../../../api_service/research_service.dart';
 import '../../../../models/AccountModel.dart';
@@ -51,9 +52,6 @@ class _User_View_ResearchState extends State<User_View_Research> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        // appBar: AppBar(
-        //   title: Text(widget.research.title),
-        // ),
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
@@ -61,6 +59,7 @@ class _User_View_ResearchState extends State<User_View_Research> {
               ResName(),
               ResDesc(),
               ViewPDF(),
+              TempButton(widget.research.research_id!),
             ],
           ),
         ),
@@ -245,7 +244,7 @@ class _User_View_ResearchState extends State<User_View_Research> {
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           Text(
-            widget.research.abstract,
+            widget.research.abstracts,
             textAlign: TextAlign.justify,
             style: TextStyle(fontSize: 18, height: 1.5),
           ),
@@ -266,6 +265,7 @@ class _User_View_ResearchState extends State<User_View_Research> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   Widget ViewPDF() {
     return Container(
       width: double.infinity,
