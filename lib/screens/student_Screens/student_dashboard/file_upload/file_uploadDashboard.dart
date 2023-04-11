@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:thesis_eul/api_service/algorithn_service.dart';
 import 'package:thesis_eul/api_service/file_service.dart';
 import 'package:thesis_eul/models/AccountModel.dart';
 import 'package:thesis_eul/models/research_details.dart';
@@ -57,7 +58,8 @@ class _File_UploadState extends State<File_Upload> {
   late APIResponse<bool> _apiResponse;
   int currentStep = 0;
   final researchTitle = TextEditingController();
-
+  final researchDepartment = TextEditingController();
+  late String researchDate = " ";
   final researchAdviser = TextEditingController();
   final researchAbstract = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -68,9 +70,26 @@ class _File_UploadState extends State<File_Upload> {
   String resID = "";
   ResearchService get resService => GetIt.instance<ResearchService>();
   FileService get fileService => GetIt.instance<FileService>();
-  Future<APIResponse<bool>> fileUpload(Files file) async {
+  AlgorithmService get algoService => GetIt.instance<AlgorithmService>();
+
+  Future<APIResponse<bool>> fileUploadFlask(Files file) async {
+    APIResponse<bool> reponse;
+    return await fileService.fileUploadToFlask(file);
+  }
+
+  Future<APIResponse<bool>> fileUploadNode(Files file) async {
     APIResponse<bool> reponse;
     return await fileService.fileUpload(file);
+  }
+
+  Future<APIResponse<Map<String, dynamic>>> extractInformation(
+      String fileName) async {
+    return await algoService.extractInformation(fileName);
+  }
+
+  Future<APIResponse<Map<String, dynamic>>> extractAbstract(
+      String fileName) async {
+    return await algoService.extractAbstract(fileName);
   }
 
   Future<APIResponse<bool>> addResearch(ResearchDetails researchDetails) async {
@@ -132,7 +151,6 @@ class _File_UploadState extends State<File_Upload> {
               } else {
                 currentStep += 1;
               }
-              print(currentStep);
             });
           },
           onStepCancel: () {
@@ -150,6 +168,28 @@ class _File_UploadState extends State<File_Upload> {
   Files uploadFunc(File files) {
     Files payload = Files(file: files.path, research_id: resID, url: file.path);
     return payload;
+  }
+
+  void extractNamesFromPDF(String fileName) async {
+    final result = await extractInformation(fileName);
+
+    if (result.data != null) {
+      setState(() {
+        researchTitle.text = result.data!['title'];
+        researchDepartment.text = result.data!['department'];
+        researchDate = result.data!['published_date'];
+      });
+    }
+  }
+
+  void extractAbstractFromPDF(String fileName) async {
+    final result = await extractAbstract(fileName);
+
+    if (result.data != null) {
+      setState(() {
+        researchAbstract.text = result.data!['abstract'];
+      });
+    }
   }
 
   List<Step> getSteps(context) => [
@@ -188,9 +228,13 @@ class _File_UploadState extends State<File_Upload> {
                         if (file != null) {
                           resID = generateID();
                           Files payload = uploadFunc(file);
-                          final result = await fileUpload(payload);
+                          final result = await fileUploadFlask(payload);
+                          final resultNode = await fileUploadNode(payload);
+                          extractNamesFromPDF(baseName);
+                          extractAbstractFromPDF(baseName);
                           setState(() {
-                            if (result.data != null) {
+                            if (result.data != null &&
+                                resultNode.data != null) {
                               currentStep += 1;
                               showSnackBarSucess(context, 'PDF Uploaded!');
                             } else {
@@ -248,12 +292,23 @@ class _File_UploadState extends State<File_Upload> {
                       }
                       return null;
                     },
+                    controller: researchDepartment,
+                    decoration: const InputDecoration(labelText: 'Department'),
+                  ),
+                  TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please Enter Text';
+                      }
+                      return null;
+                    },
                     controller: researchAdviser,
                     decoration:
                         const InputDecoration(labelText: 'Paper Adviser'),
                   ),
 
                   TextFormField(
+                    maxLines: 8,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please Enter Text';
@@ -290,7 +345,7 @@ class _File_UploadState extends State<File_Upload> {
                       Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Text(
-                          date!,
+                          researchDate,
                           style: const TextStyle(
                               fontSize: 18.0,
                               color: Color.fromARGB(255, 102, 100, 100)),
@@ -298,11 +353,6 @@ class _File_UploadState extends State<File_Upload> {
                       ),
                     ],
                   ),
-
-                  // TextFormField(
-                  //   controller: researchTitle,
-                  //   decoration: const InputDecoration(labelText: ''),
-                  // ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -317,14 +367,14 @@ class _File_UploadState extends State<File_Upload> {
                                   departmentID: widget.account.departmentID,
                                   topic_category: const ["AI", "ML"],
                                   sdg_category: const ["Goal 1", "Goal 2"],
-                                  date_published: date!,
+                                  date_published: researchDate,
                                   adviser: researchAdviser.text,
                                   keywords: const ["shit", "ficlers"],
                                   title: researchTitle.text,
                                   abstracts: researchAbstract.text,
                                   qr: "1ss",
                                   number_of_views: 69);
-                              print(payload.abstracts);
+
                               final result = await addResearch(payload);
 
                               final resultAuthored = await addAuthored(

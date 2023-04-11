@@ -112,25 +112,25 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
                       color: Colors.greenAccent,
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Icon(
+                    child: const Icon(
                       Icons.filter_none,
                       color: Colors.black,
                     ),
                   ),
                   filled: true,
-                  fillColor: Color(0xfff4f5f9),
+                  fillColor: const Color(0xfff4f5f9),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(6),
-                    borderSide: BorderSide(color: Color(0xfff4f5f9)),
+                    borderSide: const BorderSide(color: Color(0xfff4f5f9)),
                   ),
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20, bottom: 10),
+            const Padding(
+              padding: EdgeInsets.only(left: 20, bottom: 10),
               child: Text(
                 'Select Category',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -141,13 +141,13 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
               child: ListView.builder(
                 itemCount: categories.length,
                 shrinkWrap: true,
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.only(left: 20),
+                padding: const EdgeInsets.only(left: 20),
                 itemBuilder: (context, index) {
                   return Container(
-                    margin: EdgeInsets.only(right: 24),
-                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                    margin: const EdgeInsets.only(right: 24),
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
                     width: 150,
                     decoration: BoxDecoration(
                       color: Colors.greenAccent,
@@ -163,12 +163,12 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
                         //   width: 44,
                         //   fit: BoxFit.cover,
                         // ),
-                        SizedBox(
+                        const SizedBox(
                           height: 12,
                         ),
                         Text(
                           categories[index].title,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 15, fontWeight: FontWeight.w500),
                         ),
                       ],
@@ -177,26 +177,27 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
                 },
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Padding(
-              padding: EdgeInsets.only(left: 20, right: 20),
+              padding: const EdgeInsets.only(left: 20, right: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // ignore: prefer_const_literals_to_create_immutables
                 children: <Widget>[
-                  Text(
+                  const Text(
                     'Tap a research!',
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
-                  Text(
+                  const Text(
                     'Pick one...',
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                   ),
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Container(
@@ -218,13 +219,13 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
                       padding: const EdgeInsets.only(left: 20, bottom: 20),
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: EdgeInsets.all(5.0),
+                          padding: const EdgeInsets.all(5.0),
                           child: Container(
-                            margin: EdgeInsets.only(right: 24),
-                            padding: EdgeInsets.only(top: 10),
+                            margin: const EdgeInsets.only(right: 24),
+                            padding: const EdgeInsets.only(top: 10),
                             width: 100,
                             decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 241, 239, 239),
+                                color: const Color.fromARGB(255, 241, 239, 239),
                                 borderRadius: BorderRadius.circular(20),
                                 border: Border.all(color: Colors.greenAccent)),
                             child: Padding(
@@ -254,7 +255,8 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
                                         width: 50,
                                         fit: BoxFit.cover,
                                       ),
-                                      contentPadding: EdgeInsets.only(left: 10),
+                                      contentPadding:
+                                          const EdgeInsets.only(left: 10),
                                       title: Text(
                                         research.data![index].title,
                                         // ignore: prefer_const_constructors

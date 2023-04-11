@@ -80,6 +80,7 @@ class _CommentsViewState extends State<CommentsView> {
                     }
                     setState(() {
                       getCommentsByID(widget.researchID);
+                      go = true;
                     });
                   }
                 },
@@ -93,7 +94,6 @@ class _CommentsViewState extends State<CommentsView> {
   @override
   void initState() {
     super.initState();
-    print("Go ${widget.isComment}");
     go = widget.isComment;
   }
 
@@ -112,7 +112,7 @@ class _CommentsViewState extends State<CommentsView> {
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: <Widget>[
-              go
+              go == true
                   ? FutureBuilder(
                       future: getCommentsByID(widget.researchID),
                       builder: (BuildContext context,
@@ -130,13 +130,14 @@ class _CommentsViewState extends State<CommentsView> {
                           padding: const EdgeInsets.only(left: 20, bottom: 20),
                           itemBuilder: (context, index) {
                             return Padding(
-                              padding: EdgeInsets.all(5.0),
+                              padding: const EdgeInsets.all(5.0),
                               child: Container(
-                                margin: EdgeInsets.only(right: 24),
-                                padding: EdgeInsets.only(top: 10),
+                                margin: const EdgeInsets.only(right: 24),
+                                padding: const EdgeInsets.only(top: 10),
                                 width: 100,
                                 decoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 241, 239, 239),
+                                    color: const Color.fromARGB(
+                                        255, 241, 239, 239),
                                     borderRadius: BorderRadius.circular(20),
                                     border:
                                         Border.all(color: Colors.greenAccent)),
@@ -169,9 +170,9 @@ class _CommentsViewState extends State<CommentsView> {
                                             fit: BoxFit.cover,
                                           ),
                                           contentPadding:
-                                              EdgeInsets.only(left: 10),
+                                              const EdgeInsets.only(left: 10),
                                           title: Text(
-                                            comments.data![index].comment_text,
+                                            comments.data![index].comment_text!,
                                             // ignore: prefer_const_constructors
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold),
@@ -199,7 +200,7 @@ class _CommentsViewState extends State<CommentsView> {
                           },
                         );
                       })
-                  : Text("No Comments Yet!"),
+                  : const Text("No Comments Yet!"),
             ],
           ),
         ),

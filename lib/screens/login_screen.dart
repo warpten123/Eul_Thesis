@@ -7,6 +7,7 @@ import 'package:thesis_eul/api_service/user_service.dart';
 import 'package:thesis_eul/models/AccountModel.dart';
 
 import 'package:thesis_eul/screens/student_Screens/code_screen.dart';
+import 'package:thesis_eul/screens/student_Screens/register_screen.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/new_user_dashboard.dart';
 import 'package:thesis_eul/screens/utilities/utilities.dart';
 
@@ -177,12 +178,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const CodeScreen()),
+                                builder: (context) => const RegisterScreen()),
                           );
                         },
                         // ignore: prefer_const_constructors
                         child: Text(
-                          'No Account? Enter Code!',
+                          'No Account? Sign Up!',
                           style: const TextStyle(
                               color: Colors.green,
                               fontSize: 14,

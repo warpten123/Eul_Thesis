@@ -21,6 +21,7 @@ class _TempButtonState extends State<TempButton> {
   ResearchService get resService => GetIt.instance<ResearchService>();
   late APIResponse<List<Comments>> _apiResponse;
   bool isGo = false;
+  late Comments checker;
   Future<APIResponse<List<Comments>>> getCommentsByID(String resID) async {
     return _apiResponse = await comService.getResearchCommentsByID(resID);
   }
@@ -40,12 +41,12 @@ class _TempButtonState extends State<TempButton> {
         ),
         onPressed: () async {
           final result = await getCommentsByID(widget.researchID);
-          if (result.data != null) {
-            isGo = true;
-          } else {
+          checker = result.data![0];
+          if (checker.authored_id == null) {
             isGo = false;
+          } else {
+            isGo = true;
           }
-          print("From button $isGo");
           // ignore: use_build_context_synchronously
           Navigator.push(
             context,

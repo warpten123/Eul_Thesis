@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:thesis_eul/api_service/algorithn_service.dart';
 import 'package:thesis_eul/api_service/comments_service.dart';
 import 'package:thesis_eul/api_service/file_service.dart';
 import 'package:thesis_eul/api_service/research_service.dart';
@@ -15,6 +16,7 @@ void setupLocator() {
   GetIt.instance.registerLazySingleton(() => UserService());
   GetIt.instance.registerLazySingleton(() => FileService());
   GetIt.instance.registerLazySingleton(() => CommentService());
+  GetIt.instance.registerLazySingleton(() => AlgorithmService());
 }
 
 void main() async {

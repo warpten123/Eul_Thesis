@@ -12,7 +12,8 @@ class ResearchService {
   static const baseURL = 'http://10.0.2.2:3000/';
   static const headers = {
     'apiKey': 'abaf3c8e-72c0-498b-9862-47afad7add14',
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'Connection': 'Keep-Alive',
   };
   Future<APIResponse<List<ResearchDetails>>> getResearchList() {
     return http

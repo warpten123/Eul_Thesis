@@ -8,7 +8,10 @@ import 'api_response.dart';
 
 class CommentService {
   static const baseURL = 'http://10.0.2.2:3000/';
-  static const headers = {'Content-Type': 'application/json'};
+  static const headers = {
+    'Content-Type': 'application/json',
+    'Connection': 'Keep-Alive',
+  };
   Future<APIResponse<bool>> addComment(Comments comment) {
     print(
         "${comment.school_id}\n${comment.authored_id},\n${comment.comment_text},\n${comment.created_at},\n${comment.updated_at},\n${comment.comment_id}");

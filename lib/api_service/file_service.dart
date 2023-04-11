@@ -11,9 +11,11 @@ import 'package:path_provider/path_provider.dart';
 
 class FileService {
   static const baseURL = 'http://10.0.2.2:3000/';
+  static const baseURLFlask = 'http://10.0.2.2:5000/';
   static const headers = {
     'apiKey': 'abaf3c8e-72c0-498b-9862-47afad7add14',
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'Connection': 'Keep-Alive',
   };
   Future<File> loadNetwork(String url) async {
     final response = await http.get(Uri.parse(url));
@@ -47,13 +49,39 @@ class FileService {
     map['file'] = file.file;
     map['research_id'] = file.research_id;
     map['url'] = file.url;
-    var uri = Uri.parse('${baseURL}file/upload-file/${file.research_id}');
+    var uri = Uri.parse('${baseURL}file/upload-file');
     var request = http.MultipartRequest('POST', uri);
     // request.files.add(
     //     await http.MultipartFile.fromPath('research_id', file.research_id));
 
     request.files.add(await http.MultipartFile.fromPath('file', file.file));
     request.fields['url'] = file.url;
+    var response = await request.send();
+    print(response.statusCode);
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      return APIResponse<bool>(
+        data: true,
+      );
+    }
+    return APIResponse<bool>(
+        error: true, errorMessage: response.statusCode.toString());
+  }
+
+  Future<APIResponse<bool>> fileUploadToFlask(Files file) async {
+    // var userInfo = {
+    //   'school_id': id,
+    //   'password': password,
+    // };
+    var map = <String, dynamic>{};
+    map['file'] = file.file;
+    map['research_id'] = file.research_id;
+    var uri = Uri.parse('${baseURLFlask}upload-file');
+    var request = http.MultipartRequest('POST', uri);
+    // request.files.add(
+    //     await http.MultipartFile.fromPath('research_id', file.research_id));
+
+    request.files.add(await http.MultipartFile.fromPath('file', file.file));
+    request.fields['research_id'] = file.research_id;
     var response = await request.send();
 
     if (response.statusCode == 201 || response.statusCode == 200) {

@@ -329,7 +329,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   password: password_Controller.text,
                                   role_roleID: 4,
                                   departmentID: deptID,
-                                  approve: 0,
+                                  approve: 1,
                                 );
 
                                 final result = await createAccount(account);
