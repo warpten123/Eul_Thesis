@@ -9,7 +9,8 @@ import 'package:thesis_eul/models/authored.dart';
 import 'package:thesis_eul/models/research_details.dart';
 
 class ResearchService {
-  static const baseURL = 'http://10.0.2.2:3000/';
+  // static const baseURL = 'http://10.0.2.2:3000/'; //eul-backend.loca.lt
+  static const baseURL = 'https://lazy-emu-89.loca.lt/'; //eul-backend.loca.lt
   static const headers = {
     'apiKey': 'abaf3c8e-72c0-498b-9862-47afad7add14',
     'Content-Type': 'application/json',

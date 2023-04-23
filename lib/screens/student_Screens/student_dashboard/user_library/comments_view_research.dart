@@ -71,7 +71,8 @@ class _CommentsViewState extends State<CommentsView> {
                     final resultComment = await createComment(payload);
                     if (resultComment.data != null) {
                       // ignore: use_build_context_synchronously
-                      showSnackBarSucess(context, "Comment Added Sucessfully!");
+                      showSnackBarSuccess(
+                          context, "Comment Added Sucessfully!");
                       // ignore: use_build_context_synchronously
                       Navigator.pop(context);
                     } else {

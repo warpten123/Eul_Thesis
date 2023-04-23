@@ -69,8 +69,7 @@ class NavigationDrawer extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          UserLibrary(loggedAccount.school_id!),
+                      builder: (context) => UserLibrary(loggedAccount!),
                     ));
               },
             ),
@@ -84,8 +83,7 @@ class NavigationDrawer extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          UserBookmarks(loggedAccount.school_id!),
+                      builder: (context) => UserBookmarks(loggedAccount),
                     ));
               },
             ),

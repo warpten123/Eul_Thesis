@@ -29,7 +29,7 @@ ScaffoldFeatureController showSnackBarError(BuildContext context, String text) {
   return ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
 
-ScaffoldFeatureController showSnackBarSucess(
+ScaffoldFeatureController showSnackBarSuccess(
     BuildContext context, String text) {
   // final snackBar = SnackBar(
   //   content: Text(text),

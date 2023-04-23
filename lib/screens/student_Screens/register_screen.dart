@@ -53,9 +53,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return reponse = await userService.createAccount(account);
   }
 
-  Future<APIResponse<bool>> addUserProfile(Files file) async {
+  Future<APIResponse<bool>> addUserProfile(Files file, String deparment) async {
     APIResponse<bool> reponse;
-    return reponse = await userService.addUserProfile(file);
+    return reponse = await userService.addUserProfile(file, deparment);
   }
 
   Future<APIResponse<List<Department>>> getAllDepartments() async {
@@ -328,14 +328,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   email: email_Controller.text,
                                   password: password_Controller.text,
                                   role_roleID: 4,
+                                  departmentName: valueDropDown!,
                                   departmentID: deptID,
-                                  approve: 1,
+                                  approve: 0,
                                 );
 
                                 final result = await createAccount(account);
                                 if (result.data != null) {
+                                  Files payload = uploadFunc(image!);
+                                  final resultAvatar = await addUserProfile(
+                                      payload, valueDropDown!);
                                   // ignore: use_build_context_synchronously
-                                  showSnackBarSucess(
+                                  showSnackBarSuccess(
                                       context, "Registered Successfully!");
                                   // ignore: use_build_context_synchronously
                                   Navigator.push(
@@ -349,9 +353,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   showSnackBarError(
                                       context, result.errorMessage.toString());
                                 }
-                                Files payload = uploadFunc(image!);
-                                final resultAvatar =
-                                    await addUserProfile(payload);
+
                                 // Navigator.push(
                                 //   context,
                                 //   MaterialPageRoute(

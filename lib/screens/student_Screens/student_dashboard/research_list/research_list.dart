@@ -17,6 +17,8 @@ import 'package:thesis_eul/models/sdg.dart';
 
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/user_library/user_view_research.dart';
 
+import '../../../utilities/utilities.dart';
+
 // ignore: must_be_immutable
 class ContentUserDashBoard extends StatefulWidget {
   SDG sdg;
@@ -40,7 +42,7 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
   UserService get userService => GetIt.instance<UserService>();
   late APIResponse<List<Account>> _apiResponse;
   late APIResponse<List<ResearchDetails>> _apiResponseRes;
-
+  late Account finalAccount;
   Future<APIResponse<List<Account>>> getAllAccount() async {
     return _apiResponse = await userService.getAllAccounts();
   }
@@ -63,6 +65,31 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
 
     if (result == null) return null;
     // OpenFile.open(file?.path);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  late APIResponse<Account> _getAccount;
+  Future<APIResponse<Account>> getAccount(String school_id) async {
+    return _getAccount = await userService.getStudentByID(school_id);
+  }
+
+  void getAccounts() async {
+    try {
+      print("FUCK");
+      final result = await getAccount(widget.id);
+      finalAccount = result.data!;
+      print("Mounted $mounted");
+      if (mounted) {
+        setState(() {});
+      }
+      // ignore: empty_catches
+    } catch (e) {
+      showSnackBarError(context, "Error Getting User Information!");
+    }
   }
 
   @override
@@ -246,7 +273,7 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
                                               builder: (context) =>
                                                   User_View_Research(
                                                       research.data![index],
-                                                      widget.id)),
+                                                      finalAccount)),
                                         );
                                       },
                                       leading: Image.asset(

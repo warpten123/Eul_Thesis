@@ -6,11 +6,12 @@ import 'package:thesis_eul/screens/utilities/utilities.dart';
 
 import '../../../../api_service/api_response.dart';
 import '../../../../api_service/research_service.dart';
+import '../../../../models/AccountModel.dart';
 import '../user_library/user_view_research.dart';
 
 class UserBookmarks extends StatefulWidget {
-  UserBookmarks(this.schoolID, {super.key});
-  final String schoolID;
+  UserBookmarks(this.account, {super.key});
+  final Account account;
 
   @override
   State<UserBookmarks> createState() => _UserBookmarksState();
@@ -59,7 +60,7 @@ class _UserBookmarksState extends State<UserBookmarks> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            User_View_Research(_selected, widget.schoolID)),
+                            User_View_Research(_selected, widget.account)),
                   );
                 },
                 child: const Icon(Icons.arrow_forward_ios),
@@ -86,7 +87,7 @@ class _UserBookmarksState extends State<UserBookmarks> {
               ),
             ),
             FutureBuilder(
-              future: getUserBookmarks(widget.schoolID),
+              future: getUserBookmarks(widget.account.school_id!),
               builder: (BuildContext context,
                   AsyncSnapshot<APIResponse<List<ResearchDetails>>> snapshot) {
                 if (!snapshot.hasData) {

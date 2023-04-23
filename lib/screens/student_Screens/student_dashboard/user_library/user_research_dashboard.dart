@@ -11,10 +11,11 @@ import 'package:thesis_eul/screens/student_Screens/student_dashboard/research_li
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/user_library/user_view_research.dart';
 
 import '../../../../api_service/api_response.dart';
+import '../../../../models/AccountModel.dart';
 
 class UserLibrary extends StatefulWidget {
-  UserLibrary(this.schoolID, {super.key});
-  String schoolID;
+  UserLibrary(this.account, {super.key});
+  Account account;
 
   @override
   State<UserLibrary> createState() => _UserLibraryState();
@@ -82,7 +83,7 @@ class _UserLibraryState extends State<UserLibrary> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            User_View_Research(_selected, widget.schoolID)),
+                            User_View_Research(_selected, widget.account)),
                   );
                 },
                 child: const Icon(Icons.arrow_forward_ios),
@@ -109,7 +110,7 @@ class _UserLibraryState extends State<UserLibrary> {
               ),
             ),
             FutureBuilder(
-              future: getUserLibrary(widget.schoolID),
+              future: getUserLibrary(widget.account.school_id!),
               builder: (BuildContext context,
                   AsyncSnapshot<APIResponse<List<ResearchDetails>>> snapshot) {
                 if (!snapshot.hasData) {

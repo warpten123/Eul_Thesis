@@ -7,7 +7,8 @@ import '../models/comments.dart';
 import 'api_response.dart';
 
 class CommentService {
-  static const baseURL = 'http://10.0.2.2:3000/';
+  // static const baseURL = 'http://10.0.2.2:3000/';
+  static const baseURL = 'https://lazy-emu-89.loca.lt/';
   static const headers = {
     'Content-Type': 'application/json',
     'Connection': 'Keep-Alive',
@@ -32,7 +33,6 @@ class CommentService {
 
   Future<APIResponse<List<Comments>>> getResearchCommentsByID(
       String researchID) {
-    print("bruh wtf");
     return http
         .get(Uri.parse('${baseURL}comment/getAllComments/$researchID'))
         .then((data) {

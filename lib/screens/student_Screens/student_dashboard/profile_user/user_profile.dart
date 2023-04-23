@@ -28,6 +28,7 @@ class _UserProfileState extends State<UserProfile> {
   late int numberOfResearch = 0;
   late int numberOfBookmarks = 0;
   late APIResponse<List<Account>> _apiResponse;
+  late APIResponse<Account> _getAccount;
   late APIResponse<bool> _apiResponseUpdate;
   late APIResponse<Uint8List> _apiResponseProfile;
   late List<Account> allAccounts;
@@ -35,12 +36,18 @@ class _UserProfileState extends State<UserProfile> {
     return _apiResponse = await userService.getAllAccounts();
   }
 
+  Future<APIResponse<Account>> getAccount(String school_id) async {
+    return _getAccount = await userService.getStudentByID(school_id);
+  }
+
   Future<APIResponse<bool>> updateAccount(Account account) async {
     return _apiResponseUpdate = await userService.updateAccount(account);
   }
 
-  Future<APIResponse<Uint8List>> getProfile(String schoold_id) async {
-    return _apiResponseProfile = await userService.getUserProfile(schoold_id);
+  Future<APIResponse<Uint8List>> getProfile(
+      String schoold_id, String deparment) async {
+    return _apiResponseProfile =
+        await userService.getUserProfile(schoold_id, deparment);
   }
 
   late List<ResearchDetails> userBookMarks;
@@ -127,24 +134,23 @@ class _UserProfileState extends State<UserProfile> {
 
   void getAccounts() async {
     try {
-      final result = await getAllAccounts();
-      allAccounts = result.data!;
-      for (int i = 0; i < allAccounts.length; i++) {
-        if (allAccounts[i].school_id == widget.account.school_id) {
-          finalAccount = allAccounts[i];
-        }
+      print("FUCK");
+      final result = await getAccount(widget.account.school_id!);
+      finalAccount = result.data!;
+      print("Mounted $mounted");
+      if (mounted) {
+        setState(() {
+          firstName_Controller.text = finalAccount.first_name;
+          lastName_Controller.text = finalAccount.last_name;
+          email_Controller.text = finalAccount.email;
+          firstName = finalAccount.first_name;
+          lastName = finalAccount.last_name;
+          id = finalAccount.school_id!;
+          test = firstName_Controller.text;
+          test2 = lastName_Controller.text;
+          test3 = email_Controller.text;
+        });
       }
-      setState(() {
-        firstName_Controller.text = finalAccount.first_name;
-        lastName_Controller.text = finalAccount.last_name;
-        email_Controller.text = finalAccount.email;
-        firstName = finalAccount.first_name;
-        lastName = finalAccount.last_name;
-        id = finalAccount.school_id!;
-        test = firstName_Controller.text;
-        test2 = lastName_Controller.text;
-        test3 = email_Controller.text;
-      });
       // ignore: empty_catches
     } catch (e) {
       showSnackBarError(context, "Error Getting User Information!");
@@ -275,7 +281,9 @@ class _UserProfileState extends State<UserProfile> {
             top: MediaQuery.of(context).padding.top,
             child: GestureDetector(
               onTap: () {
-                Navigator.pop(context);
+                if (mounted) {
+                  Navigator.of(context, rootNavigator: true).pop();
+                }
               },
               child: Container(
                 padding: const EdgeInsets.only(left: 5, top: 5, bottom: 5),
@@ -435,7 +443,7 @@ class _UserProfileState extends State<UserProfile> {
                 isUpdate = true;
               } else if ((isUpdate)) {
                 if (!listenChanges) {
-                  showSnackBarSucess(context, "No Changes!");
+                  showSnackBarSuccess(context, "No Changes!");
                   isUpdate = false;
                   listenChanges = false;
                 }
@@ -450,12 +458,13 @@ class _UserProfileState extends State<UserProfile> {
                     last_name: lastName_Controller.text,
                     email: email_Controller.text,
                     departmentID: finalAccount.departmentID,
+                    departmentName: widget.account.departmentName,
                     role_roleID: 1);
 
                 final result = await updateAccount(payload);
 
                 // ignore: use_build_context_synchronously
-                showSnackBarSucess(context, "Profile Updated! ");
+                showSnackBarSuccess(context, "Profile Updated! ");
                 setState(() {
                   getAccounts();
                   isUpdate = false;

@@ -29,8 +29,10 @@ class _UserDashboardNewState extends State<UserDashboardNew> {
   late APIResponse<Uint8List> _apiResponseProfile;
   ResearchService get resService => GetIt.instance<ResearchService>();
   UserService get userService => GetIt.instance<UserService>();
-  Future<APIResponse<Uint8List>> getProfile(String schoold_id) async {
-    return _apiResponseProfile = await userService.getUserProfile(schoold_id);
+  Future<APIResponse<Uint8List>> getProfile(
+      String schoold_id, String department) async {
+    return _apiResponseProfile =
+        await userService.getUserProfile(schoold_id, department);
   }
 
   @override
@@ -150,6 +152,8 @@ class _UserDashboardNewState extends State<UserDashboardNew> {
       actions: [
         GestureDetector(
           onTap: () {
+            print(
+                "TAP: ${widget.account.departmentName}, ${widget.account.first_name}");
             Navigator.push(
               context,
               MaterialPageRoute(

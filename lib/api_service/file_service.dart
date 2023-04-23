@@ -10,7 +10,8 @@ import 'package:thesis_eul/models/Files.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FileService {
-  static const baseURL = 'http://10.0.2.2:3000/';
+  // static const baseURL = 'http://10.0.2.2:3000/';
+  static const baseURL = 'https://lazy-emu-89.loca.lt/';
   static const baseURLFlask = 'http://10.0.2.2:5000/';
   static const headers = {
     'apiKey': 'abaf3c8e-72c0-498b-9862-47afad7add14',
@@ -40,7 +41,7 @@ class FileService {
     return File(result.paths.first!);
   }
 
-  Future<APIResponse<bool>> fileUpload(Files file) async {
+  Future<APIResponse<bool>> fileUpload(Files file, String deparment) async {
     // var userInfo = {
     //   'school_id': id,
     //   'password': password,
@@ -49,7 +50,9 @@ class FileService {
     map['file'] = file.file;
     map['research_id'] = file.research_id;
     map['url'] = file.url;
-    var uri = Uri.parse('${baseURL}file/upload-file');
+
+    var uri =
+        Uri.parse('${baseURL}file/upload-file/$deparment/${file.research_id}');
     var request = http.MultipartRequest('POST', uri);
     // request.files.add(
     //     await http.MultipartFile.fromPath('research_id', file.research_id));
@@ -93,9 +96,11 @@ class FileService {
         error: true, errorMessage: response.statusCode.toString());
   }
 
-  Future<APIResponse<Uint8List>> getResearchFile(String id) {
+  Future<APIResponse<Uint8List>> getResearchFile(
+      String school_id, String deparment) {
     return http
-        .get(Uri.parse('${baseURL}file/download/$id'), headers: headers)
+        .get(Uri.parse('${baseURL}file/download/$deparment/$school_id'),
+            headers: headers)
         .then((data) {
       if (data.statusCode == 200) {
         dynamic blob = data.bodyBytes;

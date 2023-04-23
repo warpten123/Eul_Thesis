@@ -12,14 +12,16 @@ import 'package:thesis_eul/models/department.dart';
 import '../models/AccountModel.dart';
 
 class UserService {
-  static const baseURL = 'http://10.0.2.2:3000/';
+  // static const baseURL = 'http://10.0.2.2:3000/'; //little-termite-22.loca.lt
   static const baseURL2 = 'http://10.0.2.2:5000/';
+  static const baseURL = 'https://lazy-emu-89.loca.lt/'; //eul-backend.loca.lt
+  static const externalCon = 'http://172.29.7.189/3000/';
   static const headers = {
-    'apiKey': 'abaf3c8e-72c0-498b-9862-47afad7add14',
     'Content-Type': 'application/json',
     'Connection': 'Keep-Alive',
   };
   Future<APIResponse<bool>> userLogin(String id, String password) {
+    print('$id');
     var userInfo = {
       'school_id': id,
       'password': password,
@@ -32,6 +34,8 @@ class UserService {
         return APIResponse<bool>(
           data: true,
         );
+      } else {
+        print("sTATUS ${data.statusCode}");
       }
       return APIResponse<bool>(
           error: true, errorMessage: data.statusCode.toString());
@@ -61,6 +65,7 @@ class UserService {
         final jsonData = (jsonDecode(data.body)[0] as List)
             .map((e) => e as Map<String, dynamic>)
             .toList(); //
+
         final account = <Account>[];
         // print("from API: ${jsonData[0]}");
         // ignore: unused_local_variable
@@ -107,6 +112,7 @@ class UserService {
         .then((data) {
       if (data.statusCode == 200) {
         final jsonData = jsonDecode(data.body)[0];
+
         return APIResponse<Account>(
           data: Account.fromJsonFetchByID(jsonData[0]),
         );
@@ -133,8 +139,10 @@ class UserService {
             APIResponse<bool>(error: true, errorMessage: "An error occured"));
   }
 
-  Future<APIResponse<bool>> addUserProfile(Files file) async {
-    var uri = Uri.parse('${baseURL}image/upload-avatar/${file.research_id}');
+  Future<APIResponse<bool>> addUserProfile(
+      Files file, String department) async {
+    var uri = Uri.parse(
+        '${baseURL}image/upload-avatar/$department/${file.research_id}');
     var request = http.MultipartRequest('POST', uri);
     // request.files.add(
     //     await http.MultipartFile.fromPath('research_id', file.research_id));
@@ -152,9 +160,10 @@ class UserService {
         error: true, errorMessage: response.statusCode.toString());
   }
 
-  Future<APIResponse<Uint8List>> getUserProfile(String id) {
+  Future<APIResponse<Uint8List>> getUserProfile(String id, String department) {
     return http
-        .get(Uri.parse('${baseURL}image/download/$id'), headers: headers)
+        .get(Uri.parse('${baseURL}image/download/$department/$id'),
+            headers: headers)
         .then((data) {
       if (data.statusCode == 200) {
         dynamic blob = data.bodyBytes;

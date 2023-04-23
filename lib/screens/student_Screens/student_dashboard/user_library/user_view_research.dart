@@ -17,9 +17,9 @@ import '../../../../models/AccountModel.dart';
 import '../../../utilities/utilities.dart';
 
 class User_View_Research extends StatefulWidget {
-  User_View_Research(this.research, this.id, {super.key});
+  User_View_Research(this.research, this.account, {super.key});
   ResearchDetails research;
-  String id;
+  Account account;
 
   @override
   State<User_View_Research> createState() => _User_View_ResearchState();
@@ -31,7 +31,8 @@ class _User_View_ResearchState extends State<User_View_Research> {
   FileService get fileService => GetIt.instance<FileService>();
   late APIResponse<dynamic> _apiResponseRes;
   Future<APIResponse<Uint8List>> getResearchFile(String schoolID) async {
-    return _apiResponseRes = await fileService.getResearchFile(schoolID);
+    return _apiResponseRes = await fileService.getResearchFile(
+        schoolID, widget.account.departmentName!);
   }
 
   Future<APIResponse<bool>> addResearchList(
@@ -119,7 +120,7 @@ class _User_View_ResearchState extends State<User_View_Research> {
                       if (isFavorite == false) {
                         isFavorite = true;
                         addBookMarks();
-                        showSnackBarSucess(context, "Research Bookmarked!");
+                        showSnackBarSuccess(context, "Research Bookmarked!");
                       } else {
                         isFavorite = false;
                         showSnackBarError(context, "Removed from Bookmarks!");
@@ -134,13 +135,13 @@ class _User_View_ResearchState extends State<User_View_Research> {
   }
 
   void addBookMarks() async {
-    final resultList =
-        await addResearchList(widget.research.research_id!, widget.id);
+    final resultList = await addResearchList(
+        widget.research.research_id!, widget.account.school_id!);
   }
 
   void removeBookMarks() async {
-    final result =
-        await removeBookMark(widget.research.research_id!, widget.id);
+    final result = await removeBookMark(
+        widget.research.research_id!, widget.account.school_id!);
   }
 
   // ignore: non_constant_identifier_names

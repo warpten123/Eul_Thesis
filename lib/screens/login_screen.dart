@@ -44,8 +44,10 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   // ignore: non_constant_identifier_names
-  Future<APIResponse<Uint8List>> getProfile(String schoold_id) async {
-    return _apiResponseProfile = await userService.getUserProfile(schoold_id);
+  Future<APIResponse<Uint8List>> getProfile(
+      String schoold_id, String department) async {
+    return _apiResponseProfile =
+        await userService.getUserProfile(schoold_id, department);
   }
 
   Future<APIResponse<String>> testFlask(String schoold_id) async {
@@ -205,6 +207,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         margin: const EdgeInsets.only(left: 40, right: 40),
                         child: TextButton(
                           onPressed: () async {
+                            print("holy shit");
                             if (_formKey.currentState!.validate()) {
                               final result = await userLogin(
                                   school_id.text, passwordController.text);
@@ -215,13 +218,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                 // ignore: use_build_context_synchronously
                                 Account test = result.data!;
+
                                 if (test.approve == 1) {
                                   // final result2 = await testFlask("a");
                                   // ignore: use_build_context_synchronously
-                                  showSnackBarSucess(
+                                  showSnackBarSuccess(
                                       context, "Welcome to EUL!");
-                                  final resultUrl =
-                                      await getProfile(school_id.text);
+                                  final resultUrl = await getProfile(
+                                      school_id.text, test.departmentName!);
                                   // ignore: use_build_context_synchronously
                                   Navigator.push(
                                     context,
