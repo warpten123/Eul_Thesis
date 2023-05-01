@@ -69,7 +69,7 @@ class NavigationDrawer extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => UserLibrary(loggedAccount!),
+                      builder: (context) => UserLibrary(loggedAccount),
                     ));
               },
             ),

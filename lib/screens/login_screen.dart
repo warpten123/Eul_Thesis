@@ -50,10 +50,6 @@ class _LoginScreenState extends State<LoginScreen> {
         await userService.getUserProfile(schoold_id, department);
   }
 
-  Future<APIResponse<String>> testFlask(String schoold_id) async {
-    return test = await userService.flaskTest(schoold_id);
-  }
-
   // @override
   // void dispose() {
   //   emailController.dispose();
@@ -207,11 +203,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         margin: const EdgeInsets.only(left: 40, right: 40),
                         child: TextButton(
                           onPressed: () async {
-                            print("holy shit");
                             if (_formKey.currentState!.validate()) {
                               final result = await userLogin(
                                   school_id.text, passwordController.text);
                               // var local = result;
+                              print("RESULT : ${result.data}");
                               if (result.data != null) {
                                 final result =
                                     await getStudentByID(school_id.text);
@@ -240,8 +236,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 }
                               } else {
                                 // ignore: use_build_context_synchronously
-                                showSnackBarError(
-                                    context, "Account doesn't exist!");
+                                showSnackBarError(context,
+                                    "Account doesn't exist! or Your account is still pending confirmation.");
                               }
                             }
                           },

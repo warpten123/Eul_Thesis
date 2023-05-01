@@ -191,6 +191,7 @@ class _File_UploadState extends State<File_Upload> {
         researchDepartment.text = result.data!['department'];
         researchDate = result.data!['published_date'];
         researchAuthors.text = result.data!['authors'];
+        researchDate = convertDate(researchDate);
       });
     }
   }
@@ -203,13 +204,13 @@ class _File_UploadState extends State<File_Upload> {
     }
   }
 
+  List<dynamic> finalKeyPhrases = [];
   void extractKeyPhrasesFunc(String fileName) async {
     final result = await extractKeyPhrases(fileName);
 
-    List<dynamic> test = [];
     if (result.data != null) {
-      test = result.data!;
-      keyPhrases.text = test.join(', ');
+      finalKeyPhrases = result.data!;
+      keyPhrases.text = finalKeyPhrases.join(', ');
     }
   }
 
@@ -278,22 +279,25 @@ class _File_UploadState extends State<File_Upload> {
                     child: ElevatedButton(
                       onPressed: () async {
                         if (file != null) {
+                          bool test = false;
                           resID = generateID();
                           payload = uploadFunc(file);
                           final result = await fileUploadFlask(payload);
                           extractNamesFromPDF(baseName);
                           extractAbstractFromPDF(baseName);
                           extractKeyPhrasesFunc(baseName);
-
+                          test = true;
                           // final resultNode = await fileUploadNode(payload);
                           setState(() {
                             if (result.data != null) {
                               // ignore: unrelated_type_equality_checks
-
+                              print("TEST: $test");
                               // ignore: unrelated_type_equality_checks
-                              showSnackBarSuccess(context, 'PDF Uploaded!');
+                              showSnackBarSuccess(
+                                  context, 'Research Information Extracted');
                             } else {
-                              showSnackBarError(context, 'Error Uploading!');
+                              showSnackBarError(
+                                  context, 'Error Extracting Information!');
                             }
                             currentStep += 1;
                           });
@@ -439,15 +443,15 @@ class _File_UploadState extends State<File_Upload> {
                         child: ElevatedButton(
                           onPressed: () async {
                             if (_formKey.currentState!.validate() &&
-                                date != "Date Published") {
+                                researchDate != "Date Published") {
                               final details = ResearchDetails(
                                   research_id: resID,
                                   departmentID: widget.account.departmentID,
                                   topic_category: const ["AI", "ML"],
                                   sdg_category: const ["Goal 1", "Goal 2"],
-                                  date_published: "1970-01-08",
+                                  date_published: researchDate,
                                   adviser: researchAdviser.text,
-                                  keywords: const ["shit", "ficlers"],
+                                  keywords: finalKeyPhrases,
                                   title: researchTitle.text,
                                   abstracts: researchAbstract.text,
                                   qr: "1ss",

@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:io';
 import 'dart:math';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
@@ -91,3 +92,45 @@ String generateID() {
 
 void openPDF(BuildContext context, String file) => Navigator.of(context)
     .push(MaterialPageRoute(builder: (context) => PDFViewerWidget(file)));
+
+String convertDate(String date) {
+  //convert to yyyy/mm/dd
+  String newDate = "";
+  date = date.replaceAll(",", "");
+  final token = date.split(" ");
+  String month = "";
+  final Map<String, String> months = HashMap(); // Is a HashMap
+  // final  data = {
+  //   'January': 01,'Febuary','March','April','May','June','July','August',
+  //   'September','October','November','December'
+  // };
+  final data = {
+    'January': '01',
+    'Febuary': '02',
+    'March': '03',
+    'April': '04',
+    'May': '05',
+    'June': '06',
+    'July': '07',
+    'August': '08',
+    'September': '09',
+    'October': '10',
+    'November': '11',
+    'December': '12',
+  };
+  months.addEntries(data.entries);
+  months.forEach((key, value) {
+    print('$key \t $value');
+    if (key == token[0]) {
+      month = value;
+    }
+
+    // 5        Saturn
+    // 4        Mars
+    // 3        Earth
+    // 6        Jupiter
+  });
+  newDate = "${token[2]}-$month-${token[1]}";
+  print(newDate);
+  return newDate;
+}

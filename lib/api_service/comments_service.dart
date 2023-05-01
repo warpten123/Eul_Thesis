@@ -5,10 +5,11 @@ import 'package:http/http.dart' as http;
 import '../models/comments.dart';
 
 import 'api_response.dart';
+import 'package:thesis_eul/api_service/links.dart';
 
 class CommentService {
   // static const baseURL = 'http://10.0.2.2:3000/';
-  static const baseURL = 'https://lazy-emu-89.loca.lt/';
+  // static const baseURL = 'https://lazy-emu-89.loca.lt/';
   static const headers = {
     'Content-Type': 'application/json',
     'Connection': 'Keep-Alive',

@@ -3,9 +3,10 @@ import 'dart:convert';
 import 'package:thesis_eul/api_service/api_response.dart';
 import 'package:http/http.dart' as http;
 import '../models/comments.dart';
+import 'package:thesis_eul/api_service/links.dart';
 
 class AlgorithmService {
-  static const baseURLFlask = 'http://10.0.2.2:5000/';
+  // static const baseURLFlask = 'http://10.0.2.2:5000/';
   static const headers = {
     'Content-Type': 'application/json',
     'Connection': 'Keep-Alive',

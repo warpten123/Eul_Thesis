@@ -253,6 +253,19 @@ class _User_View_ResearchState extends State<User_View_Research> {
             height: 20,
           ),
           const Text(
+            'Key Phrases',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            widget.research.keywords.toString().replaceAll("[", ""),
+            textAlign: TextAlign.justify,
+            style: TextStyle(
+                fontSize: 18, height: 1.5, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          const Text(
             'Date Approved',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),

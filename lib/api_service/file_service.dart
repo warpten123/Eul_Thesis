@@ -8,11 +8,12 @@ import 'dart:io'; // for File
 import 'package:thesis_eul/api_service/api_response.dart';
 import 'package:thesis_eul/models/Files.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:thesis_eul/api_service/links.dart';
 
 class FileService {
   // static const baseURL = 'http://10.0.2.2:3000/';
-  static const baseURL = 'https://lazy-emu-89.loca.lt/';
-  static const baseURLFlask = 'http://10.0.2.2:5000/';
+  // static const baseURL = 'https://lazy-emu-89.loca.lt/';
+  // static const baseURLFlask = 'http://10.0.2.2:5000/';
   static const headers = {
     'apiKey': 'abaf3c8e-72c0-498b-9862-47afad7add14',
     'Content-Type': 'application/json',

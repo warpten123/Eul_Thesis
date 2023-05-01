@@ -8,20 +8,17 @@ import 'package:http/http.dart' as http;
 import 'package:thesis_eul/api_service/api_response.dart';
 import 'package:thesis_eul/models/Files.dart';
 import 'package:thesis_eul/models/department.dart';
-
+import 'package:thesis_eul/api_service/links.dart';
 import '../models/AccountModel.dart';
 
 class UserService {
   // static const baseURL = 'http://10.0.2.2:3000/'; //little-termite-22.loca.lt
-  static const baseURL2 = 'http://10.0.2.2:5000/';
-  static const baseURL = 'https://lazy-emu-89.loca.lt/'; //eul-backend.loca.lt
-  static const externalCon = 'http://172.29.7.189/3000/';
+
   static const headers = {
     'Content-Type': 'application/json',
     'Connection': 'Keep-Alive',
   };
   Future<APIResponse<bool>> userLogin(String id, String password) {
-    print('$id');
     var userInfo = {
       'school_id': id,
       'password': password,
@@ -34,8 +31,6 @@ class UserService {
         return APIResponse<bool>(
           data: true,
         );
-      } else {
-        print("sTATUS ${data.statusCode}");
       }
       return APIResponse<bool>(
           error: true, errorMessage: data.statusCode.toString());
@@ -129,6 +124,7 @@ class UserService {
             headers: headers, body: json.encode(account.toJson()))
         .then((data) {
       if (data.statusCode == 200 || data.statusCode == 201) {
+        print('${data.statusCode}');
         return APIResponse<bool>(
           data: true,
         );
@@ -160,6 +156,25 @@ class UserService {
         error: true, errorMessage: response.statusCode.toString());
   }
 
+  // Future<APIResponse<Uint8List>> getUserProfile(String id, String department) {
+  //   return http
+  //       .get(Uri.parse('${baseURL}image/download/$department/$id'),
+  //           headers: headers)
+  //       .then((data) {
+  //     if (data.statusCode == 200) {
+  //       dynamic blob = data.bodyBytes;
+  //       Uint8List image = blob.buffer.asUint8List();
+
+  //       return APIResponse<Uint8List>(
+  //         data: image,
+  //       );
+  //     }
+
+  //     return APIResponse<Uint8List>(
+  //         error: true, errorMessage: data.statusCode.toString());
+  //   }).catchError((_) => APIResponse<Uint8List>(
+  //           error: true, errorMessage: "An error occured"));
+  // }
   Future<APIResponse<Uint8List>> getUserProfile(String id, String department) {
     return http
         .get(Uri.parse('${baseURL}image/download/$department/$id'),
@@ -173,26 +188,26 @@ class UserService {
           data: image,
         );
       }
-
+      print("STATUS ${data.statusCode}");
       return APIResponse<Uint8List>(
           error: true, errorMessage: data.statusCode.toString());
     }).catchError((_) => APIResponse<Uint8List>(
             error: true, errorMessage: "An error occured"));
   }
 
-  Future<APIResponse<String>> flaskTest(String id) {
-    return http
-        .get(Uri.parse("${baseURL2}api?query=$id"), headers: headers)
-        .then((data) {
-      if (data.statusCode == 200) {
-        final jsonData = jsonDecode(data.body);
-        return APIResponse<String>(
-          data: jsonData.toString(),
-        );
-      }
-      return APIResponse<String>(
-          error: true, errorMessage: data.statusCode.toString());
-    }).catchError((_) =>
-            APIResponse<String>(error: true, errorMessage: "An error occured"));
-  }
+  // Future<APIResponse<String>> flaskTest(String id) {
+  //   return http
+  //       .get(Uri.parse("${baseURL2}api?query=$id"), headers: headers)
+  //       .then((data) {
+  //     if (data.statusCode == 200) {
+  //       final jsonData = jsonDecode(data.body);
+  //       return APIResponse<String>(
+  //         data: jsonData.toString(),
+  //       );
+  //     }
+  //     return APIResponse<String>(
+  //         error: true, errorMessage: data.statusCode.toString());
+  //   }).catchError((_) =>
+  //           APIResponse<String>(error: true, errorMessage: "An error occured"));
+  // }
 }

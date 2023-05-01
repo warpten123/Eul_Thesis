@@ -70,6 +70,7 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
   @override
   void initState() {
     super.initState();
+    getAccounts();
   }
 
   late APIResponse<Account> _getAccount;
