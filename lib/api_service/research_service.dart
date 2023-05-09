@@ -41,6 +41,29 @@ class ResearchService {
             error: true, errorMessage: "An error occured"));
   }
 
+  Future<APIResponse<List<ResearchDetails>>> getSDGList(String goal) {
+    return http
+        .get(Uri.parse('${baseURL}api/research/getResearchBySimilarSDG/$goal'))
+        .then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = (jsonDecode(data.body));
+
+        final research = <ResearchDetails>[];
+
+        // ignore: unused_local_variable
+        for (var item in jsonData) {
+          research.add(ResearchDetails.fromJson(item));
+        }
+        return APIResponse<List<ResearchDetails>>(
+          data: research,
+        );
+      }
+      return APIResponse<List<ResearchDetails>>(
+          error: true, errorMessage: "An error occured");
+    }).catchError((_) => APIResponse<List<ResearchDetails>>(
+            error: true, errorMessage: "An error occured"));
+  }
+
   Future<APIResponse<List<ResearchDetails>>> getUserLibray(String schooldID) {
     return http
         .get(Uri.parse('${baseURL}api/research/fetchMyResearchList/$schooldID'))

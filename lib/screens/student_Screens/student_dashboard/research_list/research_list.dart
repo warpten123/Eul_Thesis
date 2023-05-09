@@ -56,6 +56,14 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
     return reponse = await userService.createAccount(account);
   }
 
+  Future<APIResponse<List<ResearchDetails>>> getSDG() async {
+    return _apiResponseRes = await resService.getSDGList(widget.sdg.goal);
+    // final _apiResponseRes = await resService.getResearchList();
+    // for (int i = 0; i < _apiResponseRes.data!.length; i++) {
+    //   test[i] = "";
+    // }
+  }
+
   Future<File?> pickFile() async {
     final result = await FilePicker.platform.pickFiles(
         allowMultiple: true,
@@ -231,7 +239,7 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
             Container(
               height: 400,
               child: FutureBuilder(
-                  future: getAllResearch(),
+                  future: getSDG(),
                   builder: (BuildContext context,
                       AsyncSnapshot<APIResponse<List<ResearchDetails>>>
                           snapshot) {

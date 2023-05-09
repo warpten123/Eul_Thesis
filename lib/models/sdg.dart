@@ -18,7 +18,7 @@ class SDG {
   static List<SDG> generateList() {
     return [
       SDG(
-          goal: 'Goal 1',
+          goal: 'Goal 1: No Poverty',
           name: 'No Poverty',
           subtitle: 0,
           description: 'End Poverty In All Its Forms Everywhere',
@@ -26,7 +26,7 @@ class SDG {
           header:
               'https://drive.google.com/uc?export=view&id=1XjuT6BPQHyKDOnsfMTycpSIUL7r2gXVh'),
       SDG(
-        goal: 'Goal 2',
+        goal: 'Goal 2: Zero Hunger',
         name: 'Zero Hunger',
         subtitle: 0,
         description:
@@ -36,7 +36,7 @@ class SDG {
             'https://drive.google.com/uc?export=view&id=1AJFqaSR7tFznRk4R7EQHmKY-0DFi5_6W',
       ),
       SDG(
-        goal: 'Goal 3',
+        goal: 'Goal 3: Good Health and Well-Being',
         name: 'Good Health and Well-Being',
         subtitle: 0,
         description:
@@ -46,7 +46,7 @@ class SDG {
             'https://drive.google.com/uc?export=view&id=1uvviJvAn_5gj0jYYeOFgWeX3DaZdDsQR',
       ),
       SDG(
-          goal: 'Goal 4',
+          goal: 'Goal 4: Quality Education',
           name: 'Quality Education',
           subtitle: 0,
           description:
@@ -55,7 +55,7 @@ class SDG {
           header:
               'https://drive.google.com/uc?export=view&id=19fQ5FhRQBR8vI2L6zcCPNc6STM_IFFYh'),
       SDG(
-          goal: 'Goal 5',
+          goal: 'Goal 5: Gender Equality',
           name: 'Gender Equality',
           subtitle: 0,
           description:
@@ -64,7 +64,7 @@ class SDG {
           header:
               'https://drive.google.com/uc?export=view&id=1FoeyKzOyVe9v3kJ24r2QdFdEVnzbBPC3'),
       SDG(
-          goal: 'Goal 6',
+          goal: 'Goal 6: Clean Water and Sanitation',
           name: 'Clean Water and Sanitation',
           subtitle: 0,
           description:
@@ -73,7 +73,7 @@ class SDG {
           header:
               'https://drive.google.com/uc?export=view&id=16OGcGwiokjlBe-2a7OX7GyT1RTuNCgKA'),
       SDG(
-          goal: 'Goal 7',
+          goal: 'Goal 7: Affordable and Clean Energy',
           name: 'Affordable and Clean Energy',
           subtitle: 0,
           description:
@@ -82,7 +82,7 @@ class SDG {
           header:
               'https://drive.google.com/uc?export=view&id=1I77A9zR0OsT_gJJFUzz-6BSFP196hpY3'),
       SDG(
-          goal: 'Goal 8',
+          goal: 'Goal 8: Decent Work and Economic Growth',
           name: 'Decent Work and Economic Growth',
           subtitle: 0,
           description:
@@ -91,7 +91,7 @@ class SDG {
           header:
               'https://drive.google.com/uc?export=view&id=1uf8lzjHCnBXks9MpU0bFC4zeAG8alCFA'),
       SDG(
-          goal: 'Goal 9',
+          goal: 'Goal 9: Industry, Innovation, and Infrastrucuture',
           name: 'Industry, Innovation, and Infrastructure',
           subtitle: 0,
           description:
@@ -100,7 +100,7 @@ class SDG {
           header:
               'https://drive.google.com/uc?export=view&id=1l1UiAz23KpVk-Ok0C_W9IbKKGtyV-CdA'),
       SDG(
-          goal: 'Goal 10',
+          goal: 'Goal 10: Reduced Inequalities',
           name: 'Reduced Inequalities',
           subtitle: 0,
           description: 'Reduce inequality within and among countries',
@@ -108,7 +108,7 @@ class SDG {
           header:
               'https://drive.google.com/uc?export=view&id=13DIxOaZN8kJh51xSvx9P7Aaj67JXfDax'),
       SDG(
-          goal: 'Goal 11',
+          goal: 'Goal 11: Sustainable Cities and Communities',
           name: 'Sustainable Cities and Communities',
           subtitle: 0,
           description:
@@ -117,7 +117,7 @@ class SDG {
           header:
               'https://drive.google.com/uc?export=view&id=1agaBoct0L_cE7gn5zAPHp5qxyBVdG0Sq'),
       SDG(
-          goal: 'Goal 12',
+          goal: 'Goal 12: Responsible Consumption and Production',
           name: 'Responsible Consumption and Production',
           subtitle: 0,
           description:
@@ -126,7 +126,7 @@ class SDG {
           header:
               'https://drive.google.com/uc?export=view&id=1Zsc6oinyLQ7u8nk7o_q4I5UWUFfivQdf'),
       SDG(
-          goal: 'Goal 13',
+          goal: 'Goal 13: Climate Action',
           name: 'Climate Action',
           subtitle: 0,
           description:
@@ -135,7 +135,7 @@ class SDG {
           header:
               'https://drive.google.com/uc?export=view&id=19GMEOkYoZ_FfzIdtOaqvwvJxHOxF1HO1'),
       SDG(
-          goal: 'Goal 14',
+          goal: 'Goal 14: Life Below Water',
           name: 'Life Below Water',
           subtitle: 0,
           description:
@@ -144,7 +144,7 @@ class SDG {
           header:
               'https://drive.google.com/uc?export=view&id=1dkBu99yeG2qX3oU_x6Pq0EuXrwfaXJeB'),
       SDG(
-          goal: 'Goal 15',
+          goal: 'Goal 15: Life on Land',
           name: 'Life on Land',
           subtitle: 0,
           description:
@@ -153,7 +153,7 @@ class SDG {
           header:
               'https://drive.google.com/uc?export=view&id=1StWIsrhVM682ek-aHWV90WxvpIx0rWwG'),
       SDG(
-          goal: 'Goal 16',
+          goal: 'Goal 16: Peace, Justice and Strong Institutions',
           name: 'Peace, Justice, and Strong Institutions',
           subtitle: 0,
           description:
@@ -162,7 +162,7 @@ class SDG {
           header:
               'https://drive.google.com/uc?export=view&id=1YibnuVx5Z9v_Bixo5Trxr39_NcK5ZA9P'),
       SDG(
-          goal: 'Goal 17',
+          goal: 'Goal 17: Partnership for the Goals',
           name: 'Partnership for the goals',
           subtitle: 0,
           description:

@@ -1,9 +1,12 @@
 // ignore: file_names
+import 'dart:collection';
+import 'dart:ffi';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:thesis_eul/api_service/algorithn_service.dart';
 import 'package:thesis_eul/api_service/file_service.dart';
 import 'package:thesis_eul/models/AccountModel.dart';
@@ -65,10 +68,13 @@ class _File_UploadState extends State<File_Upload> {
   final researchAuthors = TextEditingController();
   final keyPhrases = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
+  List<Color> color = [];
+  List<String> url = [];
+  List<dynamic> finalGoal = [];
   bool upload = false;
   var baseName;
   var file = null;
+  List<MapEntry<String, dynamic>> sortedEntries = [];
   DateTime? newDateTime;
   String resID = "";
   ResearchService get resService => GetIt.instance<ResearchService>();
@@ -99,6 +105,11 @@ class _File_UploadState extends State<File_Upload> {
     return await algoService.extractAbstract(fileName);
   }
 
+  Future<APIResponse<Map<String, dynamic>>> classifyResearch(
+      String fileName) async {
+    return await algoService.classifyResearch(fileName);
+  }
+
   Future<APIResponse<Map<String, dynamic>>> checkAcceptance(
       String fileName) async {
     return await algoService.checkAcceptance(fileName);
@@ -127,6 +138,7 @@ class _File_UploadState extends State<File_Upload> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.greenAccent.shade100,
         // appBar: AppBar(
         //   centerTitle: true,
         //   title: const Text('Research Upload'),
@@ -244,6 +256,7 @@ class _File_UploadState extends State<File_Upload> {
     // ignore: use_build_context_synchronously
   }
 
+  var data = {};
   late Files payload;
   List<Step> getSteps(context) => [
         Step(
@@ -278,33 +291,37 @@ class _File_UploadState extends State<File_Upload> {
                     padding: const EdgeInsets.all(12.0),
                     child: ElevatedButton(
                       onPressed: () async {
-                        if (file != null) {
-                          bool test = false;
-                          resID = generateID();
-                          payload = uploadFunc(file);
-                          final result = await fileUploadFlask(payload);
-                          extractNamesFromPDF(baseName);
-                          extractAbstractFromPDF(baseName);
-                          extractKeyPhrasesFunc(baseName);
-                          test = true;
-                          // final resultNode = await fileUploadNode(payload);
-                          setState(() {
-                            if (result.data != null) {
-                              // ignore: unrelated_type_equality_checks
-                              print("TEST: $test");
-                              // ignore: unrelated_type_equality_checks
-                              showSnackBarSuccess(
-                                  context, 'Research Information Extracted');
-                            } else {
-                              showSnackBarError(
-                                  context, 'Error Extracting Information!');
-                            }
-                            currentStep += 1;
-                          });
-                        } else {
-                          showSnackBarError(
-                              context, "Try uploading a pdf file.");
-                        }
+                        // if (file != null) {
+                        //   bool test = false;
+                        //   resID = generateID();
+                        //   payload = uploadFunc(file);
+                        //   final result = await fileUploadFlask(payload);
+                        //   extractNamesFromPDF(baseName);
+                        //   extractAbstractFromPDF(baseName);
+                        //   extractKeyPhrasesFunc(baseName);
+                        //   test = true;
+                        //   // final resultNode = await fileUploadNode(payload);
+                        //   setState(() {
+                        //     if (result.data != null) {
+                        //       // ignore: unrelated_type_equality_checks
+                        //       print("TEST: $test");
+                        //       // ignore: unrelated_type_equality_checks
+                        //       showSnackBarSuccess(
+                        //           context, 'Research Information Extracted');
+                        //     } else {
+                        //       showSnackBarError(
+                        //           context, 'Error Extracting Information!');
+                        //     }
+                        //     currentStep += 1;
+                        //   });
+                        // } else {
+                        //   showSnackBarError(
+                        //       context, "Try uploading a pdf file.");
+                        // }
+                        setState(() {
+                          ///uncomment if actual
+                          currentStep += 1;
+                        });
                       },
                       child: const Text('CONTINUE'),
                     ),
@@ -336,82 +353,70 @@ class _File_UploadState extends State<File_Upload> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   TextFormField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please Enter Text';
-                      }
-                      return null;
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'Please Enter Text';
+                    //   }
+                    //   return null;
+                    // },
                     controller: researchTitle,
                     decoration: const InputDecoration(labelText: 'Paper Title'),
                   ),
                   TextFormField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please Enter Text';
-                      }
-                      return null;
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'Please Enter Text';
+                    //   }
+                    //   return null;
+                    // },
                     controller: researchDepartment,
                     decoration: const InputDecoration(labelText: 'Department'),
                   ),
                   TextFormField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please Enter Text';
-                      }
-                      return null;
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'Please Enter Text';
+                    //   }
+                    //   return null;
+                    // },
                     controller: researchAdviser,
                     decoration:
                         const InputDecoration(labelText: 'Paper Adviser'),
                   ),
-
                   TextFormField(
                     maxLines: 8,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please Enter Text';
-                      }
-                      return null;
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'Please Enter Text';
+                    //   }
+                    //   return null;
+                    // },
                     controller: researchAbstract,
                     decoration:
                         const InputDecoration(labelText: 'Paper Abstract'),
                   ),
                   TextFormField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please Enter Text';
-                      }
-                      return null;
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'Please Enter Text';
+                    //   }
+                    //   return null;
+                    // },
                     controller: researchAuthors,
                     decoration:
                         const InputDecoration(labelText: 'Paper Authors'),
                   ),
                   TextFormField(
                     maxLines: 6,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please Enter Text';
-                      }
-                      return null;
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'Please Enter Text';
+                    //   }
+                    //   return null;
+                    // },
                     controller: keyPhrases,
                     decoration: const InputDecoration(labelText: 'Key Phrases'),
                   ),
-                  // child: TextFormField(
-                  //   validator: (value) {
-                  //     if (value == null || value.isEmpty) {
-                  //       return 'Please Enter Text';
-                  //     }
-                  //     return null;
-                  //   },
-                  //   controller: researchDate,
-                  //   decoration: const InputDecoration(labelText: 'Date '),
-                  // ),
-
                   Row(
                     children: <Widget>[
                       IconButton(
@@ -444,58 +449,34 @@ class _File_UploadState extends State<File_Upload> {
                           onPressed: () async {
                             if (_formKey.currentState!.validate() &&
                                 researchDate != "Date Published") {
-                              final details = ResearchDetails(
-                                  research_id: resID,
-                                  departmentID: widget.account.departmentID,
-                                  topic_category: const ["AI", "ML"],
-                                  sdg_category: const ["Goal 1", "Goal 2"],
-                                  date_published: researchDate,
-                                  adviser: researchAdviser.text,
-                                  keywords: finalKeyPhrases,
-                                  title: researchTitle.text,
-                                  abstracts: researchAbstract.text,
-                                  qr: "1ss",
-                                  number_of_views: 69);
-                              addResDetails(details, context);
-                              final resultNode = await fileUploadNode(payload);
-                              final resultAuthored = await addAuthored(
-                                  resID, widget.account.school_id!);
-                              if (resultNode.data != null &&
-                                  resultAuthored.data != null) {
-                                showSnackBarSuccess(
-                                    context, "Uploaded to Node!");
-                              } else {
-                                showSnackBarError(context,
-                                    resultNode.errorMessage.toString());
-                              }
-                              // final payload = ResearchDetails(
-                              //     research_id: resID,
-                              //     departmentID: widget.account.departmentID,
-                              //     topic_category: const ["AI", "ML"],
-                              //     sdg_category: const ["Goal 1", "Goal 2"],
-                              //     date_published: researchDate,
-                              //     adviser: researchAdviser.text,
-                              //     keywords: const ["shit", "ficlers"],
-                              //     title: researchTitle.text,
-                              //     abstracts: researchAbstract.text,
-                              //     qr: "1ss",
-                              //     number_of_views: 69);
+                              Map<String, Float> finalClassify = HashMap();
+                              Map<String, dynamic> test = HashMap();
+                              final dataTest = {
+                                'Goal 1: No Poverty': 20.8,
+                                'Goal 17: Partnership for the Goals': 45.3,
+                                'Goal 14: Life Below Water': 67.2,
+                              };
+                              test.addEntries(dataTest.entries);
+                              // final classifyResult =
+                              //     await classifyResearch(baseName);
 
-                              // final result = await addResearch(payload);
-
-                              // if (result.data != null &&
-                              //     resultAuthored.data != null) {
-                              //   showSnackBarSuccess(
-                              //       context, "Research Uploaded Sucessfully!");
-                              // } else {
-                              //   showSnackBarError(
-                              //       context, "Error Uploading your research!");
-                              // }
-                              // showSnackBarSuccess(
-                              //     context, "Research Uploaded Successfully");
+                              // final test = classifyResult.data;
                               setState(() {
+                                test!.forEach((key, value) {
+                                  test[key] = (value.toDouble() / 100);
+                                });
+                                sortedEntries = test.entries.toList()
+                                  ..sort((a, b) => b.value.compareTo(a.value));
                                 currentStep += 1;
                               });
+
+                              for (int i = 0; i < sortedEntries.length; i++) {
+                                url.add(getImageUrl(sortedEntries[i].key));
+                                color.add(getColor(sortedEntries[i].key));
+                                finalGoal.add(sortedEntries[i].key);
+                              }
+                              print(finalGoal);
+                              print(url);
                             } else {
                               showSnackBarError(context, "Complete the form!");
                             }
@@ -522,8 +503,40 @@ class _File_UploadState extends State<File_Upload> {
             isActive: currentStep >= 1),
         Step(
             state: currentStep > 2 ? StepState.complete : StepState.indexed,
-            title: const Text('Review'),
-            content: Upload_Review(),
+            title: const Text('Classify'),
+            content: Column(
+              children: <Widget>[
+                Upload_Review(sortedEntries, url, color),
+                ElevatedButton(
+                    onPressed: () async {
+                      // final details = ResearchDetails(
+                      //     research_id: resID,
+                      //     departmentID: widget.account.departmentID,
+                      //     topic_category: const ["AI", "ML"],
+                      //     sdg_category: finalGoal,
+                      //     date_published: researchDate,
+                      //     adviser: researchAdviser.text,
+                      //     keywords: finalKeyPhrases,
+                      //     title: researchTitle.text,
+                      //     abstracts: researchAbstract.text,
+                      //     qr: "1ss",
+                      //     number_of_views: 69);
+                      // print(details);
+                      // addResDetails(details, context);
+                      // final resultNode = await fileUploadNode(payload);
+                      // final resultAuthored =
+                      //     await addAuthored(resID, widget.account.school_id!);
+                      // if (resultNode.data != null &&
+                      //     resultAuthored.data != null) {
+                      //   showSnackBarSuccess(context, "Uploaded to Node!");
+                      // } else {
+                      //   showSnackBarError(
+                      //       context, resultNode.errorMessage.toString());
+                      // }
+                    },
+                    child: Text("Add Research")),
+              ],
+            ),
             isActive: currentStep >= 2),
       ];
 }

@@ -106,10 +106,10 @@ class UserService {
         .get(Uri.parse('${baseURL}api/account/$id'), headers: headers)
         .then((data) {
       if (data.statusCode == 200) {
-        final jsonData = jsonDecode(data.body)[0];
+        final jsonData = jsonDecode(data.body);
 
         return APIResponse<Account>(
-          data: Account.fromJsonFetchByID(jsonData[0]),
+          data: Account.fromJsonFetchByID(jsonData),
         );
       }
       return APIResponse<Account>(

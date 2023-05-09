@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:thesis_eul/api_service/api_response.dart';
 import 'package:http/http.dart' as http;
@@ -79,6 +80,22 @@ class AlgorithmService {
       return APIResponse<List<dynamic>>(
           error: true, errorMessage: "An error occured");
     }).catchError((_) => APIResponse<List<dynamic>>(
+            error: true, errorMessage: "An error occured"));
+  }
+
+  Future<APIResponse<Map<String, dynamic>>> classifyResearch(String fileName) {
+    return http
+        .get(Uri.parse('${baseURLFlask}python/classify/$fileName'))
+        .then((data) {
+      if (data.statusCode == 200) {
+        Map<String, dynamic> jsonData = jsonDecode(data.body);
+        return APIResponse<Map<String, dynamic>>(
+          data: jsonData,
+        );
+      }
+      return APIResponse<Map<String, dynamic>>(
+          error: true, errorMessage: "An error occured");
+    }).catchError((_) => APIResponse<Map<String, dynamic>>(
             error: true, errorMessage: "An error occured"));
   }
 }
