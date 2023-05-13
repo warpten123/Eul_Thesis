@@ -143,7 +143,7 @@ Color getColor(String goal) {
         const Color.fromARGB(255, 79, 157, 56),
     'Goal 4: Quality Education': const Color.fromARGB(255, 197, 26, 45),
     'Goal 5: Gender Equality': const Color.fromARGB(255, 253, 57, 33),
-    'Goal 6: Gender Clean Water and Sanitation':
+    'Goal 6: Clean Water and Sanitation':
         const Color.fromARGB(255, 47, 185, 226),
     'Goal 7: Affordable and Clean Energy':
         const Color.fromARGB(255, 253, 194, 12),
@@ -181,7 +181,7 @@ String getImageUrl(String goal) {
     'Goal 3: Good Health and Well-Being': 'assets/3.png',
     'Goal 4: Quality Education': 'assets/4.png',
     'Goal 5: Gender Equality': 'assets/5.png',
-    'Goal 6: Gender Clean Water and Sanitation': 'assets/6.png',
+    'Goal 6: Clean Water and Sanitation': 'assets/6.png',
     'Goal 7: Affordable and Clean Energy': 'assets/7.png',
     'Goal 8: Decent Work and Economic Growth': 'assets/8.png',
     'Goal 9: Industry, Innovation, and Infrastructure': 'assets/9.png',

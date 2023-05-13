@@ -26,6 +26,7 @@ class File_Upload extends StatefulWidget {
 }
 
 class _File_UploadState extends State<File_Upload> {
+  Color universal = Colors.red;
   @override
   void initState() {
     super.initState();
@@ -70,6 +71,7 @@ class _File_UploadState extends State<File_Upload> {
   final _formKey = GlobalKey<FormState>();
   List<Color> color = [];
   List<String> url = [];
+
   List<dynamic> finalGoal = [];
   bool upload = false;
   var baseName;
@@ -138,7 +140,6 @@ class _File_UploadState extends State<File_Upload> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.greenAccent.shade100,
         // appBar: AppBar(
         //   centerTitle: true,
         //   title: const Text('Research Upload'),
@@ -243,16 +244,7 @@ class _File_UploadState extends State<File_Upload> {
     final result = await addResearch(details);
     print("DETIALS ${result.data}");
     // final resultAuthored = await addAuthored(
-    //     resID, widget.account.school_id!);
-    if (result.data != null) {
-      // ignore: use_build_context_synchronously
-
-      showSnackBarSuccess(context, "Research Uploaded Sucessfully!");
-    } else {
-      // ignore: use_build_context_synchronously
-
-      showSnackBarError(context, "Error Uploading your research!");
-    }
+    //     resID, widget.account.school_id!)
     // ignore: use_build_context_synchronously
   }
 
@@ -267,11 +259,11 @@ class _File_UploadState extends State<File_Upload> {
             children: <Widget>[
               TextButton(
                   onPressed: () async {
-                    file = await FileService.pickFile();
-                    if (file == null) return;
-                    setState(() {
-                      baseName = basename(file!.path);
-                    });
+                    // file = await FileService.pickFile();
+                    // if (file == null) return;
+                    // setState(() {
+                    //   baseName = basename(file!.path);
+                    // });
 
                     // if (result.data == null) {
                     //   showSnackBar(context, result.errorMessage.toString());
@@ -447,39 +439,41 @@ class _File_UploadState extends State<File_Upload> {
                         padding: const EdgeInsets.all(12.0),
                         child: ElevatedButton(
                           onPressed: () async {
-                            if (_formKey.currentState!.validate() &&
-                                researchDate != "Date Published") {
-                              Map<String, Float> finalClassify = HashMap();
-                              Map<String, dynamic> test = HashMap();
-                              final dataTest = {
-                                'Goal 1: No Poverty': 20.8,
-                                'Goal 17: Partnership for the Goals': 45.3,
-                                'Goal 14: Life Below Water': 67.2,
-                              };
-                              test.addEntries(dataTest.entries);
-                              // final classifyResult =
-                              //     await classifyResearch(baseName);
+                            // if (_formKey.currentState!.validate() &&
+                            //     researchDate != "Date Published") {
+                            //   Map<String, Float> finalClassify = HashMap();
+                            Map<String, dynamic> test = HashMap();
+                            final dataTest = {
+                              'Goal 1: No Poverty': 20.86677,
+                              'Goal 17: Partnership for the Goals': 45.323232,
+                              'Goal 14: Life Below Water': 67.29999,
+                              'Goal 15: Life on Land': 56.2921,
+                            };
+                            test.addEntries(dataTest.entries);
+                            //   final classifyResult =
+                            //       await classifyResearch(baseName);
 
-                              // final test = classifyResult.data;
-                              setState(() {
-                                test!.forEach((key, value) {
-                                  test[key] = (value.toDouble() / 100);
-                                });
-                                sortedEntries = test.entries.toList()
-                                  ..sort((a, b) => b.value.compareTo(a.value));
-                                currentStep += 1;
+                            //   final test = classifyResult.data;
+                            setState(() {
+                              test!.forEach((key, value) {
+                                test[key] = (value.toDouble() / 100);
                               });
+                              sortedEntries = test.entries.toList()
+                                ..sort((a, b) => b.value.compareTo(a.value));
+                            });
 
-                              for (int i = 0; i < sortedEntries.length; i++) {
-                                url.add(getImageUrl(sortedEntries[i].key));
-                                color.add(getColor(sortedEntries[i].key));
-                                finalGoal.add(sortedEntries[i].key);
-                              }
-                              print(finalGoal);
-                              print(url);
-                            } else {
-                              showSnackBarError(context, "Complete the form!");
+                            for (int i = 0; i < sortedEntries.length; i++) {
+                              url.add(getImageUrl(sortedEntries[i].key));
+                              color.add(getColor(sortedEntries[i].key));
+                              finalGoal.add(sortedEntries[i].key);
                             }
+                            print(
+                                "${sortedEntries.length}, ${url.length}, ${color.length}");
+                            // } else {
+                            //   showSnackBarError(context, "Complete the form!");
+                            // }
+                            currentStep += 1;
+                            //uncomment if actual
                           },
                           child: const Text('CONTINUE'),
                         ),
@@ -507,6 +501,9 @@ class _File_UploadState extends State<File_Upload> {
             content: Column(
               children: <Widget>[
                 Upload_Review(sortedEntries, url, color),
+                SizedBox(
+                  height: 100,
+                ),
                 ElevatedButton(
                     onPressed: () async {
                       // final details = ResearchDetails(
@@ -520,7 +517,7 @@ class _File_UploadState extends State<File_Upload> {
                       //     title: researchTitle.text,
                       //     abstracts: researchAbstract.text,
                       //     qr: "1ss",
-                      //     number_of_views: 69);
+                      //     number_of_views: 0);
                       // print(details);
                       // addResDetails(details, context);
                       // final resultNode = await fileUploadNode(payload);
@@ -528,7 +525,8 @@ class _File_UploadState extends State<File_Upload> {
                       //     await addAuthored(resID, widget.account.school_id!);
                       // if (resultNode.data != null &&
                       //     resultAuthored.data != null) {
-                      //   showSnackBarSuccess(context, "Uploaded to Node!");
+                      //   showSnackBarSuccess(context, "Research Uploaded Successfully!");
+                      //   Navigator.pop(context);
                       // } else {
                       //   showSnackBarError(
                       //       context, resultNode.errorMessage.toString());

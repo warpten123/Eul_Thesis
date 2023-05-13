@@ -8,6 +8,7 @@ import 'package:thesis_eul/models/AccountModel.dart';
 
 import 'package:thesis_eul/screens/student_Screens/code_screen.dart';
 import 'package:thesis_eul/screens/student_Screens/register_screen.dart';
+import 'package:thesis_eul/screens/student_Screens/student_dashboard/file_upload/erika.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/new_user_dashboard.dart';
 import 'package:thesis_eul/screens/utilities/utilities.dart';
 
@@ -229,6 +230,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                         builder: (context) => UserDashboardNew(
                                             result.data!, resultUrl.data!)),
                                   );
+                                  // ignore: use_build_context_synchronously
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //       builder: (context) => Erika()),
+                                  // );
                                 } else {
                                   // ignore: use_build_context_synchronously
                                   showSnackBarError(context,

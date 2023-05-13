@@ -18,7 +18,7 @@ class SDGDescription extends StatelessWidget {
         // ignore: prefer_const_literals_to_create_immutables
         children: [
           Text(
-            'Description',
+            'SDG Description',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           Text(
