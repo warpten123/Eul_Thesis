@@ -170,9 +170,9 @@ class _Upload_ReviewState extends State<Upload_Review> {
                         // ),
                         Container(
                           decoration: const BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(25))),
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.all(Radius.circular(25)),
+                          ),
                           // width: MediaQuery.of(context).size.width * 0.82,
                           // height: MediaQuery.of(context).size.height * 0.28,
 
@@ -183,31 +183,51 @@ class _Upload_ReviewState extends State<Upload_Review> {
                             itemBuilder: (context, index) {
                               return Column(
                                 children: [
-                                  LinearPercentIndicator(
-                                    linearStrokeCap: LinearStrokeCap.round,
-                                    animation: true,
-                                    animationDuration: 1000,
-                                    leading: Container(
-                                      decoration: const BoxDecoration(
-                                          shape: BoxShape.rectangle,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(30))),
-                                      height: 70,
-                                      width: 70,
-                                      child:
-                                          Image.asset(widget.image[index + 1]),
+                                  Center(
+                                    child: LinearPercentIndicator(
+                                      linearStrokeCap: LinearStrokeCap.round,
+                                      animation: true,
+                                      animationDuration: 1000,
+                                      leading: Container(
+                                        decoration: const BoxDecoration(
+                                            shape: BoxShape.rectangle,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(30))),
+                                        height: 70,
+                                        width: 70,
+                                        child: Container(
+                                          width: 100,
+                                          height: 100,
+                                          decoration: BoxDecoration(
+                                            color: Colors.teal,
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            boxShadow: const [
+                                              BoxShadow(
+                                                color: Colors.grey,
+                                                blurRadius: 4,
+                                                offset: Offset(
+                                                    4, 8), // Shadow position
+                                              ),
+                                            ],
+                                          ),
+                                          child: Image.asset(
+                                              widget.image[index + 1]),
+                                        ),
+                                      ),
+                                      trailing: Text(
+                                        '${(widget.goals[index + 1].value * 100).toStringAsFixed(2)}%',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: widget.color[index + 1]),
+                                      ),
+                                      lineHeight: 10,
+                                      percent: widget.goals[index + 1].value,
+                                      progressColor: widget.color[index + 1],
+                                      backgroundColor:
+                                          Colors.deepPurple.shade200,
                                     ),
-                                    trailing: Text(
-                                      '${(widget.goals[index + 1].value * 100).toStringAsFixed(2)}%',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: widget.color[index + 1]),
-                                    ),
-                                    lineHeight: 10,
-                                    percent: widget.goals[index + 1].value,
-                                    progressColor: widget.color[index + 1],
-                                    backgroundColor: Colors.deepPurple.shade200,
                                   ),
                                   const SizedBox(
                                     height: 10,
