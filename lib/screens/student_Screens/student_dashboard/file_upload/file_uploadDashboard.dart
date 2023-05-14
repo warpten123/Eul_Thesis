@@ -306,7 +306,6 @@ class _File_UploadState extends State<File_Upload> {
                 SizedBox(
                   height: 50,
                 ),
-
                 baseName != null
                     ? InkWell(
                         onTap: () async {
@@ -327,11 +326,21 @@ class _File_UploadState extends State<File_Upload> {
                               width: 300,
                               color: Colors.grey,
                               child: Center(
-                                child: Container(
-                                  height: 90,
-                                  width: 90,
-                                  decoration: BoxDecoration(),
-                                  child: Image.asset("assets/icon_pdf.png"),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height: 90,
+                                      width: 90,
+                                      decoration: BoxDecoration(),
+                                      child: Image.asset("assets/icon_pdf.png"),
+                                    ),
+                                    Text(
+                                      "$baseName",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -418,82 +427,6 @@ class _File_UploadState extends State<File_Upload> {
                       )
                     : Container(),
                 baseName != null ? Text("I'm ready to go!") : Text(""),
-                // TextButton(
-                //     onPressed: () async {
-                //       // file = await FileService.pickFile();
-                //       // if (file == null) return;
-                //       // setState(() {
-                //       //   baseName = basename(file!.path);
-                //       // });
-
-                //       // if (result.data == null) {
-                //       //   showSnackBar(context, result.errorMessage.toString());
-                //       // } else {
-                //       //   upload = true;
-                //       //   showSnackBar(context, 'File Uploaded!');
-                //       // }
-                //     },
-                //     child: const Text('Upload PDF')),
-                // baseName != null
-                //     ? Text('Filename: $baseName')
-                //     : const Text('Filename: '),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: <Widget>[
-                //     Padding(
-                //       padding: const EdgeInsets.all(12.0),
-                //       child: ElevatedButton(
-                // onPressed: () async {
-                //   if (file != null) {
-                //     bool test = false;
-                //     resID = generateID();
-                //     payload = uploadFunc(file);
-                //     final result = await fileUploadFlask(payload);
-                //     extractNamesFromPDF(baseName);
-                //     extractAbstractFromPDF(baseName);
-                //     extractKeyPhrasesFunc(baseName);
-                //     test = true;
-                //     // final resultNode = await fileUploadNode(payload);
-                //     setState(() {
-                //       if (result.data != null) {
-                //         // ignore: unrelated_type_equality_checks
-                //         print("TEST: $test");
-                //         // ignore: unrelated_type_equality_checks
-                //         showSnackBarSuccess(
-                //             context, 'Research Information Extracted');
-                //       } else {
-                //         showSnackBarError(
-                //             context, 'Error Extracting Information!');
-                //       }
-                //       currentStep += 1;
-                //     });
-                //   } else {
-                //     showSnackBarError(
-                //         context, "Try uploading a pdf file.");
-                //   }
-                //   setState(() {
-                //     ///uncomment if actual
-                //     currentStep += 1;
-                //   });
-                // },
-                //         child: const Text('CONTINUE'),
-                //       ),
-                //     ),
-                //     Padding(
-                //       padding: const EdgeInsets.all(12.0),
-                //       child: ElevatedButton(
-                //         onPressed: () async {
-                //           if (file != null) {
-                //             openPDF(context, file.path);
-                //           } else {
-                //             showSnackBarError(context, "No PDF to be viewed.");
-                //           }
-                //         },
-                //         child: const Text('VIEW PDF'),
-                //       ),
-                //     ),
-                //   ],
-                // )
               ],
             ),
           ),
@@ -724,31 +657,43 @@ class _File_UploadState extends State<File_Upload> {
                 ),
                 ElevatedButton(
                     onPressed: () async {
-                      // final details = ResearchDetails(
-                      //     research_id: resID,
-                      //     departmentID: widget.account.departmentID,
-                      //     topic_category: const ["AI", "ML"],
-                      //     sdg_category: finalGoal,
-                      //     date_published: researchDate,
-                      //     adviser: researchAdviser.text,
-                      //     keywords: finalKeyPhrases,
-                      //     title: researchTitle.text,
-                      //     abstracts: researchAbstract.text,
-                      //     qr: "1ss",
-                      //     number_of_views: 0);
-                      // print(details);
-                      // addResDetails(details, context);
-                      // final resultNode = await fileUploadNode(payload);
-                      // final resultAuthored =
-                      //     await addAuthored(resID, widget.account.school_id!);
-                      // if (resultNode.data != null &&
-                      //     resultAuthored.data != null) {
-                      //   showSnackBarSuccess(context, "Research Uploaded Successfully!");
-                      //   Navigator.pop(context);
-                      // } else {
-                      //   showSnackBarError(
-                      //       context, resultNode.errorMessage.toString());
-                      // }
+                      final details = ResearchDetails(
+                          research_id: resID,
+                          departmentID: widget.account.departmentID,
+                          topic_category: const ["AI", "ML"],
+                          sdg_category: finalGoal,
+                          date_published: researchDate,
+                          adviser: researchAdviser.text,
+                          keywords: finalKeyPhrases,
+                          title: researchTitle.text,
+                          abstracts: researchAbstract.text,
+                          qr: "1ss",
+                          number_of_views: 0);
+                      print(details);
+                      addResDetails(details, context);
+                      if (isAddResearch == false) {
+                        showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (context) {
+                              return DialogPopup(
+                                  "Adding to repository!", "assets/add.gif");
+                            });
+                      }
+                      final resultNode = await fileUploadNode(payload);
+                      final resultAuthored =
+                          await addAuthored(resID, widget.account.school_id!);
+                      if (resultNode.data != null &&
+                          resultAuthored.data != null) {
+                        showSnackBarSuccess(
+                            context, "Research Uploaded Successfully!");
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      } else {
+                        showSnackBarError(
+                            context, resultNode.errorMessage.toString());
+                      }
                     },
                     child: const Text("Add Research")),
               ],
