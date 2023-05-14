@@ -19,6 +19,7 @@ import 'package:path/path.dart';
 import '../../../../api_service/api_response.dart';
 import '../../../../api_service/research_service.dart';
 import '../../../../models/Files.dart';
+import 'package:dotted_border/dotted_border.dart';
 
 class File_Upload extends StatefulWidget {
   File_Upload(this.account, {super.key});
@@ -257,96 +258,201 @@ class _File_UploadState extends State<File_Upload> {
           isActive: currentStep >= 0,
           state: currentStep > 0 ? StepState.complete : StepState.indexed,
           title: const Text('Upload'),
-          content: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    currentStep += 1;
-                  });
-                },
-                child: Container(
-                  child: Image.asset("assets/loading_un_2.gif"),
+          content: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Text(
+                  "The first step of your journey with us!",
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-              ),
-              // TextButton(
-              //     onPressed: () async {
-              //       // file = await FileService.pickFile();
-              //       // if (file == null) return;
-              //       // setState(() {
-              //       //   baseName = basename(file!.path);
-              //       // });
+                SizedBox(
+                  height: 40,
+                ),
+                InkWell(
+                  onTap: () async {
+                    file = await FileService.pickFile();
+                    if (file == null) return;
+                    setState(() {
+                      baseName = basename(file!.path);
+                    });
+                  },
+                  child: baseName == null
+                      ? Container(
+                          height: 300,
+                          width: 300,
+                          decoration: BoxDecoration(),
+                          child: Image.asset("assets/icon_pdf.png"),
+                        )
+                      : Container(),
+                ),
+                SizedBox(
+                  height: 50,
+                ),
 
-              //       // if (result.data == null) {
-              //       //   showSnackBar(context, result.errorMessage.toString());
-              //       // } else {
-              //       //   upload = true;
-              //       //   showSnackBar(context, 'File Uploaded!');
-              //       // }
-              //     },
-              //     child: const Text('Upload PDF')),
-              // baseName != null
-              //     ? Text('Filename: $baseName')
-              //     : const Text('Filename: '),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: <Widget>[
-              //     Padding(
-              //       padding: const EdgeInsets.all(12.0),
-              //       child: ElevatedButton(
-              //         onPressed: () async {
-              //           // if (file != null) {
-              //           //   bool test = false;
-              //           //   resID = generateID();
-              //           //   payload = uploadFunc(file);
-              //           //   final result = await fileUploadFlask(payload);
-              //           //   extractNamesFromPDF(baseName);
-              //           //   extractAbstractFromPDF(baseName);
-              //           //   extractKeyPhrasesFunc(baseName);
-              //           //   test = true;
-              //           //   // final resultNode = await fileUploadNode(payload);
-              //           //   setState(() {
-              //           //     if (result.data != null) {
-              //           //       // ignore: unrelated_type_equality_checks
-              //           //       print("TEST: $test");
-              //           //       // ignore: unrelated_type_equality_checks
-              //           //       showSnackBarSuccess(
-              //           //           context, 'Research Information Extracted');
-              //           //     } else {
-              //           //       showSnackBarError(
-              //           //           context, 'Error Extracting Information!');
-              //           //     }
-              //           //     currentStep += 1;
-              //           //   });
-              //           // } else {
-              //           //   showSnackBarError(
-              //           //       context, "Try uploading a pdf file.");
-              //           // }
-              //           setState(() {
-              //             ///uncomment if actual
-              //             currentStep += 1;
-              //           });
-              //         },
-              //         child: const Text('CONTINUE'),
-              //       ),
-              //     ),
-              //     Padding(
-              //       padding: const EdgeInsets.all(12.0),
-              //       child: ElevatedButton(
-              //         onPressed: () async {
-              //           if (file != null) {
-              //             openPDF(context, file.path);
-              //           } else {
-              //             showSnackBarError(context, "No PDF to be viewed.");
-              //           }
-              //         },
-              //         child: const Text('VIEW PDF'),
-              //       ),
-              //     ),
-              //   ],
-              // )
-            ],
+                baseName != null
+                    ? InkWell(
+                        onTap: () async {
+                          file = await FileService.pickFile();
+                          if (file == null) return;
+                          setState(() {
+                            baseName = basename(file!.path);
+                          });
+                        },
+                        child: DottedBorder(
+                          borderType: BorderType.RRect,
+                          radius: Radius.circular(15),
+                          padding: EdgeInsets.all(6),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(16)),
+                            child: Container(
+                              height: 200,
+                              width: 300,
+                              color: Colors.grey,
+                              child: Center(
+                                child: Container(
+                                  height: 90,
+                                  width: 90,
+                                  decoration: BoxDecoration(),
+                                  child: Image.asset("assets/icon_pdf.png"),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    // ? Text("File: $baseName",
+                    //     textAlign: TextAlign.justify,
+                    //     style:
+                    //         TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
+                    : Text(
+                        "Click the icon to start uploading!",
+                        textAlign: TextAlign.justify,
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                SizedBox(
+                  height: 20,
+                ),
+                baseName != null
+                    ? Center(
+                        child: Text("Great! You're PDF is now ready!",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold)),
+                      )
+                    : Text(""),
+                baseName != null
+                    ? ElevatedButton(
+                        onPressed: () async {
+                          if (file != null) {
+                            openPDF(context, file.path);
+                          } else {
+                            showSnackBarError(context, "No PDF to be viewed.");
+                          }
+                        },
+                        child: Text("View PDF"))
+                    : Container(),
+                SizedBox(
+                  height: 100,
+                ),
+                baseName != null
+                    ? InkWell(
+                        onTap: () {
+                          setState(() {
+                            currentStep += 1;
+                          });
+                        },
+                        child: SizedBox(
+                          height: 200,
+                          width: 200,
+                          child: Image.asset("assets/loading_un_2.gif"),
+                        ),
+                      )
+                    : Container(),
+                baseName != null
+                    ? Text("Tap the spinning wheel to proceed!")
+                    : Text(""),
+                // TextButton(
+                //     onPressed: () async {
+                //       // file = await FileService.pickFile();
+                //       // if (file == null) return;
+                //       // setState(() {
+                //       //   baseName = basename(file!.path);
+                //       // });
+
+                //       // if (result.data == null) {
+                //       //   showSnackBar(context, result.errorMessage.toString());
+                //       // } else {
+                //       //   upload = true;
+                //       //   showSnackBar(context, 'File Uploaded!');
+                //       // }
+                //     },
+                //     child: const Text('Upload PDF')),
+                // baseName != null
+                //     ? Text('Filename: $baseName')
+                //     : const Text('Filename: '),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: <Widget>[
+                //     Padding(
+                //       padding: const EdgeInsets.all(12.0),
+                //       child: ElevatedButton(
+                //         onPressed: () async {
+                //           // if (file != null) {
+                //           //   bool test = false;
+                //           //   resID = generateID();
+                //           //   payload = uploadFunc(file);
+                //           //   final result = await fileUploadFlask(payload);
+                //           //   extractNamesFromPDF(baseName);
+                //           //   extractAbstractFromPDF(baseName);
+                //           //   extractKeyPhrasesFunc(baseName);
+                //           //   test = true;
+                //           //   // final resultNode = await fileUploadNode(payload);
+                //           //   setState(() {
+                //           //     if (result.data != null) {
+                //           //       // ignore: unrelated_type_equality_checks
+                //           //       print("TEST: $test");
+                //           //       // ignore: unrelated_type_equality_checks
+                //           //       showSnackBarSuccess(
+                //           //           context, 'Research Information Extracted');
+                //           //     } else {
+                //           //       showSnackBarError(
+                //           //           context, 'Error Extracting Information!');
+                //           //     }
+                //           //     currentStep += 1;
+                //           //   });
+                //           // } else {
+                //           //   showSnackBarError(
+                //           //       context, "Try uploading a pdf file.");
+                //           // }
+                //           setState(() {
+                //             ///uncomment if actual
+                //             currentStep += 1;
+                //           });
+                //         },
+                //         child: const Text('CONTINUE'),
+                //       ),
+                //     ),
+                //     Padding(
+                //       padding: const EdgeInsets.all(12.0),
+                //       child: ElevatedButton(
+                //         onPressed: () async {
+                //           if (file != null) {
+                //             openPDF(context, file.path);
+                //           } else {
+                //             showSnackBarError(context, "No PDF to be viewed.");
+                //           }
+                //         },
+                //         child: const Text('VIEW PDF'),
+                //       ),
+                //     ),
+                //   ],
+                // )
+              ],
+            ),
           ),
         ),
         Step(
