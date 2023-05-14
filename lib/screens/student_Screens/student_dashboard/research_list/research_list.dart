@@ -106,115 +106,112 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
     return SafeArea(
         child: Scaffold(
       resizeToAvoidBottomInset: true,
-      // appBar: AppBar(
-      //   leading: IconButton(
-      //       onPressed: () {
-      //         Navigator.pop(context);
-      //       },
-      //       icon: const Icon(Icons.arrow_back)),
-      //   // actions: [
-      //   //   IconButton(
-      //   //       onPressed: () {
-      //   //         Navigator.pop(context);
-      //   //       },
-      //   //       icon: Icon(Icons.logout))
-      //   // ],
-      //   // title: Text(
-      //   //   '${widget.sdg.goal} ${widget.sdg.name}',
-      //   //   style: const TextStyle(fontWeight: FontWeight.bold),
-      //   // ),
-      // ),
-      backgroundColor: Colors.white,
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back)),
+        // actions: [
+        //   IconButton(
+        //       onPressed: () {
+        //         Navigator.pop(context);
+        //       },
+        //       icon: Icon(Icons.logout))
+        // ],
+        title: Text(
+          '${widget.sdg.goal} ${widget.sdg.name}',
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+      backgroundColor: Colors.amberAccent,
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            // const SizedBox(
-            //   height: 50,
-            // ),
-            // Padding(
-            //   padding: const EdgeInsets.only(left: 20, right: 20),
-            //   child: TextField(
-            //     decoration: InputDecoration(
-            //       hintText: 'Search Thesis...',
-            //       // ignore: prefer_const_constructors
-            //       prefixIcon: Icon(
-            //         Icons.search,
-            //         color: Colors.greenAccent,
-            //       ),
-            //       suffixIcon: Container(
-            //         decoration: BoxDecoration(
-            //           color: Colors.greenAccent,
-            //           borderRadius: BorderRadius.circular(8),
-            //         ),
-            //         child: const Icon(
-            //           Icons.filter_none,
-            //           color: Colors.black,
-            //         ),
-            //       ),
-            //       filled: true,
-            //       fillColor: const Color(0xfff4f5f9),
-            //       enabledBorder: OutlineInputBorder(
-            //         borderRadius: BorderRadius.circular(6),
-            //         borderSide: const BorderSide(color: Color(0xfff4f5f9)),
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            // const SizedBox(
-            //   height: 30,
-            // ),
-            // const Padding(
-            //   padding: EdgeInsets.only(left: 20, bottom: 10),
-            //   child: Text(
-            //     'Select Category',
-            //     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            //   ),
-            // ),
-            // Container(
-            //   height: 50,
-            //   child: ListView.builder(
-            //     itemCount: categories.length,
-            //     shrinkWrap: true,
-            //     physics: const BouncingScrollPhysics(),
-            //     scrollDirection: Axis.horizontal,
-            //     padding: const EdgeInsets.only(left: 20),
-            //     itemBuilder: (context, index) {
-            //       return Container(
-            //         margin: const EdgeInsets.only(right: 24),
-            //         padding: const EdgeInsets.only(top: 10, bottom: 10),
-            //         width: 150,
-            //         decoration: BoxDecoration(
-            //           color: Colors.greenAccent,
-            //           borderRadius: BorderRadius.circular(20),
-            //         ),
-            //         child: Column(
-            //           crossAxisAlignment: CrossAxisAlignment.center,
-            //           mainAxisAlignment: MainAxisAlignment.center,
-            //           children: <Widget>[
-            //             // Image.asset(
-            //             //   categories[index].image,
-            //             //   height: 44,
-            //             //   width: 44,
-            //             //   fit: BoxFit.cover,
-            //             // ),
-            //             const SizedBox(
-            //               height: 12,
-            //             ),
-            //             Text(
-            //               categories[index].title,
-            //               style: const TextStyle(
-            //                   fontSize: 15, fontWeight: FontWeight.w500),
-            //             ),
-            //           ],
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // ),
+            const SizedBox(
+              height: 50,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Search Thesis...',
+                  // ignore: prefer_const_constructors
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Colors.greenAccent,
+                  ),
+                  suffixIcon: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.greenAccent,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Icon(
+                      Icons.filter_none,
+                      color: Colors.black,
+                    ),
+                  ),
+                  filled: true,
+                  fillColor: const Color(0xfff4f5f9),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6),
+                    borderSide: const BorderSide(color: Color(0xfff4f5f9)),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 20, bottom: 10),
+              child: Text(
+                'Select Category',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+            ),
             Container(
-              child: Image.asset("assets/header15.jpg"),
+              height: 50,
+              child: ListView.builder(
+                itemCount: categories.length,
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.only(left: 20),
+                itemBuilder: (context, index) {
+                  return Container(
+                    margin: const EdgeInsets.only(right: 24),
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
+                    width: 150,
+                    decoration: BoxDecoration(
+                      color: Colors.greenAccent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        // Image.asset(
+                        //   categories[index].image,
+                        //   height: 44,
+                        //   width: 44,
+                        //   fit: BoxFit.cover,
+                        // ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Text(
+                          categories[index].title,
+                          style: const TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
             const SizedBox(
               height: 30,

@@ -15,6 +15,7 @@ import 'package:thesis_eul/screens/student_Screens/student_dashboard/search_scre
 
 import '../../../api_service/api_response.dart';
 import '../../../api_service/research_service.dart';
+import 'file_upload/upload_dashboard.dart';
 import 'user_drawer/drawer.dart';
 
 class UserDashboardNew extends StatefulWidget {
@@ -145,11 +146,19 @@ class _UserDashboardNewState extends State<UserDashboardNew> {
             //         ),
             //       );
             //     });
+            // Navigator.push(
+            //   //file upload
+            //   context,
+            //   MaterialPageRoute(
+            //       builder: (context) => File_Upload(widget.account)),
+            // );
             Navigator.push(
               //file upload
               context,
               MaterialPageRoute(
-                  builder: (context) => File_Upload(widget.account)),
+                  builder: (context) => UploadDashboard(
+                        widget.account,
+                      )),
             );
           },
           child: const Icon(Icons.add),

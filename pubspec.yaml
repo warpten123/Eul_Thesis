@@ -120,7 +120,9 @@ flutter:
     - assets/testLib.jpeg
     - assets/un.jpg
     - assets/header15.jpg
-  # An image asset can refer to one or more resolution-specific "variants", see
+    - assets/file.png
+    - assets/loading_un_2.gif
+    # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
   # For details regarding adding assets from package dependencies, see

@@ -1,4 +1,6 @@
 // ignore: file_names
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:collection';
 import 'dart:ffi';
 import 'dart:io';
@@ -256,83 +258,94 @@ class _File_UploadState extends State<File_Upload> {
           state: currentStep > 0 ? StepState.complete : StepState.indexed,
           title: const Text('Upload'),
           content: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              TextButton(
-                  onPressed: () async {
-                    // file = await FileService.pickFile();
-                    // if (file == null) return;
-                    // setState(() {
-                    //   baseName = basename(file!.path);
-                    // });
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    currentStep += 1;
+                  });
+                },
+                child: Container(
+                  child: Image.asset("assets/loading_un_2.gif"),
+                ),
+              ),
+              // TextButton(
+              //     onPressed: () async {
+              //       // file = await FileService.pickFile();
+              //       // if (file == null) return;
+              //       // setState(() {
+              //       //   baseName = basename(file!.path);
+              //       // });
 
-                    // if (result.data == null) {
-                    //   showSnackBar(context, result.errorMessage.toString());
-                    // } else {
-                    //   upload = true;
-                    //   showSnackBar(context, 'File Uploaded!');
-                    // }
-                  },
-                  child: const Text('Upload PDF')),
-              baseName != null
-                  ? Text('Filename: $baseName')
-                  : const Text('Filename: '),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        // if (file != null) {
-                        //   bool test = false;
-                        //   resID = generateID();
-                        //   payload = uploadFunc(file);
-                        //   final result = await fileUploadFlask(payload);
-                        //   extractNamesFromPDF(baseName);
-                        //   extractAbstractFromPDF(baseName);
-                        //   extractKeyPhrasesFunc(baseName);
-                        //   test = true;
-                        //   // final resultNode = await fileUploadNode(payload);
-                        //   setState(() {
-                        //     if (result.data != null) {
-                        //       // ignore: unrelated_type_equality_checks
-                        //       print("TEST: $test");
-                        //       // ignore: unrelated_type_equality_checks
-                        //       showSnackBarSuccess(
-                        //           context, 'Research Information Extracted');
-                        //     } else {
-                        //       showSnackBarError(
-                        //           context, 'Error Extracting Information!');
-                        //     }
-                        //     currentStep += 1;
-                        //   });
-                        // } else {
-                        //   showSnackBarError(
-                        //       context, "Try uploading a pdf file.");
-                        // }
-                        setState(() {
-                          ///uncomment if actual
-                          currentStep += 1;
-                        });
-                      },
-                      child: const Text('CONTINUE'),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        if (file != null) {
-                          openPDF(context, file.path);
-                        } else {
-                          showSnackBarError(context, "No PDF to be viewed.");
-                        }
-                      },
-                      child: const Text('VIEW PDF'),
-                    ),
-                  ),
-                ],
-              )
+              //       // if (result.data == null) {
+              //       //   showSnackBar(context, result.errorMessage.toString());
+              //       // } else {
+              //       //   upload = true;
+              //       //   showSnackBar(context, 'File Uploaded!');
+              //       // }
+              //     },
+              //     child: const Text('Upload PDF')),
+              // baseName != null
+              //     ? Text('Filename: $baseName')
+              //     : const Text('Filename: '),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: <Widget>[
+              //     Padding(
+              //       padding: const EdgeInsets.all(12.0),
+              //       child: ElevatedButton(
+              //         onPressed: () async {
+              //           // if (file != null) {
+              //           //   bool test = false;
+              //           //   resID = generateID();
+              //           //   payload = uploadFunc(file);
+              //           //   final result = await fileUploadFlask(payload);
+              //           //   extractNamesFromPDF(baseName);
+              //           //   extractAbstractFromPDF(baseName);
+              //           //   extractKeyPhrasesFunc(baseName);
+              //           //   test = true;
+              //           //   // final resultNode = await fileUploadNode(payload);
+              //           //   setState(() {
+              //           //     if (result.data != null) {
+              //           //       // ignore: unrelated_type_equality_checks
+              //           //       print("TEST: $test");
+              //           //       // ignore: unrelated_type_equality_checks
+              //           //       showSnackBarSuccess(
+              //           //           context, 'Research Information Extracted');
+              //           //     } else {
+              //           //       showSnackBarError(
+              //           //           context, 'Error Extracting Information!');
+              //           //     }
+              //           //     currentStep += 1;
+              //           //   });
+              //           // } else {
+              //           //   showSnackBarError(
+              //           //       context, "Try uploading a pdf file.");
+              //           // }
+              //           setState(() {
+              //             ///uncomment if actual
+              //             currentStep += 1;
+              //           });
+              //         },
+              //         child: const Text('CONTINUE'),
+              //       ),
+              //     ),
+              //     Padding(
+              //       padding: const EdgeInsets.all(12.0),
+              //       child: ElevatedButton(
+              //         onPressed: () async {
+              //           if (file != null) {
+              //             openPDF(context, file.path);
+              //           } else {
+              //             showSnackBarError(context, "No PDF to be viewed.");
+              //           }
+              //         },
+              //         child: const Text('VIEW PDF'),
+              //       ),
+              //     ),
+              //   ],
+              // )
             ],
           ),
         ),
@@ -501,7 +514,7 @@ class _File_UploadState extends State<File_Upload> {
             content: Column(
               children: <Widget>[
                 Upload_Review(sortedEntries, url, color),
-                SizedBox(
+                const SizedBox(
                   height: 100,
                 ),
                 ElevatedButton(
@@ -532,7 +545,7 @@ class _File_UploadState extends State<File_Upload> {
                       //       context, resultNode.errorMessage.toString());
                       // }
                     },
-                    child: Text("Add Research")),
+                    child: const Text("Add Research")),
               ],
             ),
             isActive: currentStep >= 2),
