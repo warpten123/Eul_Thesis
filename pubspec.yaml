@@ -125,6 +125,7 @@ flutter:
     - assets/loading_un_2.gif
     - assets/icon_pdf.png
     - assets/upload5.png
+    - assets/loading_un.gif
     # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
