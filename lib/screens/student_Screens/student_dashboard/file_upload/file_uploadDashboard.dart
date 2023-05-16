@@ -91,6 +91,7 @@ class _File_UploadState extends State<File_Upload> {
   bool isExtractPhrases = false;
   bool isClassify = false;
   bool isAddResearch = false;
+  bool isAccept = false;
   Future<APIResponse<bool>> fileUploadFlask(Files file) async {
     APIResponse<bool> reponse;
     return await fileService.fileUploadToFlask(file);
@@ -158,19 +159,6 @@ class _File_UploadState extends State<File_Upload> {
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                // children: <Widget>[
-                //   ElevatedButton(
-                //     onPressed: controls.onStepContinue,
-                //     child: const Text('CONTINUE'),
-                //   ),
-                //   Padding(
-                //     padding: const EdgeInsets.only(left: 5.0),
-                //     child: ElevatedButton(
-                //       onPressed: controls.onStepCancel,
-                //       child: const Text('CANCEL'),
-                //     ),
-                //   ),
-                // ],
               ),
             );
           },
@@ -347,10 +335,6 @@ class _File_UploadState extends State<File_Upload> {
                           ),
                         ),
                       )
-                    // ? Text("File: $baseName",
-                    //     textAlign: TextAlign.justify,
-                    //     style:
-                    //         TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
                     : Text(
                         "Click the icon to start uploading!",
                         textAlign: TextAlign.justify,
@@ -389,27 +373,44 @@ class _File_UploadState extends State<File_Upload> {
                             resID = generateID();
                             payload = uploadFunc(file);
                             final result = await fileUploadFlask(payload);
+                            showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (context) {
+                                  return DialogPopup("Checking Paper...",
+                                      "assets/acceptance.png");
+                                });
+                            final resultCheck = await checkAcceptance(baseName);
 
                             // final resultNode = await fileUploadNode(payload);
-                            setState(() {
-                              if (isExtractNames == false &&
-                                  isExtractAbstract == false &&
-                                  isExtractPhrases == false) {
-                                showDialog(
-                                    barrierDismissible: false,
-                                    context: context,
-                                    builder: (context) {
-                                      return DialogPopup(
-                                          "Extracting Information...",
-                                          "assets/loading_un_2.gif");
-                                    });
-                              }
-                              extractNamesFromPDF(baseName);
-                              extractAbstractFromPDF(
-                                baseName,
-                              );
-                              extractKeyPhrasesFunc(baseName, context);
-                            });
+                            if (resultCheck.data!['result'] == false) {
+                              showSnackBarError(context,
+                                  "Paper not accepted. Endorsement may not be included.");
+                              Navigator.pop(context);
+                              isAccept = false;
+                            } else {
+                              setState(() {
+                                Navigator.pop(context);
+                                isAccept = false;
+                                if (isExtractNames == false &&
+                                    isExtractAbstract == false &&
+                                    isExtractPhrases == false) {
+                                  showDialog(
+                                      barrierDismissible: false,
+                                      context: context,
+                                      builder: (context) {
+                                        return DialogPopup(
+                                            "Extracting Information...",
+                                            "assets/loading_un_2.gif");
+                                      });
+                                }
+                                extractNamesFromPDF(baseName);
+                                extractAbstractFromPDF(
+                                  baseName,
+                                );
+                                extractKeyPhrasesFunc(baseName, context);
+                              });
+                            }
                           } else {
                             showSnackBarError(
                                 context, "Try uploading a pdf file.");
@@ -426,7 +427,7 @@ class _File_UploadState extends State<File_Upload> {
                         ),
                       )
                     : Container(),
-                baseName != null ? Text("I'm ready to go!") : Text(""),
+                // baseName != null ? Text("I'm ready to go!") : Text(""),
               ],
             ),
           ),
@@ -442,12 +443,12 @@ class _File_UploadState extends State<File_Upload> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     TextFormField(
-                      // validator: (value) {
-                      //   if (value == null || value.isEmpty) {
-                      //     return 'Please Enter Text';
-                      //   }
-                      //   return null;
-                      // },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please Enter Text';
+                        }
+                        return null;
+                      },
                       controller: researchTitle,
                       decoration: const InputDecoration(
                           labelText: 'Paper Title',
@@ -458,12 +459,12 @@ class _File_UploadState extends State<File_Upload> {
                       height: 20,
                     ),
                     TextFormField(
-                      // validator: (value) {
-                      //   if (value == null || value.isEmpty) {
-                      //     return 'Please Enter Text';
-                      //   }
-                      //   return null;
-                      // },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please Enter Text';
+                        }
+                        return null;
+                      },
                       controller: researchDepartment,
                       decoration: const InputDecoration(
                           labelText: 'Department',
@@ -474,12 +475,12 @@ class _File_UploadState extends State<File_Upload> {
                       height: 20,
                     ),
                     TextFormField(
-                      // validator: (value) {
-                      //   if (value == null || value.isEmpty) {
-                      //     return 'Please Enter Text';
-                      //   }
-                      //   return null;
-                      // },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please Enter Text';
+                        }
+                        return null;
+                      },
                       controller: researchAdviser,
                       decoration: const InputDecoration(
                           labelText: 'Adviser',
@@ -491,12 +492,12 @@ class _File_UploadState extends State<File_Upload> {
                     ),
                     TextFormField(
                       maxLines: 8,
-                      // validator: (value) {
-                      //   if (value == null || value.isEmpty) {
-                      //     return 'Please Enter Text';
-                      //   }
-                      //   return null;
-                      // },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please Enter Text';
+                        }
+                        return null;
+                      },
                       controller: researchAbstract,
                       decoration: const InputDecoration(
                           labelText: 'Paper Abstract',
@@ -508,12 +509,12 @@ class _File_UploadState extends State<File_Upload> {
                       height: 20,
                     ),
                     TextFormField(
-                      // validator: (value) {
-                      //   if (value == null || value.isEmpty) {
-                      //     return 'Please Enter Text';
-                      //   }
-                      //   return null;
-                      // },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please Enter Text';
+                        }
+                        return null;
+                      },
                       controller: researchAuthors,
                       decoration: const InputDecoration(
                           labelText: 'Paper Authors',
@@ -525,12 +526,12 @@ class _File_UploadState extends State<File_Upload> {
                     ),
                     TextFormField(
                       maxLines: 6,
-                      // validator: (value) {
-                      //   if (value == null || value.isEmpty) {
-                      //     return 'Please Enter Text';
-                      //   }
-                      //   return null;
-                      // },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please Enter Text';
+                        }
+                        return null;
+                      },
                       controller: keyPhrases,
                       decoration: const InputDecoration(
                           labelText: 'Keyphrases',
@@ -571,54 +572,55 @@ class _File_UploadState extends State<File_Upload> {
                           child: ElevatedButton(
                             onPressed: () async {
                               print("ISCLASSIFY $isClassify");
-                              // if (_formKey.currentState!.validate() &&
-                              //     researchDate != "Date Published") {
-                              //   Map<String, Float> finalClassify = HashMap();
-                              // Map<String, dynamic> test = HashMap();
-                              // final dataTest = {
-                              //   'Goal 1: No Poverty': 20.86677,
-                              //   'Goal 17: Partnership for the Goals': 45.323232,
-                              //   'Goal 14: Life Below Water': 67.29999,
-                              //   'Goal 15: Life on Land': 56.2921,
-                              // };
-                              // test.addEntries(dataTest.entries);
-                              if (isClassify == false) {
-                                showDialog(
-                                    barrierDismissible: false,
-                                    context: context,
-                                    builder: (context) {
-                                      return DialogPopup(
-                                          "Classifying your paper!",
-                                          "assets/loading_un.gif");
+                              if (_formKey.currentState!.validate() &&
+                                  researchDate != "Date Published") {
+                                //   Map<String, Float> finalClassify = HashMap();
+                                // Map<String, dynamic> test = HashMap();
+                                // final dataTest = {
+                                //   'Goal 1: No Poverty': 20.86677,
+                                //   'Goal 17: Partnership for the Goals': 45.323232,
+                                //   'Goal 14: Life Below Water': 67.29999,
+                                //   'Goal 15: Life on Land': 56.2921,
+                                // };
+                                // test.addEntries(dataTest.entries);
+                                if (isClassify == false) {
+                                  showDialog(
+                                      barrierDismissible: false,
+                                      context: context,
+                                      builder: (context) {
+                                        return DialogPopup(
+                                            "Classifying your paper!",
+                                            "assets/loading_un.gif");
+                                      });
+                                }
+                                final classifyResult =
+                                    await classifyResearch(baseName);
+
+                                if (classifyResult.data != null) {
+                                  final test = classifyResult.data;
+                                  setState(() {
+                                    test!.forEach((key, value) {
+                                      test[key] = (value.toDouble() / 100);
                                     });
-                              }
-                              final classifyResult =
-                                  await classifyResearch(baseName);
-
-                              if (classifyResult.data != null) {
-                                final test = classifyResult.data;
-                                setState(() {
-                                  test!.forEach((key, value) {
-                                    test[key] = (value.toDouble() / 100);
+                                    sortedEntries = test.entries.toList()
+                                      ..sort(
+                                          (a, b) => b.value.compareTo(a.value));
+                                    for (int i = 0;
+                                        i < sortedEntries.length;
+                                        i++) {
+                                      url.add(
+                                          getImageUrl(sortedEntries[i].key));
+                                      color.add(getColor(sortedEntries[i].key));
+                                      finalGoal.add(sortedEntries[i].key);
+                                    }
+                                    Navigator.pop(context);
+                                    currentStep += 1;
                                   });
-                                  sortedEntries = test.entries.toList()
-                                    ..sort(
-                                        (a, b) => b.value.compareTo(a.value));
-                                  for (int i = 0;
-                                      i < sortedEntries.length;
-                                      i++) {
-                                    url.add(getImageUrl(sortedEntries[i].key));
-                                    color.add(getColor(sortedEntries[i].key));
-                                    finalGoal.add(sortedEntries[i].key);
-                                  }
-                                  Navigator.pop(context);
-                                  currentStep += 1;
-                                });
+                                }
+                              } else {
+                                showSnackBarError(
+                                    context, "Complete the form!");
                               }
-
-                              // } else {
-                              //   showSnackBarError(context, "Complete the form!");
-                              // }
 
                               //uncomment if actual
                             },
