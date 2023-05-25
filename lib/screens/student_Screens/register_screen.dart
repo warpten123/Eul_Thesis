@@ -8,6 +8,7 @@ import 'package:thesis_eul/api_service/user_service.dart';
 import 'package:thesis_eul/models/department.dart';
 
 import 'package:thesis_eul/screens/login_screen.dart';
+import 'package:thesis_eul/screens/student_Screens/student_dashboard/file_upload/dialog.dart';
 import 'package:thesis_eul/screens/student_Screens/user_dashboard.dart';
 import 'package:thesis_eul/screens/utilities/utilities.dart';
 import 'package:path/path.dart';
@@ -32,17 +33,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final email_Controller = TextEditingController();
   // ignore: non_constant_identifier_names
   final password_Controller = TextEditingController();
+  final id_controller = TextEditingController();
   File? image = null;
   String pass = "";
   var baseName;
   List<String> deparments = [
     "School of Computer Studies",
-    "School of Allied Medicine",
+    "School of Allied Medical Sciences",
     "School of Arts and Sciences",
     "School of Law",
-    "School of Business Administration",
+    "School of Business and Management",
     "School of Engineering",
-    "School of Education"
+    "School of Education",
+    "Senior High School",
+    "RITTC",
   ];
   ResearchService get resService => GetIt.instance<ResearchService>();
   UserService get userService => GetIt.instance<UserService>();
@@ -63,8 +67,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Files uploadFunc(File files) {
-    Files payload =
-        Files(file: files.path, research_id: pass, url: image!.path);
+    Files payload = Files(
+        file: files.path, research_id: id_controller.text, url: image!.path);
     return payload;
   }
 
@@ -247,6 +251,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         height: 12,
                       ),
                       Container(
+                        height: 50,
+                        margin: const EdgeInsets.only(left: 40, right: 40),
+                        child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please Enter ID';
+                            }
+                            return null;
+                          },
+                          controller: id_controller,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
+                          decoration: InputDecoration(
+                            labelText: "School ID",
+                            labelStyle: TextStyle(color: Colors.grey.shade500),
+                            filled: true,
+                            fillColor: const Color(0xff161d27).withOpacity(0.9),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: const BorderSide(color: Colors.green),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Container(
                           height: 50,
                           margin: const EdgeInsets.only(left: 40, right: 40),
                           decoration: BoxDecoration(
@@ -310,6 +345,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               if (image != null && valueDropDown != null) {
+                                showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (context) {
+                                      return DialogPopup("Registering Account!",
+                                          "assets/loading_un_2.gif");
+                                    });
                                 int deptID = 0;
                                 final resultDept = await getAllDepartments();
                                 List<Department> department;
@@ -321,8 +363,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   }
                                 }
                                 pass = generatePassword();
+                                print(id_controller.text);
                                 final account = Account(
-                                  school_id: pass,
+                                  school_id: id_controller.text,
                                   first_name: fist_nameController.text,
                                   last_name: last_nameController.text,
                                   email: email_Controller.text,
@@ -335,6 +378,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                                 final result = await createAccount(account);
                                 if (result.data != null) {
+                                  Navigator.pop(context);
                                   Files payload = uploadFunc(image!);
                                   final resultAvatar = await addUserProfile(
                                       payload, valueDropDown!);
@@ -349,9 +393,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                             const LoginScreen()),
                                   );
                                 } else {
+                                  Navigator.pop(context);
                                   // ignore: use_build_context_synchronously
-                                  showSnackBarError(
-                                      context, result.errorMessage.toString());
+                                  showSnackBarError(context,
+                                      "There's something wrong with your information!");
                                 }
 
                                 // Navigator.push(
@@ -360,6 +405,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 //       builder: (context) => const UserDashboard()),
                                 // );
                               } else {
+                                Navigator.pop(context);
                                 showSnackBarError(
                                     context, "Registration Error!");
                               }

@@ -139,7 +139,7 @@ Color getColor(String goal) {
   final data = {
     'Goal 1: No Poverty': const Color.fromARGB(255, 230, 36, 60),
     'Goal 2: Zero Hunger': const Color.fromARGB(255, 222, 165, 58),
-    'Goal 3: Good Health and Well Being':
+    'Goal 3: Good Health and Well-Being':
         const Color.fromARGB(255, 79, 157, 56),
     'Goal 4: Quality Education': const Color.fromARGB(255, 197, 26, 45),
     'Goal 5: Gender Equality': const Color.fromARGB(255, 253, 57, 33),

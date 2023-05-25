@@ -8,7 +8,7 @@ import 'package:thesis_eul/models/AccountModel.dart';
 
 import 'package:thesis_eul/screens/student_Screens/code_screen.dart';
 import 'package:thesis_eul/screens/student_Screens/register_screen.dart';
-import 'package:thesis_eul/screens/student_Screens/student_dashboard/file_upload/erika.dart';
+import 'package:thesis_eul/screens/student_Screens/student_dashboard/file_upload/dialog.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/new_user_dashboard.dart';
 import 'package:thesis_eul/screens/utilities/utilities.dart';
 
@@ -205,11 +205,19 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: TextButton(
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
+                              showDialog(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (context) {
+                                    return DialogPopup("Logging In!",
+                                        "assets/loading_un_2.gif");
+                                  });
                               final result = await userLogin(
                                   school_id.text, passwordController.text);
-                              // var local = result;
-                              print("RESULT : ${result.data}");
+
                               if (result.data != null) {
+                                // ignore: use_build_context_synchronously
+                                Navigator.pop(context);
                                 final result =
                                     await getStudentByID(school_id.text);
 

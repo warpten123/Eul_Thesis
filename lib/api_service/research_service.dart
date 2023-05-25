@@ -17,9 +17,9 @@ class ResearchService {
     'Content-Type': 'application/json',
     'Connection': 'Keep-Alive',
   };
-  Future<APIResponse<List<ResearchDetails>>> getResearchList() {
+  Future<APIResponse<List<ResearchDetails>>> getResearchList(int approve) {
     return http
-        .get(Uri.parse('${baseURL}api/research/fetchAllResearchList'))
+        .get(Uri.parse('${baseURL}api/research/fetchAllResearchList/$approve'))
         .then((data) {
       if (data.statusCode == 200) {
         final jsonData = (jsonDecode(data.body)[0] as List)

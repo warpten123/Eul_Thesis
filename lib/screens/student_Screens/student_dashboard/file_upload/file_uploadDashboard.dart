@@ -2,6 +2,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:collection';
+import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -247,13 +248,14 @@ class _File_UploadState extends State<File_Upload> {
 
   void addResDetails(ResearchDetails details, BuildContext context) async {
     bool go = false;
+    print("SHIT ${details.sdg_categories}");
     final result = await addResearch(details);
-    print("DETIALS ${result.data}");
     // final resultAuthored = await addAuthored(
     //     resID, widget.account.school_id!)
     // ignore: use_build_context_synchronously
   }
 
+  Map<String, dynamic> shit = {};
   var data = {};
   late Files payload;
   List<Step> getSteps(context) => [
@@ -287,7 +289,7 @@ class _File_UploadState extends State<File_Upload> {
                           height: 300,
                           width: 300,
                           decoration: BoxDecoration(),
-                          child: Image.asset("assets/icon_pdf.png"),
+                          child: Image.asset("assets/new_upload.png"),
                         )
                       : Container(),
                 ),
@@ -598,6 +600,7 @@ class _File_UploadState extends State<File_Upload> {
 
                                 if (classifyResult.data != null) {
                                   final test = classifyResult.data;
+                                  shit = test!;
                                   setState(() {
                                     test!.forEach((key, value) {
                                       test[key] = (value.toDouble() / 100);
@@ -659,19 +662,22 @@ class _File_UploadState extends State<File_Upload> {
                 ),
                 ElevatedButton(
                     onPressed: () async {
+                      // Map<String, dynamic> map = {shit.key: shit.value};
+                      String json = jsonEncode(shit);
                       final details = ResearchDetails(
-                          research_id: resID,
-                          departmentID: widget.account.departmentID,
-                          topic_category: const ["AI", "ML"],
-                          sdg_category: finalGoal,
-                          date_published: researchDate,
-                          adviser: researchAdviser.text,
-                          keywords: finalKeyPhrases,
-                          title: researchTitle.text,
-                          abstracts: researchAbstract.text,
-                          qr: "1ss",
-                          number_of_views: 0);
-                      print(details);
+                        research_id: resID,
+                        departmentID: widget.account.departmentID,
+                        sdg_category: finalGoal,
+                        date_published: researchDate,
+                        adviser: researchAdviser.text,
+                        keywords: finalKeyPhrases,
+                        title: researchTitle.text,
+                        abstracts: researchAbstract.text,
+                        number_of_views: 0,
+                        approved: 0,
+                        sdg_categories: json,
+                      );
+
                       addResDetails(details, context);
                       if (isAddResearch == false) {
                         showDialog(

@@ -328,7 +328,7 @@ class _UserProfileState extends State<UserProfile> {
         NumberDivider(),
         NumberButton(text: "Bookmarks", value: numberOfBookmarks),
         NumberDivider(),
-        NumberButton(text: "Citations", value: 10),
+        // NumberButton(text: "Citations", value: 10),
       ],
     );
   }

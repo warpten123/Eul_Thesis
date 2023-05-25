@@ -18,6 +18,7 @@ import 'package:thesis_eul/models/sdg.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/user_library/user_view_research.dart';
 
 import '../../../utilities/utilities.dart';
+import '../search_screen.dart';
 
 // ignore: must_be_immutable
 class ContentUserDashBoard extends StatefulWidget {
@@ -48,7 +49,7 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
   }
 
   Future<APIResponse<List<ResearchDetails>>> getAllResearch() async {
-    return _apiResponseRes = await resService.getResearchList();
+    return _apiResponseRes = await resService.getResearchList(1);
   }
 
   Future<APIResponse<bool>> createAccount(Account account) async {
@@ -134,33 +135,58 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
               height: 50,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search Thesis...',
-                  // ignore: prefer_const_constructors
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: Colors.greenAccent,
-                  ),
-                  suffixIcon: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.greenAccent,
-                      borderRadius: BorderRadius.circular(8),
+              padding: EdgeInsets.only(left: 20, right: 20),
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 1,
+                      blurRadius: 7,
+                      offset: const Offset(0, 3),
                     ),
-                    child: const Icon(
-                      Icons.filter_none,
-                      color: Colors.black,
-                    ),
-                  ),
-                  filled: true,
-                  fillColor: const Color(0xfff4f5f9),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(6),
-                    borderSide: const BorderSide(color: Color(0xfff4f5f9)),
-                  ),
+                  ],
+                ),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                      prefixIcon: Container(
+                        padding: EdgeInsets.all(10),
+                        child: Icon(Icons.search),
+                        width: 24,
+                      ),
+                      border: InputBorder.none,
+                      hintText: 'Search Thesis...'),
                 ),
               ),
+              // child: TextField(
+              //   decoration: InputDecoration(
+              //     hintText: 'Search Thesis...',
+              //     // ignore: prefer_const_constructors
+              //     prefixIcon: Icon(
+              //       Icons.search,
+              //       color: Colors.greenAccent,
+              //     ),
+              //     suffixIcon: Container(
+              //       decoration: BoxDecoration(
+              //         color: Colors.greenAccent,
+              //         borderRadius: BorderRadius.circular(8),
+              //       ),
+              //       child: const Icon(
+              //         Icons.filter_none,
+              //         color: Colors.black,
+              //       ),
+              //     ),
+              //     filled: true,
+              //     fillColor: const Color(0xfff4f5f9),
+              //     enabledBorder: OutlineInputBorder(
+              //       borderRadius: BorderRadius.circular(6),
+              //       borderSide: const BorderSide(color: Color(0xfff4f5f9)),
+              //     ),
+              //   ),
+              // ),
             ),
             const SizedBox(
               height: 30,

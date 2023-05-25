@@ -15,6 +15,7 @@ import '../../../../api_service/api_response.dart';
 import '../../../../api_service/research_service.dart';
 import '../../../../models/AccountModel.dart';
 import '../../../utilities/utilities.dart';
+import '../file_upload/dialog.dart';
 
 class User_View_Research extends StatefulWidget {
   User_View_Research(this.research, this.account, {super.key});
@@ -60,7 +61,7 @@ class _User_View_ResearchState extends State<User_View_Research> {
               ResName(),
               ResDesc(),
               ViewPDF(),
-              TempButton(widget.research.research_id!),
+              // TempButton(widget.research.research_id!),
             ],
           ),
         ),
@@ -294,11 +295,19 @@ class _User_View_ResearchState extends State<User_View_Research> {
         ),
         onPressed: () async {
           // ignore: use_build_context_synchronously
+          showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (context) {
+                return DialogPopup("Fetching PDF!", "assets/loading_un_2.gif");
+              });
           final result = await getResearchFile(widget.research.research_id!);
           if (result.data == null) {
             // ignore: use_build_context_synchronously
             showSnackBarError(context, "Paper not found!");
           } else {
+            // ignore: use_build_context_synchronously
+            Navigator.pop(context);
             var file = await writeToFile(result.data!);
             // ignore: use_build_context_synchronously
             openPDF(context, file.path);
