@@ -111,10 +111,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 50,
                         margin: const EdgeInsets.only(left: 40, right: 40),
                         child: TextFormField(
-                          keyboardType: TextInputType.number,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please Enter ID';
+                              return 'Please Enter Email';
                             }
                             return null;
                           },
@@ -124,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: Colors.white,
                           ),
                           decoration: InputDecoration(
-                            labelText: "School ID",
+                            labelText: "School Email",
                             labelStyle: TextStyle(color: Colors.grey.shade500),
                             // hintStyle: TextStyle(color: Colors.grey.shade500),
                             filled: true,

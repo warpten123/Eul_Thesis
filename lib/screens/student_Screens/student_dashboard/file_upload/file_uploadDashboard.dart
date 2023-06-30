@@ -60,7 +60,7 @@ class _File_UploadState extends State<File_Upload> {
     );
 
     setState(() {
-      date = DateFormat("yyyy-MM-dd").format(newDateTime!);
+      researchDate = DateFormat("yyyy-MM-dd").format(newDateTime!);
     });
   }
 
