@@ -89,9 +89,10 @@ class ResearchService {
   }
 
   Future<APIResponse<List<ResearchDetails>>> getUserBookmarks(
-      String schooldID) {
+      String accountID, int approve) {
     return http
-        .get(Uri.parse('${baseURL}api/research/fetchLibrary/$schooldID'))
+        .get(Uri.parse(
+            '${baseURL}api/research/fetchMyLibrary/$accountID/$approve'))
         .then((data) {
       if (data.statusCode == 200) {
         final jsonData = (jsonDecode(data.body)[0] as List)
@@ -166,15 +167,42 @@ class ResearchService {
             APIResponse<bool>(error: true, errorMessage: "An error occured"));
   }
 
-  Future<APIResponse<bool>> addAuthored(String researchID, String studentID) {
+  Future<APIResponse<bool>> addAuthored(
+      String researchID, String studentID, int idType) {
     var payload = {
       'research_id': researchID,
-      'school_id': studentID,
+      'id_type': idType,
+      'account_id': studentID,
     };
     return http
-        .post(Uri.parse('${baseURL}api/research/addAuthored'),
+        .post(Uri.parse('${baseURL}api/research/addAuthor'),
             headers: headers, body: json.encode(payload))
         .then((data) {
+      print(data.statusCode);
+      if (data.statusCode == 201 || data.statusCode == 200) {
+        return APIResponse<bool>(
+          data: true,
+        );
+      }
+      return APIResponse<bool>(
+          error: true, errorMessage: data.statusCode.toString());
+    }).catchError((_) =>
+            APIResponse<bool>(error: true, errorMessage: "An error occured"));
+  }
+
+  Future<APIResponse<bool>> addSDGs(
+      String researchID, int sdgID, double sdgScore) {
+    print("RES: $researchID, SDGID: $sdgID, SDGSCORE: $sdgScore");
+    var payload = {
+      'research_id': researchID,
+      'sdg_id': sdgID,
+      'sdg_score': sdgScore,
+    };
+    return http
+        .post(Uri.parse('${baseURL}api/research/AddMyResearchSDG'),
+            headers: headers, body: json.encode(payload))
+        .then((data) {
+      print(data.statusCode);
       if (data.statusCode == 201 || data.statusCode == 200) {
         return APIResponse<bool>(
           data: true,

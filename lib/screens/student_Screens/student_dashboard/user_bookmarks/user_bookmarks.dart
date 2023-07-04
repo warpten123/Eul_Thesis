@@ -25,7 +25,7 @@ class _UserBookmarksState extends State<UserBookmarks> {
   late List<ResearchDetails> userBookMarks;
   Future<APIResponse<List<ResearchDetails>>> getUserBookmarks(
       String school_id) async {
-    return _apiResponse = await resService.getUserBookmarks(school_id);
+    return _apiResponse = await resService.getUserBookmarks(school_id, 1);
   }
 
   @override
@@ -87,7 +87,7 @@ class _UserBookmarksState extends State<UserBookmarks> {
               ),
             ),
             FutureBuilder(
-              future: getUserBookmarks(widget.account.school_id!),
+              future: getUserBookmarks(widget.account.account_id!),
               builder: (BuildContext context,
                   AsyncSnapshot<APIResponse<List<ResearchDetails>>> snapshot) {
                 if (!snapshot.hasData) {

@@ -45,16 +45,16 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   Future<APIResponse<Uint8List>> getProfile(
-      String schoold_id, String deparment) async {
+      String schoold_id, String deparment, String schoolName) async {
     return _apiResponseProfile =
-        await userService.getUserProfile(schoold_id, deparment);
+        await userService.getUserProfile(schoold_id, deparment, schoolName);
   }
 
   late List<ResearchDetails> userBookMarks;
   Future<APIResponse<List<ResearchDetails>>> getUserBookmarks(
       String school_id) async {
     late APIResponse<List<ResearchDetails>> _apiResponseRes;
-    return _apiResponseRes = await resService.getUserBookmarks(school_id);
+    return _apiResponseRes = await resService.getUserBookmarks(school_id, 1);
   }
 
   Future<APIResponse<List<ResearchDetails>>> getUserLibrary(
@@ -123,19 +123,18 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   void getAllResearch() async {
-    final result = await getUserLibrary(widget.account.school_id!);
+    final result = await getUserLibrary(widget.account.account_id!);
     numberOfResearch = result.data!.length;
   }
 
   void getAllBookmarks() async {
-    final result = await getUserBookmarks(widget.account.school_id!);
+    final result = await getUserBookmarks(widget.account.account_id!);
     numberOfBookmarks = result.data!.length;
   }
 
   void getAccounts() async {
     try {
-      print("FUCK");
-      final result = await getAccount(widget.account.school_id!);
+      final result = await getAccount(widget.account.account_id!);
       finalAccount = result.data!;
       print("Mounted $mounted");
       if (mounted) {
@@ -145,7 +144,7 @@ class _UserProfileState extends State<UserProfile> {
           email_Controller.text = finalAccount.email;
           firstName = finalAccount.first_name;
           lastName = finalAccount.last_name;
-          id = finalAccount.school_id!;
+          id = finalAccount.account_id!;
           test = firstName_Controller.text;
           test2 = lastName_Controller.text;
           test3 = email_Controller.text;
@@ -453,13 +452,12 @@ class _UserProfileState extends State<UserProfile> {
             if (listenChanges && isUpdate) {
               if (_formKey.currentState!.validate()) {
                 Account payload = Account(
-                    school_id: finalAccount.school_id,
+                    account_id: finalAccount.account_id,
                     first_name: firstName_Controller.text,
                     last_name: lastName_Controller.text,
                     email: email_Controller.text,
                     departmentID: finalAccount.departmentID,
-                    departmentName: widget.account.departmentName,
-                    role_roleID: 1);
+                    roleID: 1);
 
                 final result = await updateAccount(payload);
 

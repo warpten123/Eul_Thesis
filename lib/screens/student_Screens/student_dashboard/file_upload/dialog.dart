@@ -20,8 +20,8 @@ class DialogPopup extends StatelessWidget {
           children: [
             Center(
               child: Container(
-                height: 300,
-                width: 300,
+                height: 250,
+                width: 250,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.rectangle,

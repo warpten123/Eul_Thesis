@@ -33,9 +33,9 @@ class _UserDashboardNewState extends State<UserDashboardNew> {
   ResearchService get resService => GetIt.instance<ResearchService>();
   UserService get userService => GetIt.instance<UserService>();
   Future<APIResponse<Uint8List>> getProfile(
-      String schoold_id, String department) async {
+      String schoold_id, String department, String schoolName) async {
     return _apiResponseProfile =
-        await userService.getUserProfile(schoold_id, department);
+        await userService.getUserProfile(schoold_id, department, schoolName);
   }
 
   @override
@@ -76,7 +76,7 @@ class _UserDashboardNewState extends State<UserDashboardNew> {
                   ),
                   // Department_List(),
                   // PlaceItem(),
-                  PlaceGridView(widget.account.school_id!),
+                  PlaceGridView(widget.account.account_id!),
                 ],
               ),
             ),

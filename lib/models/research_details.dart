@@ -3,32 +3,31 @@
 // research_details class
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
+import 'package:thesis_eul/models/AccountModel.dart';
 
 class ResearchDetails extends Equatable {
   final String? research_id;
-  final int departmentID;
-  final List<dynamic> sdg_category;
+  final int? departmentID;
+  final List<dynamic>? sdg_category;
   final String date_published;
-  final String adviser;
   final List<dynamic> keywords;
   final String title;
   final String abstracts;
   final int number_of_views;
   final int approved;
-  final dynamic sdg_categories;
+  final String file;
 
   const ResearchDetails({
     this.research_id,
-    required this.departmentID,
-    required this.sdg_category,
+    this.departmentID,
+    this.sdg_category,
     required this.date_published,
-    required this.adviser,
     required this.keywords,
     required this.title,
     required this.abstracts,
     required this.number_of_views,
     required this.approved,
-    this.sdg_categories,
+    required this.file,
   });
 
   Map<String, dynamic> toMap() {
@@ -37,14 +36,13 @@ class ResearchDetails extends Equatable {
       'departmentID': departmentID,
       'sdg_category': sdg_category,
       'date_published': date_published,
-      'adviser': adviser,
       'keywords': keywords,
       'title': title,
       'abstracts': abstracts,
       'qr': keywords,
       'number_of_views': number_of_views,
       'approved': approved,
-      'sdg_categories': sdg_categories,
+      'file': file,
     };
   }
 
@@ -54,13 +52,12 @@ class ResearchDetails extends Equatable {
       departmentID: map['departmentID'] as int,
       sdg_category: map['sdg_category'] as List<dynamic>,
       date_published: map['date_published'] as String,
-      adviser: map['adviser'] as String,
       keywords: map['keywords'] as List<dynamic>,
       title: map['title'] as String,
       abstracts: map['abstracts'] as String,
       number_of_views: map['number_of_views'] as int,
       approved: map['approved'] as int,
-      sdg_categories: map['sdg_categories'] as dynamic,
+      file: map['file'] as String,
     );
   }
   factory ResearchDetails.fromMapLibrary(Map<String, dynamic> map) {
@@ -68,13 +65,12 @@ class ResearchDetails extends Equatable {
       departmentID: map['departmentID'] as int,
       sdg_category: map['sdg_category'] as List<dynamic>,
       date_published: map['date_published'] as String,
-      adviser: map['adviser'] as String,
       keywords: map['keywords'] as List<dynamic>,
       title: map['title'] as String,
       abstracts: map['abstracts'] as String,
       approved: map['approved'] as int,
       number_of_views: map['number_of_views'] as int,
-      sdg_categories: map['sdg_categories'] as dynamic,
+      file: map['file'] as String,
     );
   }
   factory ResearchDetails.fromJson(Map<String, dynamic> json) =>
@@ -83,13 +79,12 @@ class ResearchDetails extends Equatable {
         departmentID: json['departmentID'] as int,
         sdg_category: json['sdg_category'] as List<dynamic>,
         date_published: json['date_published'] as String,
-        adviser: json['adviser'] as String,
         keywords: json['keywords'] as List<dynamic>,
         title: json['title'] as String,
         abstracts: json['abstracts'] as String,
         approved: json['approved'] as int,
         number_of_views: json['number_of_views'] as int,
-        sdg_categories: json['sdg_categories'] as dynamic,
+        file: json['file'] as String,
       );
 
   Map<String, dynamic> toJson() {
@@ -98,13 +93,12 @@ class ResearchDetails extends Equatable {
       'departmentID': departmentID,
       'sdg_category': sdg_category,
       'date_published': date_published,
-      'adviser': adviser,
       'keywords': keywords,
       'title': title,
       'abstracts': abstracts,
       'approved': approved,
       'number_of_views': number_of_views,
-      'sdg_categories': sdg_categories,
+      'file': file,
     };
   }
 
@@ -114,13 +108,12 @@ class ResearchDetails extends Equatable {
         departmentID,
         sdg_category,
         date_published,
-        adviser,
+        file,
         keywords,
         title,
         abstracts,
         number_of_views,
         approved,
-        sdg_categories,
       ];
   ResearchDetails copyWith({
     String? research_id,
@@ -142,13 +135,12 @@ class ResearchDetails extends Equatable {
       departmentID: departmentID ?? this.departmentID,
       sdg_category: sdg_category ?? this.sdg_category,
       date_published: date_published ?? this.date_published,
-      adviser: adviser ?? this.adviser,
       keywords: keywords ?? this.keywords,
       title: title ?? this.title,
       abstracts: abstract ?? this.abstracts,
       approved: approved ?? this.approved,
       number_of_views: number_of_views ?? this.number_of_views,
-      sdg_categories: sdg_categories ?? this.sdg_categories,
+      file: file ?? this.file,
     );
   }
 }//end class

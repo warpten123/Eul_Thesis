@@ -137,12 +137,12 @@ class _User_View_ResearchState extends State<User_View_Research> {
 
   void addBookMarks() async {
     final resultList = await addResearchList(
-        widget.research.research_id!, widget.account.school_id!);
+        widget.research.research_id!, widget.account.account_id!);
   }
 
   void removeBookMarks() async {
     final result = await removeBookMark(
-        widget.research.research_id!, widget.account.school_id!);
+        widget.research.research_id!, widget.account.account_id!);
   }
 
   // ignore: non_constant_identifier_names
@@ -179,12 +179,6 @@ class _User_View_ResearchState extends State<User_View_Research> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 // ignore: prefer_const_constructors
-                Text(
-                  "Adviser: ${widget.research.adviser}",
-                  // ignore: prefer_const_constructors
-                  style: TextStyle(fontSize: 18),
-                  overflow: TextOverflow.ellipsis,
-                ),
               ],
             ),
           ),
@@ -228,10 +222,10 @@ class _User_View_ResearchState extends State<User_View_Research> {
                   height: 50,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: widget.research.sdg_category.length,
+                    itemCount: widget.research.sdg_category!.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Text(
-                        "${widget.research.sdg_category[index]}, ",
+                        "${widget.research.sdg_category![index]}, ",
                         style: const TextStyle(fontSize: 25.0),
                       );
                     },

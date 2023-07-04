@@ -42,7 +42,11 @@ class FileService {
     return File(result.paths.first!);
   }
 
-  Future<APIResponse<bool>> fileUpload(Files file, String deparment) async {
+  Future<APIResponse<bool>> fileUpload(
+    Files file,
+    String deparment,
+    String schoolName,
+  ) async {
     // var userInfo = {
     //   'school_id': id,
     //   'password': password,
@@ -52,8 +56,8 @@ class FileService {
     map['research_id'] = file.research_id;
     map['url'] = file.url;
 
-    var uri =
-        Uri.parse('${baseURL}file/upload-file/$deparment/${file.research_id}');
+    var uri = Uri.parse(
+        '${baseURL}file/upload-file/$schoolName/$deparment/${file.research_id}');
     var request = http.MultipartRequest('POST', uri);
     // request.files.add(
     //     await http.MultipartFile.fromPath('research_id', file.research_id));
