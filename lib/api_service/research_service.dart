@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 // for File
 import 'package:thesis_eul/api_service/api_response.dart';
 import 'package:thesis_eul/models/authored.dart';
+import 'package:thesis_eul/models/researchModelView.dart';
 import 'package:thesis_eul/models/research_details.dart';
 import 'package:thesis_eul/api_service/links.dart';
 
@@ -17,7 +18,7 @@ class ResearchService {
     'Content-Type': 'application/json',
     'Connection': 'Keep-Alive',
   };
-  Future<APIResponse<List<ResearchDetails>>> getResearchList(int approve) {
+  Future<APIResponse<List<Research_View>>> getResearchList(int approve) {
     return http
         .get(Uri.parse('${baseURL}api/research/fetchAllResearchList/$approve'))
         .then((data) {
@@ -25,66 +26,70 @@ class ResearchService {
         final jsonData = (jsonDecode(data.body)[0] as List)
             .map((e) => e as Map<String, dynamic>)
             .toList(); //
-        final research = <ResearchDetails>[];
+        final research = <Research_View>[];
 
         // ignore: unused_local_variable
         for (var item in jsonData) {
-          research.add(ResearchDetails.fromJson(item));
+          research.add(Research_View.fromJson(item));
         }
-        return APIResponse<List<ResearchDetails>>(
+        return APIResponse<List<Research_View>>(
           data: research,
         );
       }
-      return APIResponse<List<ResearchDetails>>(
+      return APIResponse<List<Research_View>>(
           error: true, errorMessage: "An error occured");
-    }).catchError((_) => APIResponse<List<ResearchDetails>>(
+    }).catchError((_) => APIResponse<List<Research_View>>(
             error: true, errorMessage: "An error occured"));
   }
 
-  Future<APIResponse<List<ResearchDetails>>> getSDGList(String goal) {
+  Future<APIResponse<List<Research_View>>> getSDGList(String goal) {
     return http
         .get(Uri.parse('${baseURL}api/research/getResearchBySimilarSDG/$goal'))
         .then((data) {
       if (data.statusCode == 200) {
         final jsonData = (jsonDecode(data.body));
 
-        final research = <ResearchDetails>[];
+        final research = <Research_View>[];
 
         // ignore: unused_local_variable
         for (var item in jsonData) {
-          research.add(ResearchDetails.fromJson(item));
+          research.add(Research_View.fromJson(item));
         }
-        return APIResponse<List<ResearchDetails>>(
+        return APIResponse<List<Research_View>>(
           data: research,
         );
       }
-      return APIResponse<List<ResearchDetails>>(
+      return APIResponse<List<Research_View>>(
           error: true, errorMessage: "An error occured");
-    }).catchError((_) => APIResponse<List<ResearchDetails>>(
+    }).catchError((_) => APIResponse<List<Research_View>>(
             error: true, errorMessage: "An error occured"));
   }
 
-  Future<APIResponse<List<ResearchDetails>>> getUserLibray(String schooldID) {
+  Future<APIResponse<List<Research_View>>> getUserLibray(
+      String schooldID, int approve) {
+    print("ID: $schooldID");
     return http
-        .get(Uri.parse('${baseURL}api/research/fetchMyResearchList/$schooldID'))
+        .get(Uri.parse(
+            '${baseURL}api/research/fetchMyResearch/$schooldID/$approve'))
         .then((data) {
       if (data.statusCode == 200) {
-        final jsonData = (jsonDecode(data.body)[0] as List)
-            .map((e) => e as Map<String, dynamic>)
-            .toList(); //
-        final research = <ResearchDetails>[];
+        print(data.body);
+        final jsonData = (jsonDecode(data.body));
+        final research = <Research_View>[];
 
         // ignore: unused_local_variable
         for (var item in jsonData) {
-          research.add(ResearchDetails.fromJson(item));
+          research.add(Research_View.fromJson(item));
         }
-        return APIResponse<List<ResearchDetails>>(
+        return APIResponse<List<Research_View>>(
           data: research,
         );
+      } else {
+        print("DATA ${data.statusCode}");
       }
-      return APIResponse<List<ResearchDetails>>(
+      return APIResponse<List<Research_View>>(
           error: true, errorMessage: "An error occured");
-    }).catchError((_) => APIResponse<List<ResearchDetails>>(
+    }).catchError((_) => APIResponse<List<Research_View>>(
             error: true, errorMessage: "An error occured"));
   }
 
@@ -286,6 +291,28 @@ class ResearchService {
       return APIResponse<Authored>(
           error: true, errorMessage: data.statusCode.toString());
     }).catchError((_) => APIResponse<Authored>(
+            error: true, errorMessage: "An error occured"));
+  }
+
+  Future<APIResponse<Research_View>> getResearchByID(String id) {
+    return http
+        .get(Uri.parse('${baseURL}api/research/getResearch/$id'),
+            headers: headers)
+        .then((data) {
+      if (data.statusCode == 200) {
+        if (data.body.isEmpty) {
+          print("Not Found");
+        } else {
+          print("DATA ${data.body}");
+          final jsonData = jsonDecode(data.body);
+          return APIResponse<Research_View>(
+            data: Research_View.fromJson(jsonData),
+          );
+        }
+      }
+      return APIResponse<Research_View>(
+          error: true, errorMessage: data.statusCode.toString());
+    }).catchError((_) => APIResponse<Research_View>(
             error: true, errorMessage: "An error occured"));
   }
   // ///deleteNote

@@ -6,6 +6,7 @@ import 'package:thesis_eul/screens/student_Screens/student_dashboard/user_librar
 
 import '../../../../api_service/api_response.dart';
 import '../../../../models/AccountModel.dart';
+import '../../../../models/researchModelView.dart';
 import '../../../../models/research_details.dart';
 import '../../../login_screen.dart';
 
@@ -14,10 +15,10 @@ class NavigationDrawer extends StatelessWidget {
   Account loggedAccount;
   late List<ResearchDetails> research;
   ResearchService get resService => GetIt.instance<ResearchService>();
-  late APIResponse<List<ResearchDetails>> _apiResponseRes;
-  Future<APIResponse<List<ResearchDetails>>> getUserLibrary(
+  late APIResponse<List<Research_View>> _apiResponseRes;
+  Future<APIResponse<List<Research_View>>> getUserLibrary(
       String schoolID) async {
-    return _apiResponseRes = await resService.getUserLibray(schoolID);
+    return _apiResponseRes = await resService.getUserLibray(schoolID, 0);
   }
 
   @override

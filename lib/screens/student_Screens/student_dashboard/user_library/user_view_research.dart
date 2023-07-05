@@ -8,6 +8,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get_it/get_it.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:thesis_eul/api_service/file_service.dart';
+import 'package:thesis_eul/models/researchModelView.dart';
 import 'package:thesis_eul/models/research_details.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/research_list/comment_button.dart';
@@ -19,7 +20,7 @@ import '../file_upload/dialog.dart';
 
 class User_View_Research extends StatefulWidget {
   User_View_Research(this.research, this.account, {super.key});
-  ResearchDetails research;
+  Research_View research;
   Account account;
 
   @override
@@ -222,10 +223,10 @@ class _User_View_ResearchState extends State<User_View_Research> {
                   height: 50,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: widget.research.sdg_category!.length,
+                    itemCount: widget.research.sdg.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Text(
-                        "${widget.research.sdg_category![index]}, ",
+                        "${widget.research.sdg[index]}, ",
                         style: const TextStyle(fontSize: 25.0),
                       );
                     },

@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get_it/get_it.dart';
 import 'package:thesis_eul/api_service/research_service.dart';
 import 'package:thesis_eul/models/research.dart';
+import 'package:thesis_eul/models/researchModelView.dart';
 import 'package:thesis_eul/models/research_details.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/research_list/research_details.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/user_library/user_view_research.dart';
@@ -23,11 +24,11 @@ class UserLibrary extends StatefulWidget {
 
 class _UserLibraryState extends State<UserLibrary> {
   ResearchService get resService => GetIt.instance<ResearchService>();
-  late APIResponse<List<ResearchDetails>> _apiResponseRes;
+  late APIResponse<List<Research_View>> _apiResponseRes;
 
-  Future<APIResponse<List<ResearchDetails>>> getUserLibrary(
+  Future<APIResponse<List<Research_View>>> getUserLibrary(
       String schoolID) async {
-    return _apiResponseRes = await resService.getUserLibray(schoolID);
+    return _apiResponseRes = await resService.getUserLibray(schoolID, 0);
   }
 
   // @override
@@ -112,7 +113,7 @@ class _UserLibraryState extends State<UserLibrary> {
             FutureBuilder(
               future: getUserLibrary(widget.account.account_id!),
               builder: (BuildContext context,
-                  AsyncSnapshot<APIResponse<List<ResearchDetails>>> snapshot) {
+                  AsyncSnapshot<APIResponse<List<Research_View>>> snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
                 }

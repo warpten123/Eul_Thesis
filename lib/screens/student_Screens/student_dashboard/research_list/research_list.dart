@@ -17,6 +17,7 @@ import 'package:thesis_eul/models/sdg.dart';
 
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/user_library/user_view_research.dart';
 
+import '../../../../models/researchModelView.dart';
 import '../../../utilities/utilities.dart';
 import '../search_screen.dart';
 
@@ -45,13 +46,13 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
   ResearchService get resService => GetIt.instance<ResearchService>();
   UserService get userService => GetIt.instance<UserService>();
   late APIResponse<List<Account>> _apiResponse;
-  late APIResponse<List<ResearchDetails>> _apiResponseRes;
+  late APIResponse<List<Research_View>> _apiResponseRes;
   late Account finalAccount;
   Future<APIResponse<List<Account>>> getAllAccount() async {
     return _apiResponse = await userService.getAllAccounts();
   }
 
-  Future<APIResponse<List<ResearchDetails>>> getAllResearch() async {
+  Future<APIResponse<List<Research_View>>> getAllResearch() async {
     return _apiResponseRes = await resService.getResearchList(1);
   }
 
@@ -60,7 +61,7 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
     return reponse = await userService.createAccount(account);
   }
 
-  Future<APIResponse<List<ResearchDetails>>> getSDG() async {
+  Future<APIResponse<List<Research_View>>> getSDG() async {
     return _apiResponseRes = await resService.getSDGList(widget.sdg.goal);
     // final _apiResponseRes = await resService.getResearchList();
     // for (int i = 0; i < _apiResponseRes.data!.length; i++) {
@@ -268,7 +269,7 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
               child: FutureBuilder(
                   future: getSDG(),
                   builder: (BuildContext context,
-                      AsyncSnapshot<APIResponse<List<ResearchDetails>>>
+                      AsyncSnapshot<APIResponse<List<Research_View>>>
                           snapshot) {
                     if (!snapshot.hasData) {
                       return const Center(child: CircularProgressIndicator());
@@ -327,7 +328,7 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
                                             fontWeight: FontWeight.bold),
                                       ),
                                       subtitle: Text(
-                                          '${research.data![index].sdg_category}, ${research.data![index].title}'),
+                                          '${research.data![index].sdg}, ${research.data![index].title}'),
                                       selectedColor: Colors.greenAccent,
                                       // trailing: Checkbox(
                                       //   value: checkbox,

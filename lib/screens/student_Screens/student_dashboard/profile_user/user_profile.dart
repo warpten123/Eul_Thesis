@@ -11,6 +11,7 @@ import '../../../../api_service/api_response.dart';
 import '../../../../api_service/research_service.dart';
 import '../../../../api_service/user_service.dart';
 import '../../../../models/AccountModel.dart';
+import '../../../../models/researchModelView.dart';
 import '../../../../models/research_details.dart';
 
 class UserProfile extends StatefulWidget {
@@ -57,10 +58,10 @@ class _UserProfileState extends State<UserProfile> {
     return _apiResponseRes = await resService.getUserBookmarks(school_id, 1);
   }
 
-  Future<APIResponse<List<ResearchDetails>>> getUserLibrary(
+  Future<APIResponse<List<Research_View>>> getUserLibrary(
       String schoolID) async {
-    late APIResponse<List<ResearchDetails>> _apiResponseRes;
-    return _apiResponseRes = await resService.getUserLibray(schoolID);
+    late APIResponse<List<Research_View>> _apiResponseRes;
+    return _apiResponseRes = await resService.getUserLibray(schoolID, 0);
   }
 
   bool isUpdate = false;

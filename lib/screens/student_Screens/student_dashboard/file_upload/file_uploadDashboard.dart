@@ -1181,6 +1181,7 @@ class _File_UploadState extends State<File_Upload> {
                       addResDetails(details, context); // goods step 2
                       bool goAuthors = false;
                       for (int i = 0; i < tempAccounts.length; i++) {
+                        print("ACCOUNT NAME: ${tempAccounts[i].name}");
                         final resultAuthored = await addAuthored(
                             // check step 3
 
