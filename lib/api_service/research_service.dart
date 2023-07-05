@@ -42,9 +42,10 @@ class ResearchService {
             error: true, errorMessage: "An error occured"));
   }
 
-  Future<APIResponse<List<Research_View>>> getSDGList(String goal) {
+  Future<APIResponse<List<Research_View>>> getSDGList(int goal, int approve) {
     return http
-        .get(Uri.parse('${baseURL}api/research/getResearchBySimilarSDG/$goal'))
+        .get(Uri.parse(
+            '${baseURL}api/research/fetchAllByApprovedSDG/$approve/$goal'))
         .then((data) {
       if (data.statusCode == 200) {
         final jsonData = (jsonDecode(data.body));

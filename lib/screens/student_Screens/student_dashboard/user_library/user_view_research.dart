@@ -32,9 +32,10 @@ class _User_View_ResearchState extends State<User_View_Research> {
   ResearchService get resService => GetIt.instance<ResearchService>();
   FileService get fileService => GetIt.instance<FileService>();
   late APIResponse<dynamic> _apiResponseRes;
-  Future<APIResponse<Uint8List>> getResearchFile(String schoolID) async {
+  Future<APIResponse<Uint8List>> getResearchFile(
+      String school, String researchID) async {
     return _apiResponseRes = await fileService.getResearchFile(
-        schoolID, widget.account.departmentName!);
+        school, widget.account.departmentName!, researchID);
   }
 
   Future<APIResponse<bool>> addResearchList(
@@ -296,7 +297,8 @@ class _User_View_ResearchState extends State<User_View_Research> {
               builder: (context) {
                 return DialogPopup("Fetching PDF!", "assets/loading_un_2.gif");
               });
-          final result = await getResearchFile(widget.research.research_id!);
+          final result = await getResearchFile(
+              widget.account.schoolName!, widget.research.research_id!);
           if (result.data == null) {
             // ignore: use_build_context_synchronously
             showSnackBarError(context, "Paper not found!");

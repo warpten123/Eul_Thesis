@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_brace_in_string_interps
+
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
@@ -145,6 +147,8 @@ class _New_Register_ScreenState extends State<New_Register_Screen> {
         id = generateID();
         Navigator.pop(context);
         Files payload = uploadFunc(image!);
+        print(
+            "FOR PROFILE FILE: ${payload.file} DEPT: ${valueDepartment} SCHOOL: ${valueSchool} ID: $id");
         final addProfile =
             await addUserProfile(payload, valueDepartment!, valueSchool!, id);
         showDialog(
@@ -657,6 +661,7 @@ class _New_Register_ScreenState extends State<New_Register_Screen> {
                                 }
                                 getAllDept();
                               });
+                              print("VALUE DEPT: $valueDepartment $indexDept");
                             },
                             items: listDepartment.map(buildMenuItem).toList(),
                           )),

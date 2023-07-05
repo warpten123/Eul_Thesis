@@ -193,7 +193,7 @@ Color getColor(String goal) {
         const Color.fromARGB(255, 253, 194, 12),
     'Goal 8: Decent Work and Economic Growth':
         const Color.fromARGB(255, 162, 26, 66),
-    'Goal 9: Industry, Innovation and Infrastructure':
+    'Goal 9: Industry, Innovation, and Infrastructure':
         const Color.fromARGB(255, 255, 103, 38),
     'Goal 10: Reduced Inequalities': const Color.fromARGB(255, 222, 18, 105),
     'Goal 11: Sustainable Cities and Communities':

@@ -62,7 +62,8 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
   }
 
   Future<APIResponse<List<Research_View>>> getSDG() async {
-    return _apiResponseRes = await resService.getSDGList(widget.sdg.goal);
+    int id = getSDGID(widget.sdg.goal);
+    return _apiResponseRes = await resService.getSDGList(id, 1);
     // final _apiResponseRes = await resService.getResearchList();
     // for (int i = 0; i < _apiResponseRes.data!.length; i++) {
     //   test[i] = "";

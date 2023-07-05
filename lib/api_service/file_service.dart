@@ -102,9 +102,10 @@ class FileService {
   }
 
   Future<APIResponse<Uint8List>> getResearchFile(
-      String school_id, String deparment) {
+      String school, String deparment, String researchID) {
     return http
-        .get(Uri.parse('${baseURL}file/download/$deparment/$school_id'),
+        .get(
+            Uri.parse('${baseURL}file/download/$school/$deparment/$researchID'),
             headers: headers)
         .then((data) {
       if (data.statusCode == 200) {

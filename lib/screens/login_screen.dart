@@ -235,7 +235,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                               if (resultLogin.data != null) {
                                 // ignore: use_build_context_synchronously
-                                Navigator.pop(context);
+
                                 final result = await getStudentByID(
                                     resultLogin.data!.account_id!);
                                 // ignore: use_build_context_synchronously
@@ -244,12 +244,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                 if (resultLogin.data!.approve == 1) {
                                   // final result2 = await testFlask("a");
                                   // ignore: use_build_context_synchronously
-                                  showSnackBarSuccess(
-                                      context, "Welcome to EUL!");
+
                                   final resultUrl = await getProfile(
                                       test.account_id!,
                                       test.departmentName!,
                                       test.schoolName!);
+                                  Navigator.pop(context);
+                                  showSnackBarSuccess(
+                                      context, "Welcome to EUL!");
                                   // ignore: use_build_context_synchronously
                                   Navigator.push(
                                     context,
@@ -269,6 +271,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       "Your account is still pending confirmation.");
                                 }
                               } else {
+                                Navigator.pop(context);
                                 // ignore: use_build_context_synchronously
                                 showSnackBarError(context,
                                     "Account doesn't exist! or Your account is still pending confirmation.");

@@ -118,93 +118,106 @@ class _UserLibraryState extends State<UserLibrary> {
                   return const Center(child: CircularProgressIndicator());
                 }
                 final research = snapshot.data!;
-                return SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  child: CarouselSlider(
-                      options: CarouselOptions(
-                        height: 450,
-                        aspectRatio: 16 / 9,
-                        viewportFraction: 0.70,
-                        enlargeCenterPage: true,
-                      ),
-                      items: research.data!.map((res) {
-                        return Builder(builder: (context) {
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                if (_selected == res) {
-                                  _selected = {};
-                                  isSelected = false;
-                                } else {
-                                  isSelected = true;
-                                  _selected = res;
-                                }
-                              });
-                            },
-                            child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 300),
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20),
-                                border: _selected == res
-                                    ? Border.all(
-                                        color: Colors.blue.shade500, width: 3)
-                                    : null,
-                                boxShadow: _selected == res
-                                    ? [
-                                        BoxShadow(
-                                            color: Colors.blue.shade100,
-                                            blurRadius: 30,
-                                            offset: const Offset(0, 10)),
-                                      ]
-                                    : [
-                                        BoxShadow(
-                                            color: Colors.grey.withOpacity(0.2),
-                                            blurRadius: 20,
-                                            offset: const Offset(0, 5)),
-                                      ],
-                              ),
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    Container(
-                                        clipBehavior: Clip.hardEdge,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                        height: 320,
-                                        margin: const EdgeInsets.only(top: 10),
-                                        child: Image.asset(
-                                            'assets/cover_page.jpg',
-                                            fit: BoxFit.cover)),
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
-                                    Text(res.title,
-                                        // ignore: prefer_const_constructors
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold)),
-                                    Text("Published: ${res.date_published}",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.grey.shade600)),
-                                    Text(
-                                        "Research #${research.data!.indexOf(res) + 1}",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 14,
-                                            color: Colors.grey.shade600)),
-                                  ],
-                                ),
-                              ),
+                return research.data!.isNotEmpty
+                    ? SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height,
+                        child: CarouselSlider(
+                            options: CarouselOptions(
+                              height: 450,
+                              aspectRatio: 16 / 9,
+                              viewportFraction: 0.70,
+                              enlargeCenterPage: true,
                             ),
-                          );
-                        });
-                      }).toList()),
-                );
+                            items: research.data!.map((res) {
+                              return Builder(builder: (context) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      if (_selected == res) {
+                                        _selected = {};
+                                        isSelected = false;
+                                      } else {
+                                        isSelected = true;
+                                        _selected = res;
+                                      }
+                                    });
+                                  },
+                                  child: AnimatedContainer(
+                                    duration: const Duration(milliseconds: 300),
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(20),
+                                      border: _selected == res
+                                          ? Border.all(
+                                              color: Colors.blue.shade500,
+                                              width: 3)
+                                          : null,
+                                      boxShadow: _selected == res
+                                          ? [
+                                              BoxShadow(
+                                                  color: Colors.blue.shade100,
+                                                  blurRadius: 30,
+                                                  offset: const Offset(0, 10)),
+                                            ]
+                                          : [
+                                              BoxShadow(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.2),
+                                                  blurRadius: 20,
+                                                  offset: const Offset(0, 5)),
+                                            ],
+                                    ),
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                              clipBehavior: Clip.hardEdge,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                              ),
+                                              height: 320,
+                                              margin: const EdgeInsets.only(
+                                                  top: 10),
+                                              child: Image.asset(
+                                                  'assets/cover_page.jpg',
+                                                  fit: BoxFit.cover)),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          Text(res.title,
+                                              // ignore: prefer_const_constructors
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold)),
+                                          Text(
+                                              "Published: ${res.date_published}",
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.grey.shade600)),
+                                          Text(
+                                              "Research #${research.data!.indexOf(res) + 1}",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 14,
+                                                  color: Colors.grey.shade600)),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              });
+                            }).toList()),
+                      )
+                    : Center(
+                        child: Text(
+                        "YOUR LIBRARY IS STILL EMPTY!",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold),
+                      ));
               },
             ),
           ],

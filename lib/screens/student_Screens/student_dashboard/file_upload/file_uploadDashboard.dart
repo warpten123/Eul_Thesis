@@ -207,17 +207,12 @@ class _File_UploadState extends State<File_Upload> {
     bool go = false;
     final resultAccount = await getStudentByID(findAccount.text);
     if (resultAccount.data != null) {
-      print("huh");
-      setState(() {
-        check = true;
-        isFoundAccount = true;
-        var temp =
-            // ignore: prefer_interpolation_to_compose_strings
-            resultAccount.data!.last_name +
-                " " +
-                resultAccount.data!.first_name;
-        searchAccountContoller.text = temp;
-      });
+      check = true;
+      isFoundAccount = true;
+      var temp =
+          // ignore: prefer_interpolation_to_compose_strings
+          resultAccount.data!.last_name + " " + resultAccount.data!.first_name;
+      searchAccountContoller.text = temp;
     } else {
       display = true;
       submitDisplay = true;
@@ -225,6 +220,12 @@ class _File_UploadState extends State<File_Upload> {
   }
 
   void addInTemp(BuildContext context) async {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) {
+          return DialogPopup("Adding Author...", "assets/loading_un_2.gif");
+        });
     final resultAccountNew = await getStudentByID(findAccount.text);
     bool go = false;
     final resultUrl = await getProfile(
@@ -254,13 +255,16 @@ class _File_UploadState extends State<File_Upload> {
       }
 
       if (go == false) {
+        Navigator.pop(context);
         showAlertDialogRegistration(context, "User already added!");
       } else {
+        Navigator.pop(context);
         tempAccounts.add(temp);
       }
 
       // Wrap the relevant code with setState to trigger rebuild
     });
+    Navigator.pop(context);
   }
 
   showAlertDialogRegistration(BuildContext context, String message) {
@@ -293,6 +297,7 @@ class _File_UploadState extends State<File_Upload> {
     );
   }
 
+  Map<String, double> convertedMap = {};
   List<Account> listOfAccounts = [];
   @override
   Widget build(BuildContext context) {
@@ -348,7 +353,7 @@ class _File_UploadState extends State<File_Upload> {
         researchTitle.text = result.data!['title'];
         researchDepartment.text = result.data!['department'];
         researchDate = result.data!['published_date'];
-        researchAuthors.text = result.data!['authors'];
+        // researchAuthors.text = result.data!['authors'];
         researchDate = convertDate(researchDate);
         isExtractNames = true;
       });
@@ -397,7 +402,7 @@ class _File_UploadState extends State<File_Upload> {
     bool go = false;
 
     resultResearch = await addResearch(details);
-
+    print("RES DETAILS UPLOAD ${resultResearch.data}");
     // final resultAuthored = await addAuthored(
     //     resID, widget.account.school_id!)
     // ignore: use_build_context_synchronously
@@ -659,6 +664,29 @@ class _File_UploadState extends State<File_Upload> {
                     SizedBox(
                       height: 20,
                     ),
+                    Row(
+                      children: <Widget>[
+                        IconButton(
+                          onPressed: () {
+                            showDatePicker(context);
+                          },
+                          icon: const Icon(
+                            Icons.calendar_month,
+                            size: 40.0,
+                            color: Colors.green,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            researchDate,
+                            style: const TextStyle(
+                                fontSize: 18.0,
+                                color: Color.fromARGB(255, 102, 100, 100)),
+                          ),
+                        ),
+                      ],
+                    ),
                     ExpansionTile(
                       title: Text('Authors'),
                       leading: Icon(Icons.people),
@@ -729,6 +757,7 @@ class _File_UploadState extends State<File_Upload> {
                         //     ),
                         //   ),
                         // ),
+
                         ElevatedButton(
                           onPressed: () {
                             setState(() {
@@ -934,20 +963,73 @@ class _File_UploadState extends State<File_Upload> {
                                                           child: ElevatedButton(
                                                             child:
                                                                 Text("Search"),
-                                                            onPressed: () {
+                                                            onPressed:
+                                                                () async {
+                                                              final resultAccount =
+                                                                  await getStudentByID(
+                                                                      findAccount
+                                                                          .text);
                                                               setState(() {
                                                                 // Wrap the relevant code with setState to trigger rebuild
                                                                 if (_formKeyForAccount
                                                                     .currentState!
                                                                     .validate()) {
+                                                                  showDialog(
+                                                                      barrierDismissible:
+                                                                          false,
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (context) {
+                                                                        return DialogPopup(
+                                                                            "Searching",
+                                                                            "assets/loading_un_2.gif");
+                                                                      });
                                                                   searchAccount();
-                                                                  if (check) {
-                                                                    setState(
-                                                                        () {
-                                                                      isFoundAccount =
-                                                                          true;
-                                                                    });
+
+                                                                  if (resultAccount
+                                                                          .data !=
+                                                                      null) {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                    check =
+                                                                        true;
+                                                                    isFoundAccount =
+                                                                        true;
+                                                                    var temp =
+                                                                        // ignore: prefer_interpolation_to_compose_strings
+                                                                        resultAccount.data!.last_name +
+                                                                            " " +
+                                                                            resultAccount.data!.first_name;
+                                                                    searchAccountContoller
+                                                                            .text =
+                                                                        temp;
+                                                                  } else {
+                                                                    display =
+                                                                        true;
+                                                                    submitDisplay =
+                                                                        true;
                                                                   }
+                                                                  // if (check) {
+                                                                  //   showDialog(
+                                                                  //       barrierDismissible:
+                                                                  //           false,
+                                                                  //       context:
+                                                                  //           context,
+                                                                  //       builder:
+                                                                  //           (context) {
+                                                                  //         return DialogPopup(
+                                                                  //             "Searching",
+                                                                  //             "assets/loading_un_2.gif");
+                                                                  //       });
+                                                                  //   setState(
+                                                                  //       () {
+                                                                  //     Navigator.pop(
+                                                                  //         context);
+                                                                  //     isFoundAccount =
+                                                                  //         true;
+                                                                  //   });
+                                                                  // }
                                                                 } else {
                                                                   // Handle case when resultAccount.data is null
                                                                 }
@@ -1012,38 +1094,16 @@ class _File_UploadState extends State<File_Upload> {
                     //   height: 20,
                     // ),
 
-                    // Row(
-                    //   children: <Widget>[
-                    //     IconButton(
-                    //       onPressed: () {
-                    //         showDatePicker(context);
-                    //       },
-                    //       icon: const Icon(
-                    //         Icons.calendar_month,
-                    //         size: 40.0,
-                    //         color: Colors.green,
-                    //       ),
-                    //     ),
-                    //     Padding(
-                    //       padding: const EdgeInsets.all(8.0),
-                    //       child: Text(
-                    //         researchDate,
-                    //         style: const TextStyle(
-                    //             fontSize: 18.0,
-                    //             color: Color.fromARGB(255, 102, 100, 100)),
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-
                     // Divider(
                     //   height: 1, // Adjust the height of the line as needed
                     //   color: Colors.black, // Specify the color of the line
                     //   thickness: 1, // Adjus
                     // ),
+
                     SizedBox(
                       height: 50,
                     ),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -1110,6 +1170,22 @@ class _File_UploadState extends State<File_Upload> {
                                     }
                                     Navigator.pop(context);
                                     currentStep += 1;
+
+                                    test.forEach((key, value) {
+                                      if (value is double) {
+                                        convertedMap[key] = value * 100;
+                                      } else if (value is int) {
+                                        convertedMap[key] = value.toDouble();
+                                      } else if (value is String) {
+                                        convertedMap[key] =
+                                            double.tryParse(value) ?? 0.0;
+                                      }
+                                    });
+                                    convertedMap = Map.fromEntries(
+                                        convertedMap.entries.toList()
+                                          ..sort((a, b) =>
+                                              b.value.compareTo(a.value)));
+                                    print(convertedMap);
                                   });
                                 }
                               } else {
@@ -1134,95 +1210,123 @@ class _File_UploadState extends State<File_Upload> {
             title: const Text('Classify'),
             content: Column(
               children: <Widget>[
-                Upload_Review(sortedEntries, url, color),
+                Upload_Review(
+                  sortedEntries,
+                  url,
+                  color,
+                  convertedMap,
+                ),
                 const SizedBox(
                   height: 100,
                 ),
-                ElevatedButton(
-                    onPressed: () async {
-                      // Map<String, dynamic> map = {shit.key: shit.value};
-                      // String json = jsonEncode(shit);
-                      if (isAddResearch == false) {
-                        showDialog(
-                            barrierDismissible: false,
-                            context: context,
-                            builder: (context) {
-                              return DialogPopup(
-                                  "Adding to repository!", "assets/add.gif");
-                            });
-                      }
-                      List<double> listOfSDG = [];
-                      List<String> listOfSDGNames = [];
-                      for (int i = 0; i < sortedEntries.length; i++) {
-                        double temp = sortedEntries[i].value * 100;
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            isExtractAbstract = false;
+                            isExtractNames = false;
+                            isExtractPhrases = false;
+                            currentStep -= 1;
+                          });
+                        },
+                        child: const Text('Back'),
+                      ),
+                    ),
+                    ElevatedButton(
+                        onPressed: () async {
+                          // Map<String, dynamic> map = {shit.key: shit.value};
+                          // String json = jsonEncode(shit);
+                          if (isAddResearch == false) {
+                            showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (context) {
+                                  return DialogPopup("Adding to repository!",
+                                      "assets/add.gif");
+                                });
+                          }
+                          List<double> listOfSDG = [];
+                          List<String> listOfSDGNames = [];
+                          for (int i = 0; i < sortedEntries.length; i++) {
+                            double temp = sortedEntries[i].value * 100;
 
-                        print(
-                            "${sortedEntries[i].key} == ${sortedEntries[i].value}");
+                            print(
+                                "${sortedEntries[i].key} == ${sortedEntries[i].value}");
 
-                        String formattedValue = temp.toStringAsFixed(2);
-                        double parsedValue = double.parse(formattedValue);
-                        listOfSDG.add(parsedValue);
-                        listOfSDGNames.add(sortedEntries[i].key);
-                      }
+                            String formattedValue = temp.toStringAsFixed(2);
+                            double parsedValue = double.parse(formattedValue);
+                            listOfSDG.add(parsedValue);
+                            listOfSDGNames.add(sortedEntries[i].key);
+                          }
 
-                      //START UPLOADING
-                      final resultNode =
-                          await fileUploadNode(payload); //goods step 1
-                      final details = ResearchDetails(
-                          research_id: resID,
-                          departmentID: widget.account.departmentID,
-                          date_published: researchDate,
-                          keywords: finalKeyPhrases,
-                          title: researchTitle.text,
-                          abstracts: researchAbstract.text,
-                          number_of_views: 0,
-                          approved: 0,
-                          file: baseName);
-                      addResDetails(details, context); // goods step 2
-                      bool goAuthors = false;
-                      for (int i = 0; i < tempAccounts.length; i++) {
-                        print("ACCOUNT NAME: ${tempAccounts[i].name}");
-                        final resultAuthored = await addAuthored(
-                            // check step 3
+                          //START UPLOADING
+                          final resultNode =
+                              await fileUploadNode(payload); //goods step 1
+                          print("FILE UPLOAD ${resultNode.data}");
+                          final details = ResearchDetails(
+                              research_id: resID,
+                              departmentID: widget.account.departmentID,
+                              date_published: researchDate,
+                              keywords: finalKeyPhrases,
+                              title: researchTitle.text,
+                              abstracts: researchAbstract.text,
+                              number_of_views: 0,
+                              approved: 0,
+                              file: baseName);
+                          addResDetails(details, context); // goods step 2
+                          bool goAuthors = false;
+                          for (int i = 0; i < tempAccounts.length; i++) {
+                            print("ACCOUNT NAME: ${tempAccounts[i].name}");
+                            final resultAuthored = await addAuthored(
+                                // check step 3
 
-                            resID,
-                            tempAccounts[i].account_id,
-                            tempAccounts[i].idType);
-                        if (resultAuthored.data != null) {
-                          goAuthors = true;
-                        } else {
-                          goAuthors = false;
-                        }
-                      }
-                      bool goSDG = false;
-                      for (int i = 0; i < listOfSDG.length; i++) {
-                        int id = getSDGID(listOfSDGNames[i]);
-                        final resultSDG = await addSDG(resID, id, listOfSDG[i]);
-                        if (resultSDG.data != null) {
-                          goSDG = true;
-                        } else {
-                          goSDG = false;
-                        }
-                      }
-                      // final resultAuthored =
-                      //     await addAuthored(resID, widget.account.account_id!);
-                      if (resultNode.data != null &&
-                          goAuthors &&
-                          resultResearch.data != null &&
-                          goSDG) {
-                        showSnackBarSuccess(
-                            context, "Research Uploaded Successfully!");
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                      } else {
-                        showSnackBarError(
-                            context, resultNode.errorMessage.toString());
-                      }
+                                resID,
+                                tempAccounts[i].account_id,
+                                tempAccounts[i].idType);
+                            print("resultAuthored: ${resultAuthored.data}");
+                            if (resultAuthored.data != null) {
+                              goAuthors = true;
+                            } else {
+                              goAuthors = false;
+                            }
+                          }
+                          bool goSDG = false;
+                          for (int i = 0; i < listOfSDG.length; i++) {
+                            int id = getSDGID(listOfSDGNames[i]);
+                            final resultSDG =
+                                await addSDG(resID, id, listOfSDG[i]);
+                            print("RESULT SDG: ${resultSDG.data}");
+                            if (resultSDG.data != null) {
+                              goSDG = true;
+                            } else {
+                              goSDG = false;
+                            }
+                          }
+                          // final resultAuthored =
+                          //     await addAuthored(resID, widget.account.account_id!);
+                          if (resultNode.data != null &&
+                              goAuthors &&
+                              resultResearch.data != null &&
+                              goSDG) {
+                            showSnackBarSuccess(
+                                context, "Research Uploaded Successfully!");
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          } else {
+                            showSnackBarError(
+                                context, resultNode.errorMessage.toString());
+                          }
 
-                      //END UPLOADING
-                    },
-                    child: const Text("Add Research")),
+                          //END UPLOADING
+                        },
+                        child: const Text("Add Research")),
+                  ],
+                ),
               ],
             ),
             isActive: currentStep >= 2),
