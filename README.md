@@ -1,16 +1,5 @@
 # thesis_eul
 
-A new Flutter project.
+The mobile version of EUL. Created using Flutter Framework.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Similar to its web counterpart, the mobile version classifies the document into different SDG categories, utilizing web APIs from nodeJS and Python Flask.
