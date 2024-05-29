@@ -42,6 +42,13 @@ class FileService {
     return File(result.paths.first!);
   }
 
+  static Future<File?> pickFileProfile() async {
+    final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom, allowedExtensions: ['jpeg', 'png', 'jpg']);
+    if (result == null) return null;
+    return File(result.paths.first!);
+  }
+
   Future<APIResponse<bool>> fileUpload(
     Files file,
     String deparment,
@@ -65,7 +72,7 @@ class FileService {
     request.files.add(await http.MultipartFile.fromPath('file', file.file));
     request.fields['url'] = file.url;
     var response = await request.send();
-    print(response.statusCode);
+    print("HUH ${response.statusCode}");
     if (response.statusCode == 201 || response.statusCode == 200) {
       return APIResponse<bool>(
         data: true,
@@ -103,11 +110,11 @@ class FileService {
 
   Future<APIResponse<Uint8List>> getResearchFile(
       String school, String deparment, String researchID) {
+    print("SChool $school DEPT $deparment RESID $researchID");
     return http
-        .get(
-            Uri.parse('${baseURL}file/download/$school/$deparment/$researchID'),
-            headers: headers)
+        .get(Uri.parse('${baseURL}file/download/$researchID'), headers: headers)
         .then((data) {
+      print("FILE: ${data.statusCode}");
       if (data.statusCode == 200) {
         dynamic blob = data.bodyBytes;
         Uint8List image = blob.buffer.asUint8List();

@@ -52,9 +52,9 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   late List<ResearchDetails> userBookMarks;
-  Future<APIResponse<List<ResearchDetails>>> getUserBookmarks(
+  Future<APIResponse<List<Research_View>>> getUserBookmarks(
       String school_id) async {
-    late APIResponse<List<ResearchDetails>> _apiResponseRes;
+    late APIResponse<List<Research_View>> _apiResponseRes;
     return _apiResponseRes = await resService.getUserBookmarks(school_id, 1);
   }
 
@@ -79,39 +79,41 @@ class _UserProfileState extends State<UserProfile> {
   @override
   void initState() {
     super.initState();
-
-    switch (widget.account.departmentID) {
-      case 1:
-        dept = "School of Law";
-        break;
-      case 2:
-        dept = "School of Business and Management";
-        break;
-      case 3:
-        dept = "School of Computer Studies";
-        break;
-      case 4:
-        dept = "Senior High School";
-        break;
-      case 5:
-        dept = "School of Arts and Sciences";
-        break;
-      case 6:
-        dept = "RITTC";
-        break;
-      case 7:
-        dept = "School of Allied Medical Sciences";
-        break;
-      case 8:
-        dept = "School of Engineering";
-        break;
-      case 9:
-        dept = "School of Education";
-        break;
-    }
-    getAccounts();
-    getAllBookmarks();
-    getAllResearch();
+    dept = widget.account.schoolName!;
+    // switch (widget.account.schoolName) {
+    //   case 1:
+    //     dept = "School of Law";
+    //     break;
+    //   case 2:
+    //     dept = "School of Business and Management";
+    //     break;
+    //   case 3:
+    //     dept = "School of Computer Studies";
+    //     break;
+    //   case 4:
+    //     dept = "Senior High School";
+    //     break;
+    //   case 5:
+    //     dept = "School of Arts and Sciences";
+    //     break;
+    //   case 6:
+    //     dept = "RITTC";
+    //     break;
+    //   case 7:
+    //     dept = "School of Allied Medical Sciences";
+    //     break;
+    //   case 8:
+    //     dept = "School of Engineering";
+    //     break;
+    //   case 9:
+    //     dept = "School of Education";
+    //     break;
+    // }
+    setState(() {
+      getAccounts();
+      getAllBookmarks();
+      getAllResearch();
+    });
   }
 
   @override
@@ -125,12 +127,16 @@ class _UserProfileState extends State<UserProfile> {
 
   void getAllResearch() async {
     final result = await getUserLibrary(widget.account.account_id!);
-    numberOfResearch = result.data!.length;
+    setState(() {
+      numberOfResearch = result.data!.length;
+    });
   }
 
   void getAllBookmarks() async {
     final result = await getUserBookmarks(widget.account.account_id!);
-    numberOfBookmarks = result.data!.length;
+    setState(() {
+      numberOfBookmarks = result.data!.length;
+    });
   }
 
   void getAccounts() async {

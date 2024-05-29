@@ -25,6 +25,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool _passwordVisible = true;
   // final auth = Authentication();
   // ignore: non_constant_identifier_names
   final emailController = TextEditingController();
@@ -129,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: Colors.white,
                           ),
                           decoration: InputDecoration(
-                            labelText: "School Email",
+                            labelText: "Institutional Email",
                             labelStyle: TextStyle(color: Colors.grey.shade500),
                             // hintStyle: TextStyle(color: Colors.grey.shade500),
                             filled: true,
@@ -148,7 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 50,
                         margin: const EdgeInsets.only(left: 40, right: 40),
                         child: TextFormField(
-                          obscureText: true,
+                          obscureText: _passwordVisible,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please Enter Password';
@@ -162,6 +163,21 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: Colors.white,
                           ),
                           decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                // Based on passwordVisible state choose the icon
+                                _passwordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Theme.of(context).primaryColorDark,
+                              ),
+                              onPressed: () {
+                                // Update the state i.e. toogle the state of passwordVisible variable
+                                setState(() {
+                                  _passwordVisible = !_passwordVisible;
+                                });
+                              },
+                            ),
                             labelText: "Password",
                             labelStyle: TextStyle(color: Colors.grey.shade500),
                             filled: true,

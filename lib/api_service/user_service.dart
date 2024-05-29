@@ -181,6 +181,7 @@ class UserService {
         .post(Uri.parse('${baseURL}auth/signup'),
             headers: headers, body: json.encode(account.toJson()))
         .then((data) {
+      print("ACC ${data.statusCode}");
       if (data.statusCode == 200 || data.statusCode == 201) {
         return APIResponse<bool>(
           data: true,

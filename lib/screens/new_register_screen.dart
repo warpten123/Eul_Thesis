@@ -184,7 +184,7 @@ class _New_Register_ScreenState extends State<New_Register_Screen> {
             // ignore: use_build_context_synchronously
             Navigator.pop(context);
             // ignore: use_build_context_synchronously
-            showSnackBarError(context, "Erro in registration!");
+            showSnackBarError(context, "Error in registration!");
           }
         } else {
           print(addProfile.errorMessage);
@@ -448,7 +448,7 @@ class _New_Register_ScreenState extends State<New_Register_Screen> {
                       TextFormField(
                         controller: emailController,
                         decoration: InputDecoration(
-                          labelText: "School Email",
+                          labelText: "Institutional Email",
                           labelStyle: TextStyle(color: Colors.grey.shade500),
                           // filled: true,
                           // fillColor: const Color(0xff161d27).withOpacity(0.9),
@@ -723,7 +723,7 @@ class _New_Register_ScreenState extends State<New_Register_Screen> {
                   children: [
                     InkWell(
                       onTap: () async {
-                        image = await FileService.pickFile();
+                        image = await FileService.pickFileProfile();
                         setState(() {
                           if (image != null) {
                             baseName = basename(image!.path);

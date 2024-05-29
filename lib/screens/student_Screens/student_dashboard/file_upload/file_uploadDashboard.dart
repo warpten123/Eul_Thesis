@@ -31,21 +31,6 @@ import '../../../../models/Files.dart';
 
 List<String> author_title = ["author", "adviser", "co-author"];
 
-class TempAccount {
-  String name;
-  String title;
-  Uint8List url;
-  String account_id;
-  int idType;
-  TempAccount({
-    required this.name,
-    required this.title,
-    required this.url,
-    required this.account_id,
-    required this.idType,
-  });
-}
-
 class File_Upload extends StatefulWidget {
   File_Upload(this.account, {super.key});
   Account account;
@@ -188,6 +173,12 @@ class _File_UploadState extends State<File_Upload> {
     // ignore: unused_local_variable
     APIResponse<bool> reponse;
     return reponse = await resService.addAuthored(resID, schoolID, idType);
+  }
+
+  Future<Object> addAuthoredNew(List<TempAccount> test, String resID) async {
+    // ignore: unused_local_variable
+    Object reponse;
+    return reponse = resService.addAuthoredNew(test, resID);
   }
 
   Future<APIResponse<bool>> addSDG(
@@ -343,6 +334,10 @@ class _File_UploadState extends State<File_Upload> {
   Files uploadFunc(File files) {
     Files payload = Files(file: files.path, research_id: resID, url: file.path);
     return payload;
+  }
+
+  TempAccount extractTempAccount(int i) {
+    return tempAccounts[i];
   }
 
   void extractNamesFromPDF(String fileName) async {
@@ -1127,7 +1122,8 @@ class _File_UploadState extends State<File_Upload> {
                             onPressed: () async {
                               print("ISCLASSIFY $isClassify");
                               if (_formKey.currentState!.validate() &&
-                                  researchDate != "Date Published") {
+                                  researchDate != "Date Published" &&
+                                  tempAccounts.isNotEmpty) {
                                 //   Map<String, Float> finalClassify = HashMap();
                                 // Map<String, dynamic> test = HashMap();
                                 // final dataTest = {
@@ -1190,7 +1186,7 @@ class _File_UploadState extends State<File_Upload> {
                                 }
                               } else {
                                 showSnackBarError(
-                                    context, "Complete the form!");
+                                    context, "Complete your information!");
                               }
 
                               //uncomment if actual
@@ -1279,11 +1275,33 @@ class _File_UploadState extends State<File_Upload> {
                               file: baseName);
                           addResDetails(details, context); // goods step 2
                           bool goAuthors = false;
-                          for (int i = 0; i < tempAccounts.length; i++) {
-                            print("ACCOUNT NAME: ${tempAccounts[i].name}");
+                          // TempAccount test;
+                          // for (int i = 0; i < tempAccounts.length; i++) {
+                          //   test = extractTempAccount(i);
+                          //   final resultAuthored = await addAuthored(
+                          //       // check step 3
+                          //       resID,
+                          //       test.account_id,
+                          //       test.idType);
+                          // }
+                          // if (tempAccounts.length == 1) {
+                          //   final resultAuthored1 = await addAuthored(
+                          //       // check step 3
+                          //       resID,
+                          //       tempAccounts[0].account_id,
+                          //       tempAccounts[0].idType);
+                          // } else {
+                          final resultAuthored1 = await addAuthored(
+                              // check step 3
+                              resID,
+                              tempAccounts[0].account_id,
+                              tempAccounts[0].idType);
+                          for (int i = 1; i < tempAccounts.length; i++) {
+                            print("length: ${tempAccounts.length}");
+                            print(
+                                "ACCOUNT NAME: ${tempAccounts[i].name} ACCOUNT ID: ${tempAccounts[i].account_id} ID TYPE: ${tempAccounts[i].idType} RES ID: $resID");
                             final resultAuthored = await addAuthored(
                                 // check step 3
-
                                 resID,
                                 tempAccounts[i].account_id,
                                 tempAccounts[i].idType);
@@ -1294,6 +1312,12 @@ class _File_UploadState extends State<File_Upload> {
                               goAuthors = false;
                             }
                           }
+
+                          // final resultAuthored = await addAuthoredNew(
+                          //     // check step 3
+                          //     tempAccounts,
+                          //     resID);
+
                           bool goSDG = false;
                           for (int i = 0; i < listOfSDG.length; i++) {
                             int id = getSDGID(listOfSDGNames[i]);

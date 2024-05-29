@@ -276,80 +276,92 @@ class _ContentUserDashBoardState extends State<ContentUserDashBoard> {
                       return const Center(child: CircularProgressIndicator());
                     }
                     final research = snapshot.data!;
-                    return ListView.builder(
-                      itemCount: research.data?.length ?? 0,
-                      shrinkWrap: true,
-                      physics: const BouncingScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      padding: const EdgeInsets.only(left: 20, bottom: 20),
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Container(
-                            margin: const EdgeInsets.only(right: 24),
-                            padding: const EdgeInsets.only(top: 10),
-                            width: 100,
-                            decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 241, 239, 239),
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(color: Colors.greenAccent)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.only(bottom: 20.0),
-                                    child: ListTile(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  User_View_Research(
-                                                      research.data![index],
-                                                      finalAccount)),
-                                        );
-                                      },
-                                      leading: Image.asset(
-                                        "assets/cover_page.jpg",
-                                        height: 80,
-                                        width: 50,
-                                        fit: BoxFit.cover,
-                                      ),
-                                      contentPadding:
-                                          const EdgeInsets.only(left: 10),
-                                      title: Text(
-                                        research.data![index].title,
-                                        // ignore: prefer_const_constructors
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      subtitle: Text(
-                                          '${research.data![index].sdg}, ${research.data![index].title}'),
-                                      selectedColor: Colors.greenAccent,
-                                      // trailing: Checkbox(
-                                      //   value: checkbox,
-                                      //   onChanged: (value) {
-                                      //     // setState(() {
-                                      //     //   print(
-                                      //     //       '${research[index].authors[0]}');
-                                      //     //   checkbox = value!;
-                                      //     // });
-                                      //   },
-                                      // ), //Che
+                    return research.data!.isNotEmpty
+                        ? ListView.builder(
+                            itemCount: research.data?.length ?? 0,
+                            shrinkWrap: true,
+                            physics: const BouncingScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            padding:
+                                const EdgeInsets.only(left: 20, bottom: 20),
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Container(
+                                  margin: const EdgeInsets.only(right: 24),
+                                  padding: const EdgeInsets.only(top: 10),
+                                  width: 100,
+                                  decoration: BoxDecoration(
+                                      color: const Color.fromARGB(
+                                          255, 241, 239, 239),
+                                      borderRadius: BorderRadius.circular(20),
+                                      border: Border.all(
+                                          color: Colors.greenAccent)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 20.0),
+                                          child: ListTile(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        User_View_Research(
+                                                            research
+                                                                .data![index],
+                                                            finalAccount)),
+                                              );
+                                            },
+                                            leading: Image.asset(
+                                              "assets/cover_page.jpg",
+                                              height: 80,
+                                              width: 50,
+                                              fit: BoxFit.cover,
+                                            ),
+                                            contentPadding:
+                                                const EdgeInsets.only(left: 10),
+                                            title: Text(
+                                              research.data![index].title,
+                                              // ignore: prefer_const_constructors
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            subtitle: Text(
+                                                '${research.data![index].sdg}, ${research.data![index].title}'),
+                                            selectedColor: Colors.greenAccent,
+                                            // trailing: Checkbox(
+                                            //   value: checkbox,
+                                            //   onChanged: (value) {
+                                            //     // setState(() {
+                                            //     //   print(
+                                            //     //       '${research[index].authors[0]}');
+                                            //     //   checkbox = value!;
+                                            //     // });
+                                            //   },
+                                            // ), //Che
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    );
+                                ),
+                              );
+                            },
+                          )
+                        : Center(
+                            child: Text(
+                            "No Research for this Goal!",
+                            style: TextStyle(
+                                fontSize: 30.0, fontWeight: FontWeight.bold),
+                          ));
                   }),
             ),
           ],

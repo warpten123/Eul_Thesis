@@ -76,10 +76,10 @@ class NavigationDrawer extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(
-                Icons.bookmark,
+                Icons.favorite,
                 size: 30.0,
               ),
-              title: const Text("Bookmarks", style: TextStyle(fontSize: 22.0)),
+              title: const Text("Favorites", style: TextStyle(fontSize: 22.0)),
               onTap: () {
                 Navigator.push(
                     context,
