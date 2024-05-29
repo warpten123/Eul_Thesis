@@ -82,8 +82,20 @@ String generateID() {
   String id;
   var rnd = Random();
 
-  String year = "1000", rndNumber = "";
-  for (var i = 0; i < 10; i++) {
+  String year = "2023", rndNumber = "";
+  for (var i = 0; i < 6; i++) {
+    rndNumber = rndNumber + rnd.nextInt(9).toString();
+  }
+  id = year + rndNumber;
+  return id;
+}
+
+String generateResID() {
+  String id;
+  var rnd = Random();
+
+  String year = "2000", rndNumber = "";
+  for (var i = 0; i < 6; i++) {
     rndNumber = rndNumber + rnd.nextInt(9).toString();
   }
   id = year + rndNumber;
@@ -133,13 +145,45 @@ String convertDate(String date) {
   return newDate;
 }
 
+int getSDGID(String sdg) {
+  int id = 0;
+  final data = {
+    'Goal 1: No Poverty': 1,
+    'Goal 2: Zero Hunger': 2,
+    'Goal 3: Good Health and Well-Being': 3,
+    'Goal 4: Quality Education': 4,
+    'Goal 5: Gender Equality': 5,
+    'Goal 6: Clean Water and Sanitation': 6,
+    'Goal 7: Affordable and Clean Energy': 7,
+    'Goal 8: Decent Work and Economic Growth': 8,
+    'Goal 9: Industry, Innovation, and Infrastructure': 9,
+    'Goal 10: Reduced Inequalities': 10,
+    'Goal 11: Sustainable Cities and Communities': 11,
+    'Goal 12: Responsible Consumption and Production': 12,
+    'Goal 13: Climate Action': 13,
+    'Goal 14: Life Below Water': 14,
+    'Goal 15: Life on Land': 15,
+    'Goal 16: Peace, Justice and Strong Institutions': 16,
+    'Goal 17: Partnership for the Goals': 17,
+  };
+
+  final Map<String, int> sdgMap = HashMap();
+  sdgMap.addEntries(data.entries);
+  sdgMap.forEach((key, value) {
+    if (key == sdg) {
+      id = value;
+    }
+  });
+  return id;
+}
+
 Color getColor(String goal) {
   Map<String, Color> sdgGoals = HashMap();
   Color sdgColors = Colors.black;
   final data = {
     'Goal 1: No Poverty': const Color.fromARGB(255, 230, 36, 60),
     'Goal 2: Zero Hunger': const Color.fromARGB(255, 222, 165, 58),
-    'Goal 3: Good Health and Well Being':
+    'Goal 3: Good Health and Well-Being':
         const Color.fromARGB(255, 79, 157, 56),
     'Goal 4: Quality Education': const Color.fromARGB(255, 197, 26, 45),
     'Goal 5: Gender Equality': const Color.fromARGB(255, 253, 57, 33),
@@ -149,7 +193,7 @@ Color getColor(String goal) {
         const Color.fromARGB(255, 253, 194, 12),
     'Goal 8: Decent Work and Economic Growth':
         const Color.fromARGB(255, 162, 26, 66),
-    'Goal 9: Industry, Innovation and Infrastructure':
+    'Goal 9: Industry, Innovation, and Infrastructure':
         const Color.fromARGB(255, 255, 103, 38),
     'Goal 10: Reduced Inequalities': const Color.fromARGB(255, 222, 18, 105),
     'Goal 11: Sustainable Cities and Communities':
@@ -203,4 +247,36 @@ String getImageUrl(String goal) {
     }
   });
   return url;
+}
+
+showAlertDialog(BuildContext context) {
+  // set up the buttons
+  Widget cancelButton = TextButton(
+    child: Text("Cancel"),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+  Widget continueButton = TextButton(
+    child: Text("Register"),
+    onPressed: () {},
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Confirm Registration?"),
+    content: Text("Done Reviewing your information? Register it now!"),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

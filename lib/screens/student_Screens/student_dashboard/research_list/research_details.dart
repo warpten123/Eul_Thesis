@@ -39,7 +39,7 @@ class Research_Details extends StatelessWidget {
                 ),
                 title: Text(researchDetails.title),
                 subtitle: Text(
-                    '${researchDetails.sdg_category[0]}, ${researchDetails.sdg_category[1]}'),
+                    '${researchDetails.sdg_category![0]}, ${researchDetails.sdg_category![1]}'),
                 trailing: const Text("15 Pages"),
               ),
               const SizedBox(
@@ -64,7 +64,6 @@ class Research_Details extends StatelessWidget {
               ListTile(
                 isThreeLine: true,
                 title: const Text('Research Adviser'),
-                subtitle: Text(researchDetails.adviser),
               ),
               DetailsDownload(sdg, id),
               DetailsRead(sdg),

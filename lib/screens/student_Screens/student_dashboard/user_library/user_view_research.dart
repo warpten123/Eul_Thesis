@@ -8,6 +8,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get_it/get_it.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:thesis_eul/api_service/file_service.dart';
+import 'package:thesis_eul/models/researchModelView.dart';
 import 'package:thesis_eul/models/research_details.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/research_list/comment_button.dart';
@@ -15,10 +16,11 @@ import '../../../../api_service/api_response.dart';
 import '../../../../api_service/research_service.dart';
 import '../../../../models/AccountModel.dart';
 import '../../../utilities/utilities.dart';
+import '../file_upload/dialog.dart';
 
 class User_View_Research extends StatefulWidget {
   User_View_Research(this.research, this.account, {super.key});
-  ResearchDetails research;
+  Research_View research;
   Account account;
 
   @override
@@ -30,9 +32,10 @@ class _User_View_ResearchState extends State<User_View_Research> {
   ResearchService get resService => GetIt.instance<ResearchService>();
   FileService get fileService => GetIt.instance<FileService>();
   late APIResponse<dynamic> _apiResponseRes;
-  Future<APIResponse<Uint8List>> getResearchFile(String schoolID) async {
+  Future<APIResponse<Uint8List>> getResearchFile(
+      String school, String researchID) async {
     return _apiResponseRes = await fileService.getResearchFile(
-        schoolID, widget.account.departmentName!);
+        school, widget.account.departmentName!, researchID);
   }
 
   Future<APIResponse<bool>> addResearchList(
@@ -60,7 +63,7 @@ class _User_View_ResearchState extends State<User_View_Research> {
               ResName(),
               ResDesc(),
               ViewPDF(),
-              TempButton(widget.research.research_id!),
+              // TempButton(widget.research.research_id!),
             ],
           ),
         ),
@@ -136,12 +139,12 @@ class _User_View_ResearchState extends State<User_View_Research> {
 
   void addBookMarks() async {
     final resultList = await addResearchList(
-        widget.research.research_id!, widget.account.school_id!);
+        widget.research.research_id!, widget.account.account_id!);
   }
 
   void removeBookMarks() async {
     final result = await removeBookMark(
-        widget.research.research_id!, widget.account.school_id!);
+        widget.research.research_id!, widget.account.account_id!);
   }
 
   // ignore: non_constant_identifier_names
@@ -178,12 +181,6 @@ class _User_View_ResearchState extends State<User_View_Research> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 // ignore: prefer_const_constructors
-                Text(
-                  "Adviser: ${widget.research.adviser}",
-                  // ignore: prefer_const_constructors
-                  style: TextStyle(fontSize: 18),
-                  overflow: TextOverflow.ellipsis,
-                ),
               ],
             ),
           ),
@@ -227,10 +224,10 @@ class _User_View_ResearchState extends State<User_View_Research> {
                   height: 50,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: widget.research.sdg_category.length,
+                    itemCount: widget.research.sdg.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Text(
-                        "${widget.research.sdg_category[index]}, ",
+                        "${widget.research.sdg[index]}, ",
                         style: const TextStyle(fontSize: 25.0),
                       );
                     },
@@ -294,11 +291,20 @@ class _User_View_ResearchState extends State<User_View_Research> {
         ),
         onPressed: () async {
           // ignore: use_build_context_synchronously
-          final result = await getResearchFile(widget.research.research_id!);
+          showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (context) {
+                return DialogPopup("Fetching PDF!", "assets/loading_un_2.gif");
+              });
+          final result = await getResearchFile(
+              widget.account.schoolName!, widget.research.research_id!);
           if (result.data == null) {
             // ignore: use_build_context_synchronously
             showSnackBarError(context, "Paper not found!");
           } else {
+            // ignore: use_build_context_synchronously
+            Navigator.pop(context);
             var file = await writeToFile(result.data!);
             // ignore: use_build_context_synchronously
             openPDF(context, file.path);

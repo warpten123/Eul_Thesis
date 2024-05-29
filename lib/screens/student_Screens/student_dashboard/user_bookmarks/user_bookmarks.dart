@@ -7,6 +7,7 @@ import 'package:thesis_eul/screens/utilities/utilities.dart';
 import '../../../../api_service/api_response.dart';
 import '../../../../api_service/research_service.dart';
 import '../../../../models/AccountModel.dart';
+import '../../../../models/researchModelView.dart';
 import '../user_library/user_view_research.dart';
 
 class UserBookmarks extends StatefulWidget {
@@ -21,11 +22,11 @@ class _UserBookmarksState extends State<UserBookmarks> {
   ResearchService get resService => GetIt.instance<ResearchService>();
   bool isSelected = false;
   dynamic _selected = {};
-  late APIResponse<List<ResearchDetails>> _apiResponse;
-  late List<ResearchDetails> userBookMarks;
-  Future<APIResponse<List<ResearchDetails>>> getUserBookmarks(
+  late APIResponse<List<Research_View>> _apiResponse;
+  late List<Research_View> userBookMarks;
+  Future<APIResponse<List<Research_View>>> getUserBookmarks(
       String school_id) async {
-    return _apiResponse = await resService.getUserBookmarks(school_id);
+    return _apiResponse = await resService.getUserBookmarks(school_id, 1);
   }
 
   @override
@@ -46,7 +47,7 @@ class _UserBookmarksState extends State<UserBookmarks> {
           centerTitle: true,
           // ignore: prefer_const_constructors
           title: Text(
-            'My Bookmarks',
+            'My Favorites',
             style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -87,9 +88,9 @@ class _UserBookmarksState extends State<UserBookmarks> {
               ),
             ),
             FutureBuilder(
-              future: getUserBookmarks(widget.account.school_id!),
+              future: getUserBookmarks(widget.account.account_id!),
               builder: (BuildContext context,
-                  AsyncSnapshot<APIResponse<List<ResearchDetails>>> snapshot) {
+                  AsyncSnapshot<APIResponse<List<Research_View>>> snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
                 }

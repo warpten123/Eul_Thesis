@@ -11,6 +11,7 @@ import '../../../../api_service/api_response.dart';
 import '../../../../api_service/research_service.dart';
 import '../../../../api_service/user_service.dart';
 import '../../../../models/AccountModel.dart';
+import '../../../../models/researchModelView.dart';
 import '../../../../models/research_details.dart';
 
 class UserProfile extends StatefulWidget {
@@ -45,22 +46,22 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   Future<APIResponse<Uint8List>> getProfile(
-      String schoold_id, String deparment) async {
+      String schoold_id, String deparment, String schoolName) async {
     return _apiResponseProfile =
-        await userService.getUserProfile(schoold_id, deparment);
+        await userService.getUserProfile(schoold_id, deparment, schoolName);
   }
 
   late List<ResearchDetails> userBookMarks;
-  Future<APIResponse<List<ResearchDetails>>> getUserBookmarks(
+  Future<APIResponse<List<Research_View>>> getUserBookmarks(
       String school_id) async {
-    late APIResponse<List<ResearchDetails>> _apiResponseRes;
-    return _apiResponseRes = await resService.getUserBookmarks(school_id);
+    late APIResponse<List<Research_View>> _apiResponseRes;
+    return _apiResponseRes = await resService.getUserBookmarks(school_id, 1);
   }
 
-  Future<APIResponse<List<ResearchDetails>>> getUserLibrary(
+  Future<APIResponse<List<Research_View>>> getUserLibrary(
       String schoolID) async {
-    late APIResponse<List<ResearchDetails>> _apiResponseRes;
-    return _apiResponseRes = await resService.getUserLibray(schoolID);
+    late APIResponse<List<Research_View>> _apiResponseRes;
+    return _apiResponseRes = await resService.getUserLibray(schoolID, 0);
   }
 
   bool isUpdate = false;
@@ -78,39 +79,41 @@ class _UserProfileState extends State<UserProfile> {
   @override
   void initState() {
     super.initState();
-
-    switch (widget.account.departmentID) {
-      case 1:
-        dept = "School of Law";
-        break;
-      case 2:
-        dept = "School of Business and Management";
-        break;
-      case 3:
-        dept = "School of Computer Studies";
-        break;
-      case 4:
-        dept = "Senior High School";
-        break;
-      case 5:
-        dept = "School of Arts and Sciences";
-        break;
-      case 6:
-        dept = "RITTC";
-        break;
-      case 7:
-        dept = "School of Allied Medical Sciences";
-        break;
-      case 8:
-        dept = "School of Engineering";
-        break;
-      case 9:
-        dept = "School of Education";
-        break;
-    }
-    getAccounts();
-    getAllBookmarks();
-    getAllResearch();
+    dept = widget.account.schoolName!;
+    // switch (widget.account.schoolName) {
+    //   case 1:
+    //     dept = "School of Law";
+    //     break;
+    //   case 2:
+    //     dept = "School of Business and Management";
+    //     break;
+    //   case 3:
+    //     dept = "School of Computer Studies";
+    //     break;
+    //   case 4:
+    //     dept = "Senior High School";
+    //     break;
+    //   case 5:
+    //     dept = "School of Arts and Sciences";
+    //     break;
+    //   case 6:
+    //     dept = "RITTC";
+    //     break;
+    //   case 7:
+    //     dept = "School of Allied Medical Sciences";
+    //     break;
+    //   case 8:
+    //     dept = "School of Engineering";
+    //     break;
+    //   case 9:
+    //     dept = "School of Education";
+    //     break;
+    // }
+    setState(() {
+      getAccounts();
+      getAllBookmarks();
+      getAllResearch();
+    });
   }
 
   @override
@@ -123,19 +126,22 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   void getAllResearch() async {
-    final result = await getUserLibrary(widget.account.school_id!);
-    numberOfResearch = result.data!.length;
+    final result = await getUserLibrary(widget.account.account_id!);
+    setState(() {
+      numberOfResearch = result.data!.length;
+    });
   }
 
   void getAllBookmarks() async {
-    final result = await getUserBookmarks(widget.account.school_id!);
-    numberOfBookmarks = result.data!.length;
+    final result = await getUserBookmarks(widget.account.account_id!);
+    setState(() {
+      numberOfBookmarks = result.data!.length;
+    });
   }
 
   void getAccounts() async {
     try {
-      print("FUCK");
-      final result = await getAccount(widget.account.school_id!);
+      final result = await getAccount(widget.account.account_id!);
       finalAccount = result.data!;
       print("Mounted $mounted");
       if (mounted) {
@@ -145,7 +151,7 @@ class _UserProfileState extends State<UserProfile> {
           email_Controller.text = finalAccount.email;
           firstName = finalAccount.first_name;
           lastName = finalAccount.last_name;
-          id = finalAccount.school_id!;
+          id = finalAccount.account_id!;
           test = firstName_Controller.text;
           test2 = lastName_Controller.text;
           test3 = email_Controller.text;
@@ -328,7 +334,7 @@ class _UserProfileState extends State<UserProfile> {
         NumberDivider(),
         NumberButton(text: "Bookmarks", value: numberOfBookmarks),
         NumberDivider(),
-        NumberButton(text: "Citations", value: 10),
+        // NumberButton(text: "Citations", value: 10),
       ],
     );
   }
@@ -453,13 +459,12 @@ class _UserProfileState extends State<UserProfile> {
             if (listenChanges && isUpdate) {
               if (_formKey.currentState!.validate()) {
                 Account payload = Account(
-                    school_id: finalAccount.school_id,
+                    account_id: finalAccount.account_id,
                     first_name: firstName_Controller.text,
                     last_name: lastName_Controller.text,
                     email: email_Controller.text,
                     departmentID: finalAccount.departmentID,
-                    departmentName: widget.account.departmentName,
-                    role_roleID: 1);
+                    roleID: 1);
 
                 final result = await updateAccount(payload);
 

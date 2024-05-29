@@ -5,10 +5,12 @@ import 'package:get_it/get_it.dart';
 import 'package:thesis_eul/api_service/user_service.dart';
 
 import 'package:thesis_eul/models/AccountModel.dart';
+import 'package:thesis_eul/screens/first_register_screen.dart';
+import 'package:thesis_eul/screens/new_register_screen.dart';
 
 import 'package:thesis_eul/screens/student_Screens/code_screen.dart';
 import 'package:thesis_eul/screens/student_Screens/register_screen.dart';
-import 'package:thesis_eul/screens/student_Screens/student_dashboard/file_upload/erika.dart';
+import 'package:thesis_eul/screens/student_Screens/student_dashboard/file_upload/dialog.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/new_user_dashboard.dart';
 import 'package:thesis_eul/screens/utilities/utilities.dart';
 
@@ -23,9 +25,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool _passwordVisible = true;
   // final auth = Authentication();
   // ignore: non_constant_identifier_names
-  final school_id = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
   ResearchService get resService => GetIt.instance<ResearchService>();
   UserService get userService => GetIt.instance<UserService>();
@@ -34,9 +37,9 @@ class _LoginScreenState extends State<LoginScreen> {
   // ignore: unused_field
   late APIResponse<Uint8List> _apiResponseProfile;
   late APIResponse<String> test;
-  Future<APIResponse<bool>> userLogin(String id, String password) async {
+  Future<APIResponse<Account>> userLogin(String id, String password) async {
     // ignore: unused_local_variable
-    APIResponse<bool> response;
+    APIResponse<Account> response;
     return response = await userService.userLogin(id, password);
   }
 
@@ -46,9 +49,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // ignore: non_constant_identifier_names
   Future<APIResponse<Uint8List>> getProfile(
-      String schoold_id, String department) async {
+      String schoold_id, String department, String schoolName) async {
     return _apiResponseProfile =
-        await userService.getUserProfile(schoold_id, department);
+        await userService.getUserProfile(schoold_id, department, schoolName);
   }
 
   // @override
@@ -111,20 +114,23 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 50,
                         margin: const EdgeInsets.only(left: 40, right: 40),
                         child: TextFormField(
-                          keyboardType: TextInputType.number,
                           validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please Enter ID';
+                            if (value!.isEmpty) {
+                              return 'Please enter an email';
+                            }
+                            if (!RegExp(r'^[\w-\.]+@usjr\.edu\.ph$')
+                                .hasMatch(value)) {
+                              return 'Please enter a valid email ending with @usjr.edu.ph';
                             }
                             return null;
                           },
-                          controller: school_id,
+                          controller: emailController,
                           style: const TextStyle(
                             fontSize: 16,
                             color: Colors.white,
                           ),
                           decoration: InputDecoration(
-                            labelText: "School ID",
+                            labelText: "Institutional Email",
                             labelStyle: TextStyle(color: Colors.grey.shade500),
                             // hintStyle: TextStyle(color: Colors.grey.shade500),
                             filled: true,
@@ -143,7 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 50,
                         margin: const EdgeInsets.only(left: 40, right: 40),
                         child: TextFormField(
-                          obscureText: true,
+                          obscureText: _passwordVisible,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please Enter Password';
@@ -157,6 +163,21 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: Colors.white,
                           ),
                           decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                // Based on passwordVisible state choose the icon
+                                _passwordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Theme.of(context).primaryColorDark,
+                              ),
+                              onPressed: () {
+                                // Update the state i.e. toogle the state of passwordVisible variable
+                                setState(() {
+                                  _passwordVisible = !_passwordVisible;
+                                });
+                              },
+                            ),
                             labelText: "Password",
                             labelStyle: TextStyle(color: Colors.grey.shade500),
                             filled: true,
@@ -174,11 +195,22 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.pushReplacement(
+                          // Navigator.pushReplacement(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => const RegisterScreen()),
+                          // );
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const RegisterScreen()),
+                                builder: (context) =>
+                                    const New_Register_Screen()),
                           );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => const First_Register()),
+                          // );
                         },
                         // ignore: prefer_const_constructors
                         child: Text(
@@ -205,24 +237,37 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: TextButton(
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              final result = await userLogin(
-                                  school_id.text, passwordController.text);
-                              // var local = result;
-                              print("RESULT : ${result.data}");
-                              if (result.data != null) {
-                                final result =
-                                    await getStudentByID(school_id.text);
+                              showDialog(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (context) {
+                                    return DialogPopup("Logging In!",
+                                        "assets/loading_un_2.gif");
+                                  });
+                              final resultLogin = await userLogin(
+                                  // goods
+                                  emailController.text,
+                                  passwordController.text);
 
+                              if (resultLogin.data != null) {
+                                // ignore: use_build_context_synchronously
+
+                                final result = await getStudentByID(
+                                    resultLogin.data!.account_id!);
                                 // ignore: use_build_context_synchronously
                                 Account test = result.data!;
-
-                                if (test.approve == 1) {
+                                print(resultLogin.data!.account_id);
+                                if (resultLogin.data!.approve == 1) {
                                   // final result2 = await testFlask("a");
                                   // ignore: use_build_context_synchronously
+
+                                  final resultUrl = await getProfile(
+                                      test.account_id!,
+                                      test.departmentName!,
+                                      test.schoolName!);
+                                  Navigator.pop(context);
                                   showSnackBarSuccess(
                                       context, "Welcome to EUL!");
-                                  final resultUrl = await getProfile(
-                                      school_id.text, test.departmentName!);
                                   // ignore: use_build_context_synchronously
                                   Navigator.push(
                                     context,
@@ -242,6 +287,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       "Your account is still pending confirmation.");
                                 }
                               } else {
+                                Navigator.pop(context);
                                 // ignore: use_build_context_synchronously
                                 showSnackBarError(context,
                                     "Account doesn't exist! or Your account is still pending confirmation.");

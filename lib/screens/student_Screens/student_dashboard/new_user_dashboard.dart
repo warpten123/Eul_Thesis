@@ -5,7 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:thesis_eul/api_service/user_service.dart';
 import 'package:thesis_eul/models/AccountModel.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/department_list.dart';
-import 'package:thesis_eul/screens/student_Screens/student_dashboard/file_upload/erika.dart';
+
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/file_upload/file_uploadDashboard.dart';
 import 'package:thesis_eul/screens/student_Screens/student_dashboard/place_Item.dart';
 
@@ -16,6 +16,7 @@ import 'package:thesis_eul/screens/student_Screens/student_dashboard/search_scre
 import '../../../api_service/api_response.dart';
 import '../../../api_service/research_service.dart';
 import 'file_upload/upload_dashboard.dart';
+import 'test_dashboard.dart';
 import 'user_drawer/drawer.dart';
 
 class UserDashboardNew extends StatefulWidget {
@@ -32,9 +33,9 @@ class _UserDashboardNewState extends State<UserDashboardNew> {
   ResearchService get resService => GetIt.instance<ResearchService>();
   UserService get userService => GetIt.instance<UserService>();
   Future<APIResponse<Uint8List>> getProfile(
-      String schoold_id, String department) async {
+      String schoold_id, String department, String schoolName) async {
     return _apiResponseProfile =
-        await userService.getUserProfile(schoold_id, department);
+        await userService.getUserProfile(schoold_id, department, schoolName);
   }
 
   @override
@@ -56,28 +57,12 @@ class _UserDashboardNewState extends State<UserDashboardNew> {
         appBar: appBar(context),
         body: Stack(
           children: [
-            // Container(
-            //   // ignore: prefer_const_constructors
-            //   decoration: BoxDecoration(
-            //       image: const DecorationImage(
-            //           image: AssetImage('assets/un.jpg'), fit: BoxFit.cover)),
-            // ),
-            // Container(
-            //   decoration: BoxDecoration(
-            //     gradient: LinearGradient(colors: [
-            //       Colors.transparent,
-            //       Colors.transparent,
-            //       const Color(0xff161d27).withOpacity(0.9),
-            //       const Color(0xff161d27),
-            //     ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
-            //   ),
-            // ),
             SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 // ignore: prefer_const_literals_to_create_immutables
                 children: <Widget>[
-                  const SearchWidget(),
+                  // const SearchWidget(),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     child: Text(
@@ -89,9 +74,9 @@ class _UserDashboardNewState extends State<UserDashboardNew> {
                       ),
                     ),
                   ),
-                  Department_List(),
+                  // Department_List(),
                   // PlaceItem(),
-                  PlaceGridView(widget.account.school_id!),
+                  PlaceGridView(widget.account.account_id!),
                 ],
               ),
             ),
@@ -152,13 +137,18 @@ class _UserDashboardNewState extends State<UserDashboardNew> {
             //   MaterialPageRoute(
             //       builder: (context) => File_Upload(widget.account)),
             // );
+            // Navigator.push(
+            //   //file upload
+            //   context,
+            //   MaterialPageRoute(
+            //       builder: (context) => UploadDashboard(
+            //             widget.account,
+            //           )),
+            // );
             Navigator.push(
               //file upload
               context,
-              MaterialPageRoute(
-                  builder: (context) => UploadDashboard(
-                        widget.account,
-                      )),
+              MaterialPageRoute(builder: (context) => Test(widget.account)),
             );
           },
           child: const Icon(Icons.add),
